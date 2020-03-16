@@ -27,13 +27,16 @@ License
 
 #include "psiReactionThermo.H"
 #include "hePsiThermo.H"
+#include "HYhePsiThermo.H"
 
 #include "specie.H"
 #include "perfectGas.H"
+#include "PengRobinsonGas.H"
 #include "hConstThermo.H"
 #include "janafThermo.H"
 #include "sensibleEnthalpy.H"
 #include "thermo.H"
+#include "thermotable.H"
 #include "constTransport.H"
 #include "sutherlandTransport.H"
 
@@ -41,7 +44,9 @@ License
 #include "inhomogeneousMixture.H"
 #include "veryInhomogeneousMixture.H"
 #include "multiComponentMixture.H"
+#include "HYmultiComponentMixture.H"
 #include "reactingMixture.H"
+#include "HYreactingMixture.H"
 #include "singleStepReactingMixture.H"
 #include "singleComponentMixture.H"
 
@@ -324,6 +329,27 @@ makeThermoPhysicsReactionThermo
     hePsiThermo,
     singleComponentMixture,
     gasEThermoPhysics
+);
+
+
+
+makeThermoPhysicsReactionThermos
+(
+    psiThermo,
+    psiReactionThermo,
+    HYhePsiThermo,
+    HYreactingMixture,
+    gasHThermoPhysics
+);
+
+
+makeThermoPhysicsReactionThermos
+(
+    psiThermo,
+    psiReactionThermo,
+    hePsiThermo,
+    reactingMixture,
+    PRgasEThermoPhysics
 );
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

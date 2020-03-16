@@ -34,6 +34,7 @@ Description
 
 #include "specie.H"
 #include "perfectGas.H"
+#include "PengRobinsonGas.H"
 #include "incompressiblePerfectGas.H"
 #include "perfectFluid.H"
 #include "adiabaticPerfectFluid.H"
@@ -275,6 +276,19 @@ namespace Foam
         >
     >
     constEThermoPhysics;
+
+    typedef
+    sutherlandTransport
+    <
+        species::thermo
+        <
+            janafThermo
+            <
+                PengRobinsonGas<specie>
+            >,
+            sensibleInternalEnergy
+        >
+    > PRgasEThermoPhysics;
 }
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

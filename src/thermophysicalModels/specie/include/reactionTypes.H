@@ -63,6 +63,8 @@ namespace Foam
 
     typedef Reaction<constHThermoPhysics> constHReaction;
 
+    typedef Reaction<PRgasEThermoPhysics> PRgasEThermoPhysicsReaction;
+
 
     // internal ennergy based reactions
     typedef Reaction<constGasEThermoPhysics> constGasEReaction;

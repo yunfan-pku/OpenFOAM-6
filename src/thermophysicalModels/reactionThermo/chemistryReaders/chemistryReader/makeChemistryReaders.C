@@ -29,6 +29,7 @@ License
 
 #include "chemistryReader.H"
 #include "foamChemistryReader.H"
+//#include "HYfoamChemistryReader.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -47,6 +48,7 @@ makeChemistryReader(icoPoly8HThermoPhysics);
 makeChemistryReader(constFluidHThermoPhysics);
 makeChemistryReader(constAdiabaticFluidHThermoPhysics);
 makeChemistryReader(constHThermoPhysics);
+makeChemistryReader(PRgasEThermoPhysics);
 
 makeChemistryReaderType(foamChemistryReader, constGasHThermoPhysics);
 makeChemistryReaderType(foamChemistryReader, gasHThermoPhysics);
@@ -60,6 +62,8 @@ makeChemistryReaderType(foamChemistryReader, icoPoly8HThermoPhysics);
 makeChemistryReaderType(foamChemistryReader, constFluidHThermoPhysics);
 makeChemistryReaderType(foamChemistryReader, constAdiabaticFluidHThermoPhysics);
 makeChemistryReaderType(foamChemistryReader, constHThermoPhysics);
+makeChemistryReaderType(foamChemistryReader, PRgasEThermoPhysics);
+//makeChemistryReaderType(HYfoamChemistryReader, PRgasEThermoPhysics);
 
 
 // Solid chemistry readers based on sensibleInternalEnergy

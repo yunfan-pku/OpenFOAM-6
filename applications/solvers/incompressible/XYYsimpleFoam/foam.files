@@ -1,0 +1,12 @@
+Make/files
+Make/options
+UEqn.H
+XYYsimpleFoam.C
+createFields.H
+pEqn.H
+porousSimpleFoam/Make/files
+porousSimpleFoam/Make/options
+porousSimpleFoam/UEqn.H
+porousSimpleFoam/createPorousZones.H
+porousSimpleFoam/pEqn.H
+porousSimpleFoam/porousSimpleFoam.C

@@ -1,0 +1,77 @@
+
+
+/*
+species (CO2 CH4 O2 N2);
+
+component_ini (0.15 0.1 0.15 0.6);
+component_fin (0.01666666666666666 0.9 0.016666666666666666 0.0666666666666666666);
+num_comp 8;
+pressure_ini 100000;
+pressure_fin 290000;
+num_pre  19;
+
+temperature_ini 200;
+temperature_fin 390;
+num_temp  19;
+*/
+TableFlag 1;
+PTFlag 0;
+PXFlag 0;
+
+table
+{
+    #include "thermo"
+    outputfilename ThermoTable_CO2H2O_3D.csv;
+    species (CO2 H2O);
+
+    component_ini (0.00001 1);//(0.5 0.5);
+    component_fin (1 0.000001);
+    num_comp 50;
+    pressure_ini 100000;
+    pressure_fin 40000000;
+    num_pre  500;
+
+    temperature_ini 300;
+    temperature_fin 600;
+    num_temp  50;
+    PCFlag 0;//Phase change flag 1 no, 0 yes
+}
+
+PT
+{
+    #include "thermo"
+    outputfilename PT_CO2H2O_vle.txt;
+    species (CO2 H2O);
+
+    component (0.7 0.3);
+
+    pressure_ini 100000;
+    pressure_fin 40000000;
+    num_pre  100;
+
+    temperature_ini 200;
+    temperature_fin 600;
+    num_temp  2000;
+}
+
+PX
+{
+    #include "thermo"
+    outputfilename PX.txt;
+    species (CO2 CH4);
+
+    component_ini (0 1);
+    component_fin (1 0);
+    num_comp 100;
+
+    pressure_ini 100000;
+    pressure_fin 10000000;
+    num_pre  100;
+
+    temperature 200;
+
+}
+
+
+
+

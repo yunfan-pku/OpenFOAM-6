@@ -116,6 +116,7 @@ namespace Foam
         constAdiabaticFluidEReaction
     )
     makeReactions(constEThermoPhysics, constEReaction)
+    makeReactions(PRgasEThermoPhysics, PRgasEThermoPhysicsReaction)
 }
 
 // ************************************************************************* //

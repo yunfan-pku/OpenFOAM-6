@@ -1,0 +1,3 @@
+PRpuresprayFoam.C
+
+EXE = $(FOAM_APPBIN)/PRpuresprayFoam3

@@ -1,0 +1,3 @@
+XYYicoFoam.C
+
+EXE = $(FOAM_APPBIN)/XYYicoFoam
