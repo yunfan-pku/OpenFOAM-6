@@ -342,7 +342,7 @@ inline void Foam::PengRobinsonM<Specie>::wilsoneq(
 }
 
 template <class Specie>
-inline Foam::scalar Foam::PengRobinsonM<Specie>::OAD217_function(
+inline Foam::scalar Foam::PengRobinsonM<Specie>::OAD217_function( //????? useless
     scalar XX,
     scalar YY) const
 {
@@ -378,7 +378,7 @@ inline Foam::scalar Foam::PengRobinsonM<Specie>::OAD217_function(
 }
 
 template <class Specie>
-inline void Foam::PengRobinsonM<Specie>::OAD013_function(
+inline void Foam::PengRobinsonM<Specie>::OAD013_function( //noramlize
     scalarList &comp_in,  // input
     scalarList &comp_out, // output
     int &ierr             //outpur
@@ -405,7 +405,7 @@ inline void Foam::PengRobinsonM<Specie>::OAD013_function(
 }
 
 template <class Specie>
-inline void Foam::PengRobinsonM<Specie>::OAD012_function(
+inline void Foam::PengRobinsonM<Specie>::OAD012_function( //solve vaporf
     scalar p,                  //input
     scalar T,                  //input
     scalarList &comp_inp,      //input
@@ -953,6 +953,7 @@ inline Foam::scalar Foam::PengRobinsonM<Specie>::rhomix_phase // PY:phase mixtur
     scalarList Bz(comp_inp.size(), Zero);
     this->ABZmix(p, T, comp_inp, Amixz, Bmixz, Amix2, Bz);
     scalar Zmix = this->Zmix(phasei, Amixz, Bmixz);
+    Info<<Amixz<<" "<<Bmixz<<endl;
     scalar mw_phase = this->mwmix(comp_inp); //kg/mol
     //RR: 10e+03*m3 Pa K-1 mol-1
     rhomixPhase = mw_phase * p / (Zmix * RR * 1.0e-03 * T); // kg/m3
@@ -1480,7 +1481,8 @@ inline void Foam::PengRobinsonM<Specie>::kappa_phase(
             //sigma(i,j)= bip_kij(i,j)*sqrt((0.809d0*vc(i)**(1.d0/3.d0))*(0.809d0*vc(j)**(1.d0/3.d0)))
             e_k0[spid][spjd] = sqrt(e_k[spid] * e_k[spjd]);
             //e_k0(i,j)= bip_kij(i,j)*sqrt(e_k(i)*e_k(j))
-            kij[spid][spjd] = sqrt(k[spid] * k[spjd]);
+            //kij[spid][spjd] = sqrt(k[spid] * k[spjd]);
+            kij[spid][spjd] = sqrt(single_specie[spid].kappa() * single_specie[spid].kappa());
             mwij[spid][spjd] = 2.0 * mw_sp3[spid] * mw_sp3[spjd] / (mw_sp3[spid] + mw_sp3[spjd]);
         }
     }
@@ -1501,12 +1503,19 @@ inline void Foam::PengRobinsonM<Specie>::kappa_phase(
         {
             sigma_mix3 += comp_phase[spid] * comp_phase[spjd] * pow3(sigma[spid][spjd]);
             sigma_mix2 += comp_phase[spid] * comp_phase[spjd] * sqr(sigma[spid][spjd]);
-
             e_k_mix +=  comp_phase[spid] * comp_phase[spjd] * e_k0[spid][spjd] * pow3(sigma[spid][spjd]);
+        }
+    }
+
+        forAll(comp_phase, spid)
+    {
+        forAll(comp_phase, spjd)
+        {
+            
             w_mix   +=  comp_phase[spid] * comp_phase[spjd] * w[spid][spjd] * pow3(sigma[spid][spjd]);
             mu4     +=  comp_phase[spid] * comp_phase[spjd] * sqr(single_specie[spid].mu())*sqr(single_specie[spjd].mu() ) / (pow3(sigma[spid][spjd])*e_k0[spid][spjd] );
             k_mix   +=  comp_phase[spid] * comp_phase[spjd] * kij[spid][spjd];
-            mw_binary += (comp_phase[spid] * comp_phase[spjd] * e_k0[spid][spjd] * sqr(sigma[spid][spjd]) * sqrt(mwij[spid][spjd])) / (e_k_mix * sigma_mix2);
+            mw_binary += (comp_phase[spid] * comp_phase[spjd] * e_k0[spid][spjd] * sqr(sigma[spid][spjd]) * sqrt(mwij[spid][spjd])) ;// (e_k_mix * sigma_mix2);
         }
     }
     e_k_mix   /=sigma_mix3;
@@ -1522,7 +1531,7 @@ inline void Foam::PengRobinsonM<Specie>::kappa_phase(
     scalar mur_mix4 = pow4(131.30) * mu4 / sqr(tempc_mix * volu_mix); //volu_mix in cm3/mol, mu4 in debyes
     scalar t_mix = T / e_k_mix;
     scalar Fcm = 1.0 - 0.2756 * w_mix + 0.0590350 * mur_mix4 + k_mix;
-    scalar omegav = 1.161450 * (pow(t_mix, -0.148740) + 0.524870 * exp(-0.773200 * t_mix) + 2.161780 * exp(-2.437870 * t_mix));//???GT...
+    scalar omegav = 1.161450 * (pow(t_mix, -0.148740) + 0.524870 * exp(-0.773200 * t_mix) + 2.161780 * exp(-2.437870 * t_mix))+(-6.435e-4)*pow(t_mix, 0.148740)*sin(18.0323*pow(t_mix, -0.7683)-7.27371);//???GT...
 
     //1. mixture phases viscosity 40.785 ? 26.69 there is error in 9-5.24
     viscos = 1e-07 * 26.69 * Fcm * sqrt(mw_binary * T) / (sigma_mix2 * omegav);

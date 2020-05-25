@@ -85,6 +85,7 @@ Foam::HYmultiComponentMixture<ThermoType>::HYmultiComponentMixture
 )
 :
     basicSpecieMixture(thermoDict, specieNames, mesh, phaseName),
+    table(word(thermoDict.lookup("tableName")).c_str()),
     speciesData_(species_.size()),
     mixture_(*this,"mixture", *thermoData[specieNames[0]]),
     mixtureVol_(*this,"volMixture", *thermoData[specieNames[0]])

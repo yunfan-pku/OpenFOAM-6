@@ -38,6 +38,8 @@ SourceFiles
 #include "basicSpecieMixture.H"
 #include "HashPtrTable.H"
 #include "thermotable.H"
+#include "table.H"
+#include "tabulation.H"
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
@@ -60,11 +62,18 @@ public:
        //- The type of thermodynamics this mixture is instantiated for
     typedef thermotable<ThermoType> thermoType;
 
+    tabulation table;
+
+
 private:
     // Private Data
 
+       
+
         //- Species data
         PtrList<ThermoType> speciesData_;
+
+        
 
         //- Temporary storage for the cell/face mixture thermo data
         mutable thermoType mixture_;

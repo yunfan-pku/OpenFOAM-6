@@ -225,6 +225,12 @@ inline Foam::scalar Foam::PengRobinsonS<Specie>::mu() const
     return mu_;
 }
 
+template<class Specie>
+inline Foam::scalar Foam::PengRobinsonS<Specie>::kappa() const
+{
+    return kappa_;
+}
+
 template <class Specie>
 inline Foam::scalar Foam::PengRobinsonS<Specie>::rho(
     scalar p,

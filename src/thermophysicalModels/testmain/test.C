@@ -223,19 +223,19 @@ void tablegen(dictionary &dict)
         //kappaMixture;//<<' '<<' '<<muMixture<<' '<<' '<<
 
         //ZMixture;<<' '<<' '<<Dij_binary_high*1.0e+06;
-        Info << t_temp << ' ' << ' ' << t_pres << ' ' << ' ' << t_comp[0] << endl;
+        Info << t_temp << "  " << t_pres << "  " << t_comp[0] << "  "<<muMixture<<endl;
 
-        output << t_temp << ' ' << ' ' << t_pres << ' ' << ' ' << t_comp[0] << ' ' << ' ' <<
+        output << t_temp << "  " << t_pres << "  " << t_comp[0] << "  " <<
 
-            rhoMixture << ' ' << ' ' << sieMixture << ' ' << ' ' <<
+            rhoMixture << "  " << sieMixture << "  " <<
 
-            CpMixture << ' ' << ' ' << CvMixture << ' ' << ' ' << CsMixture << ' ' << ' ' <<
+            CpMixture << "  " << CvMixture << "  " << CsMixture << "  " <<
 
-            kappaMixture << ' ' << ' ' << muMixture << ' ' << ' ' <<
+            kappaMixture << "  " << muMixture << "  " <<
 
-            ZMixture << ' ' << ' ' << Dij_binary_high << ' ' << ' ' <<
+            ZMixture << "  " << Dij_binary_high << "  " <<
 
-            comp_liq[0] << ' ' << ' ' << comp_gas[0] << ' ' << ' ' << alphagas;
+            comp_liq[0] << "  " << comp_gas[0] << "  " << alphagas;
 
         //output << t_temp << ',' << ' ' << t_pres <<" ," << state<<","<<t_pres/(rhoMixture* t_temp);
 
@@ -340,11 +340,11 @@ void TPdiagram(dictionary &dict)
           {
             templ = tempm;
           }
-          else  //(tpdtest_t == tpdtest)
+          else //(tpdtest_t == tpdtest)
           {
             tempr = tempm;
           }
-          Info<<templ<<" "<<tempr<<endl;
+          Info << templ << " " << tempr << endl;
         }
         tempphase_pt[ndettpd++] = tempm;
       }
@@ -514,6 +514,68 @@ void PXdiagram(dictionary &dict)
   output.close();
 }
 
+void phase(dictionary &dict)
+{
+  speciesTable s(dict.lookup("species"));
+  PengRobinsonM<specie> PR(s, dict);
+
+  ofstream output;
+  word outputfilename(word(dict.lookup("outputfilename")));
+  output.open(outputfilename);
+
+  ifstream input;
+  word inputfilename(word(dict.lookup("inputfilename")));
+  input.open(inputfilename);
+  string str;
+  input >> str;
+  Info << str << endl;
+  double c1, c2, p, t, x1, x2, x3;
+  char C;
+  scalarList t_comp(2);
+  scalarList comp_liq(2);
+  scalarList comp_gas(2);
+  double vaporfra;
+  scalarList equalconstant(2);
+  double state,st;
+  t_comp[0] = c1;
+  t_comp[1] = c2;
+  while (!input.eof())
+  {
+    input >> c1 >> C >> p >> C >> t >> C >> c2 >> C >> x1 >> C >> x2 >> C >> x3>>C>>st;
+    Info << c1 << " " << p << " " << t << " " << c2 << " " << x1 << " " << x2 << " " << x3 << " " << endl;
+    c1=c1/44/(c1/44+c2/18);
+    c2=1-c1;
+    p=10000000;
+    t=350;
+    t_comp[0] = c1;
+    t_comp[1] = c2;
+
+
+    PR.TPn_flash(p, t, t_comp, comp_liq, comp_gas, vaporfra, equalconstant);
+    if (vaporfra > 1.0)
+    {
+      vaporfra = 0.9999999;
+    }
+    else if (vaporfra < 0.0)
+    {
+      vaporfra = 1.0e-07;
+    }
+    if (vaporfra >= 0.9999999)
+    {
+      state = 1;
+    }
+    else if (vaporfra <= 1.0e-07)
+    {
+      state = 0;
+    }
+    else
+    {
+      state = 2;
+    }
+    output<<x1<<","<<x2<<","<<x3<<","<<state<<std::endl;
+  }
+}
+
 int main()
 {
 
@@ -551,5 +613,6 @@ int main()
     TPdiagram(dict.subDict("PT"));
   if (readLabel(dict.lookup("PXFlag")) == 1)
     PXdiagram(dict.subDict("PX"));
-
+  if (readLabel(dict.lookup("phaseFlag")) == 1)
+    phase(dict.subDict("phase"));
 }

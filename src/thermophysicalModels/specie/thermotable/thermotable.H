@@ -19,7 +19,7 @@ class thermotable
     : public ThermoType
 {
 public:
-    static tabulation table;
+    tabulation& table;
     HYmultiComponentMixture<ThermoType> &multi_mixture_;
     //PtrList<volScalarField>& Y_;
     scalarList Y_;
@@ -120,8 +120,8 @@ public:
         const scalar T) const;
 };
 
-template <class ThermoType>
-tabulation thermotable<ThermoType>::table("ThermoTable.txt");
+//template <class ThermoType>
+//tabulation thermotable<ThermoType>::table("ThermoTable.txt");
 
 } // namespace Foam
 

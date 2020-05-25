@@ -93,6 +93,7 @@ private:
     scalarList Hig_phase_;
     scalarList Hig2_phase_;
     scalar mu_;
+    scalar kappa_;
 
 public:
     // Constructors
@@ -134,6 +135,8 @@ public:
     inline scalar cp_phase(scalar T) const;
 
     inline scalar mu() const;
+
+    inline scalar kappa() const;
 
     //- Return density [kg/m^3]
     inline scalar rho(scalar p, scalar T) const;

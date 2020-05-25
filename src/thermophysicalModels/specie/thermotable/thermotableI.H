@@ -7,6 +7,7 @@ inline Foam::thermotable<ThermoType>::thermotable(
     const ThermoType &st)
     : 
     ThermoType(name, st),
+    table(multi_mixture_in.table),
     multi_mixture_(multi_mixture_in),
     Y_(multi_mixture_in.Y().size(), 0.0)
 {
@@ -387,11 +388,19 @@ Foam::scalar Foam::thermotable<ThermoType>::THE(
     scalarList zi(Y_.size(),Zero);
     this->from_Y_to_z(Y_, zi);
 
+    
+        double test_rho=this->from_tpn_to_property(T0, p, zi[0], 4);
+        double test_sie=this->from_tpn_to_property(T0, p, zi[0], 5);
+        double test_T=this->get_property_from_tpn_reverse( test_rho, test_sie, zi[0], 1);
+        double test_p=this->get_property_from_tpn_reverse( test_rho, test_sie, zi[0], 2);
+
+    
+
     //h-hig = (sie-sieig)+pv-RT
     scalar vol = this->volspecific(p, T0);
     scalar rho = this->rho(p, T0);
     scalar sie = h - p * vol; // + 10000.0;
-    scalar cell_T2;
+    //scalar cell_T2;
     scalar cell_T1;
     //flag_XYY
     //   Info<<"XYYdebug_T_my "<<rho<<" "<<sie<<" "<<zi[0]<<" "<<cell_T1<<" "<<cell_T2<<" "<<T0<<" "<<cell_T1-cell_T2<<endl;

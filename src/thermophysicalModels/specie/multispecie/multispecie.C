@@ -2,7 +2,7 @@
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
    \\    /   O peration     | Website:  https://openfoam.org
-    \\  /    A nd           | Copyright (C) 2014-2018 OpenFOAM Foundation
+    \\  /    A nd           | Copyright (C) 2011-2018 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -23,50 +23,61 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "PengRobinsonS.H"
-#include "IOstreams.H"
+#include "multispecie.H"
+#include "constants.H"
+
+/* * * * * * * * * * * * * * * public constants  * * * * * * * * * * * * * * */
+
+namespace Foam
+{
+    defineTypeNameAndDebug(multispecie, 0);
+}
+
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
-
-template<class Specie>
-Foam::PengRobinsonS<Specie>::PengRobinsonS
-(
-    const dictionary& dict
-)
-:   Specie(dict),
-    Tc_(readScalar(dict.subDict("equationOfState").lookup("Tc"))),
-    Vc_(readScalar(dict.subDict("equationOfState").lookup("Vc"))),
-    Pc_(readScalar(dict.subDict("equationOfState").lookup("Pc"))),
-    omega_(readScalar(dict.subDict("equationOfState").lookup("omega"))),
-    Zc_(1.0),
-    Hig_phase_(dict.subDict("equationOfState").lookup("Hig_phase")),
-    Hig2_phase_(dict.subDict("equationOfState").lookup("Hig2_phase")),
-    mu_(readScalar(dict.subDict("equationOfState").lookup("mu"))),
-    kappa_(readScalar(dict.subDict("equationOfState").lookup("kappa")))
+template<class thermo>
+Foam::multispecie<thermo>(const dictionary& thermoDict)
+:speciesTable()
 {
-    Zc_ = Pc_*Vc_/(RR*Tc_);
+    wordList s(thermoDict.lookup("species"));
+    this->transfer(s);
+
 }
+
+/*
+Foam::multispecie::multispecie(const dictionary& dict)
+:
+    speciesTable()
+    //name_(dict.dictName()),
+    //Y_(dict.subDict("multispecie").lookupOrDefault("massFraction", 1.0)),
+    //molWeight_(readScalar(dict.subDict("multispecie").lookup("molWeight")))
+{
+
+    wordList s(dict.lookup("species"));
+    species.transfer(s);
+}
+*/
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-
-template<class Specie>
-void Foam::PengRobinsonS<Specie>::write(Ostream& os) const
+void Foam::multispecie::write(Ostream& os) const
 {
-    Specie::write(os);
+    dictionary dict("multispecie");
+    if (Y_ != 1)
+    {
+        dict.add("massFraction", Y_);
+    }
+    dict.add("molWeight", molWeight_);
+    os  << indent << dict.dictName() << dict;
 }
 
 
 // * * * * * * * * * * * * * * * Ostream Operator  * * * * * * * * * * * * * //
 
-template<class Specie>
-Foam::Ostream& Foam::operator<<
-(
-    Ostream& os,
-    const PengRobinsonS<Specie>& pg
-)
+Foam::Ostream& Foam::operator<<(Ostream& os, const multispecie& st)
 {
-    pg.write(os);
+    st.write(os);
+    os.check("Ostream& operator<<(Ostream& os, const multispecie& st)");
     return os;
 }
 

@@ -23,35 +23,17 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "PengRobinsonS.H"
+#include "PengRobinsonMixture.H"
 #include "IOstreams.H"
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-template<class Specie>
-Foam::PengRobinsonS<Specie>::PengRobinsonS
-(
-    const dictionary& dict
-)
-:   Specie(dict),
-    Tc_(readScalar(dict.subDict("equationOfState").lookup("Tc"))),
-    Vc_(readScalar(dict.subDict("equationOfState").lookup("Vc"))),
-    Pc_(readScalar(dict.subDict("equationOfState").lookup("Pc"))),
-    omega_(readScalar(dict.subDict("equationOfState").lookup("omega"))),
-    Zc_(1.0),
-    Hig_phase_(dict.subDict("equationOfState").lookup("Hig_phase")),
-    Hig2_phase_(dict.subDict("equationOfState").lookup("Hig2_phase")),
-    mu_(readScalar(dict.subDict("equationOfState").lookup("mu"))),
-    kappa_(readScalar(dict.subDict("equationOfState").lookup("kappa")))
-{
-    Zc_ = Pc_*Vc_/(RR*Tc_);
-}
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
 
 template<class Specie>
-void Foam::PengRobinsonS<Specie>::write(Ostream& os) const
+void Foam::PengRobinsonMixture<Specie>::write(Ostream& os) const
 {
     Specie::write(os);
 }
@@ -63,7 +45,7 @@ template<class Specie>
 Foam::Ostream& Foam::operator<<
 (
     Ostream& os,
-    const PengRobinsonS<Specie>& pg
+    const PengRobinsonMixture<Specie>& pg
 )
 {
     pg.write(os);
