@@ -117,6 +117,8 @@ namespace Foam
     )
     makeReactions(constEThermoPhysics, constEReaction)
     makeReactions(PRgasEThermoPhysics, PRgasEThermoPhysicsReaction)
+    //makeReactions(VLEPRHThermoPhysics, )
+    makeReactions(VLEChungPRHThermoPhysics, VLEChungPRHThermoPhysicsReaction)
 }
 
 // ************************************************************************* //

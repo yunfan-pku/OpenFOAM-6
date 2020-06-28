@@ -89,12 +89,15 @@ namespace Foam
         //- Acentric factor [-]
         scalar omega_;
 
+        scalarList Hig_phase_;
+        scalarList Hig2_phase_;
+
     public:
-        label phaseFlag;//gas 1,liq 0
+        label phaseFlag; //gas 1,liq 0
 
     public:
         // Constructors
-
+        typedef PengRobinson<Specie> EOS;
         //- Construct from components
         inline PengRobinson(
             const Specie &sp,
@@ -155,8 +158,17 @@ namespace Foam
 
         inline scalar A(scalar p, scalar T) const;
         inline scalar B(scalar p, scalar T) const;
+        inline scalar a(scalar p, scalar T) const;
+        inline scalar b(scalar p, scalar T) const;
+        inline scalar dadt(scalar p, scalar T) const;
+        inline scalar d2adt2(scalar p, scalar T) const;
+        inline scalar EOSalpha(scalar P, scalar T) const;
+
+        //Temp
+        inline scalar Hig_phase(scalar T) const;
+        inline scalar Hig2_phase(scalar T) const;
         //solve cubic equatoin
-        static inline scalar cubicSolve(scalar a0, scalar a1,scalar a2, label flag); //flag 0 smallest>0 ,flag 1 largest
+        static inline scalar cubicSolve(scalar a0, scalar a1, scalar a2, label flag); //flag 0 smallest>0 ,flag 1 largest
         // IO
 
         //- Write to Ostream

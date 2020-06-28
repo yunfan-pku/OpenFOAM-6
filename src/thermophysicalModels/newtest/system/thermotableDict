@@ -18,7 +18,7 @@ TableFlag 1;
 PTFlag 0;
 PXFlag 0;
 phaseFlag 0;
-
+species (CO2 H2O);
 phase
 {
     #include "thermo"
@@ -80,6 +80,8 @@ PX
     temperature 200;
 
 }
+
+
 
 
 

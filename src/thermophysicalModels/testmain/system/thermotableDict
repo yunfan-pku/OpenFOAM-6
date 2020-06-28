@@ -30,18 +30,18 @@ phase
 table
 {
     #include "thermo"
-    outputfilename ThermoTable_CO2H2O_test.txt;
+    outputfilename ThermoTable_low_CO2H2O.txt;
     species (CO2 H2O);
 
-    component_ini (0.5 0.5);
-    component_fin (1 0.000001);
+    component_ini (0.7 0.3);
+    component_fin (10 0.001);
     num_comp 0;
-    pressure_ini 100000;
-    pressure_fin 110000;
+    pressure_ini  110000;//30000000;	567.096	129.742
+    pressure_fin   80000;
     num_pre  0;
 
-    temperature_ini 1000;//633.15;
-    temperature_fin 500;
+    temperature_ini 180;//450;//633.15;
+    temperature_fin 600;
     num_temp  0;
     PCFlag 0;//Phase change flag 1 no, 0 yes
 }

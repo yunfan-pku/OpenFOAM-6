@@ -77,14 +77,19 @@ namespace Foam
         List<scalar> X_;
 
         //- thermo lib
-        PtrList<Thermo> speciesData_;
+        PtrList<Thermo>& speciesData_;
 
         //- species name list
-        speciesTable species_;
+        const speciesTable& species_;
 
     public:
+    typedef Thermo SingleThermoType;
         //- Runtime type information
-        ClassName("multispecie");
+        //ClassName("multispecie");
+        static word typeName()
+        {
+            return  " ";//Thermo::typeName() ;
+        }
 
         // Constructors
 
@@ -102,7 +107,10 @@ namespace Foam
         //inline multispecie(const word &name, const multispecie &);
 
         //- Construct from dictionary
-        multispecie(const dictionary &dict);
+        multispecie(const dictionary &dict,PtrList<Thermo> &);
+
+        inline multispecie(const word &name, PtrList<Thermo> &, const speciesTable &, const dictionary &);
+
 
         // Member Functions
 

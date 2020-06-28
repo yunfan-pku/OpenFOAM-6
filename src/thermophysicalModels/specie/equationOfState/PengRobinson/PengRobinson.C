@@ -36,7 +36,9 @@ Foam::PengRobinson<Specie>::PengRobinson(
       Vc_(readScalar(dict.subDict("equationOfState").lookup("Vc"))),
       Zc_(1.0),
       Pc_(readScalar(dict.subDict("equationOfState").lookup("Pc"))),
-      omega_(readScalar(dict.subDict("equationOfState").lookup("omega")))
+      omega_(readScalar(dict.subDict("equationOfState").lookup("omega"))),
+      Hig_phase_(dict.subDict("equationOfState").lookup("Hig_phase")),
+      Hig2_phase_(dict.subDict("equationOfState").lookup("Hig2_phase"))
 {
     Zc_ = Pc_ * Vc_ / (RR * Tc_);
 }
@@ -47,6 +49,16 @@ template <class Specie>
 void Foam::PengRobinson<Specie>::write(Ostream &os) const
 {
     Specie::write(os);
+    dictionary dict("PengRobinson");
+    dict.add("Tc", Tc_);
+    dict.add("Vc", Vc_);
+    dict.add("Zc", Zc_);
+    dict.add("Pc", Pc_);
+    dict.add("omega", omega_);
+    dict.add("Hig_coef", Hig_phase_);
+    dict.add("Hig2_coef", Hig2_phase_);
+
+    os  << indent << dict.dictName() << dict;
 }
 
 // * * * * * * * * * * * * * * * Ostream Operator  * * * * * * * * * * * * * //

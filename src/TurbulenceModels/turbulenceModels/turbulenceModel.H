@@ -73,6 +73,7 @@ protected:
 
         //- Near wall distance boundary field
         nearWallDist y_;
+        
 
 
 private:

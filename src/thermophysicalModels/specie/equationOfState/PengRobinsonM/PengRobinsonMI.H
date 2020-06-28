@@ -312,7 +312,7 @@ inline void Foam::PengRobinsonM<Specie>::fugcoef_phase(
         zfactor00 = Bmixz + small8;
         zdiff = small8;
     }
-
+//b=0.0019591145739235169,0.0013946427843255767
     forAll(comp_inp, spid)
     {
         fugcoef[spid] = Bz[spid] / Bmixz * (zfactor00 - 1.0) - log(zdiff) - Amixz / (cc0 * Bmixz) * (2.0 * Amix2[spid] / Amixz - Bz[spid] / Bmixz) * log((zfactor00 + cc1 * Bmixz) / (zfactor00 + cc2 * Bmixz));
@@ -440,15 +440,15 @@ inline void Foam::PengRobinsonM<Specie>::OAD012_function( //solve vaporf
         //printf("OAD012function0******= %+5.8f %+5.8f \n", comp_liq[spid],equalconstant[spid]);
         if (comp_inp[spid] > 0.0)
         {
-            if (comp_liq[spid] > 0.0)
+            if (comp_liq[spid] > 0.0)//g=l
             {
                 ag = max(ag, -1.0 / comp_liq[spid]);
                 dumm = (comp_inp[spid] - 1.0) / comp_liq[spid] + comp_inp[spid];
                 tetag = max(tetag, dumm);
             }
-            else if (comp_liq[spid] < 0.0)
+            else if (comp_liq[spid] < 0.0)//d=u
             {
-                ad = min(ad, -1.0 / comp_liq[spid]);
+                ad = min(ad, -1.0 / comp_liq[spid]);//1ci,2ci
                 dumm = (comp_inp[spid] - 1.0) / comp_liq[spid];
                 tetad = min(tetad, dumm);
             }
@@ -478,7 +478,7 @@ inline void Foam::PengRobinsonM<Specie>::OAD012_function( //solve vaporf
         ierr = 4; //change to 0
     }
     else if (ag == crita1) //Not very sure, no physics, please double check
-    {
+    {//!
         vaporf = 1.0e-07;
         forAll(comp_inp, spid)
         {
@@ -673,10 +673,10 @@ inline void Foam::PengRobinsonM<Specie>::TPn_flash // PY:with a course initializ
     }
     //scalar tpdvalue = 0;
     //this->TPD(p, T, comp, comp_liq, comp_gas, tpdvalue);
-    this->fugcoef_phase(iliquid, p, T, comp_liq, fugcoef_liq);
-    this->fugcoef_phase(igas, p, T, comp_gas, fugcoef_gas);
+    this->fugcoef_phase(iliquid, p, T, comp_liq, fugcoef_liq);//1.46448808200523,2.6869515270026286e-05
+    this->fugcoef_phase(igas, p, T, comp_gas, fugcoef_gas);//0.97726773370530451,0.9512528961701644
     //this->fugcoef_mixture(p, T, comp, fugcoef_mix, gibbsenergy);
-    this->wilsoneq(p, T, equalconstant);
+    this->wilsoneq(p, T, equalconstant);//0.71761427682247247,1.4584982618390764e-06
     //printf("TPflash_OAD012_function0 = %+5.8f %+5.8f %+5.8f %+5.8f\n", p,T,equalconstant[0],equalconstant[1]);
 
     /*for (label spid = 0; spid < num_sp; spid++)//0725
@@ -738,7 +738,7 @@ inline void Foam::PengRobinsonM<Specie>::TPn_flash // PY:with a course initializ
 	}
         */
         vaporfra_iter0 = vaporfra;
-        this->OAD012_function(p, T, comp, equalconstant, comp_liq, comp_gas, vaporfra, ierr);
+        this->OAD012_function(p, T, comp, equalconstant, comp_liq, comp_gas, vaporfra, ierr);//9.9999999999999995e-08
         //printf("TPflash_OAD012_function1 = %+5.2i %+5.8f %+5.8f %+5.8f\n", ierr,vaporfra,equalconstant[0],equalconstant[1]);
 
         // only for Hn flash at high temperature and pressure conditions
@@ -871,7 +871,7 @@ inline void Foam::PengRobinsonM<Specie>::TPn_flash // PY:with a course initializ
             epsilon2 = errr2;
             //printf("TPflash_epsilon44444444444 = %+5.15f\n",epsilon2);
         }
-
+        Info<<"vaporfra="<<vaporfra<<endl;
         if (epsilon1 < tol_fug || epsilon2 < tol_fug2)
         {
             //printf("TPflash_epsilon****** = %+5.2i %+5.8f %+5.6f %+5.15f\n",ierr, vaporfra, T, epsilon1);
@@ -953,7 +953,7 @@ inline Foam::scalar Foam::PengRobinsonM<Specie>::rhomix_phase // PY:phase mixtur
     scalarList Bz(comp_inp.size(), Zero);
     this->ABZmix(p, T, comp_inp, Amixz, Bmixz, Amix2, Bz);
     scalar Zmix = this->Zmix(phasei, Amixz, Bmixz);
-    Info<<Amixz<<" "<<Bmixz<<endl;
+    //Info<<Amixz<<" "<<Bmixz<<endl;
     scalar mw_phase = this->mwmix(comp_inp); //kg/mol
     //RR: 10e+03*m3 Pa K-1 mol-1
     rhomixPhase = mw_phase * p / (Zmix * RR * 1.0e-03 * T); // kg/m3

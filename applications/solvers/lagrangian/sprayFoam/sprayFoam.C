@@ -39,6 +39,7 @@ Description
 #include "SLGThermo.H"
 #include "pimpleControl.H"
 #include "fvOptions.H"
+#include <fstream>
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -58,6 +59,7 @@ int main(int argc, char *argv[])
     #include "initContinuityErrs.H"
 
     turbulence->validate();
+    std::ofstream fout("d2.txt");
 
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -70,6 +72,11 @@ int main(int argc, char *argv[])
         #include "setDeltaT.H"
 
         runTime++;
+        forAllIter(basicSprayCloud,parcels,iter)
+        {
+            fout<<runTime.timeName()<<" "<<iter().d()<<std::endl;
+        }
+        //fout<<parcels.size()<<std::endl;
 
         Info<< "Time = " << runTime.timeName() << nl << endl;
 
@@ -117,9 +124,9 @@ int main(int argc, char *argv[])
             << "  ClockTime = " << runTime.elapsedClockTime() << " s"
             << nl << endl;
     }
-
+    fout.close();
     Info<< "End\n" << endl;
-
+   
     return 0;
 }
 

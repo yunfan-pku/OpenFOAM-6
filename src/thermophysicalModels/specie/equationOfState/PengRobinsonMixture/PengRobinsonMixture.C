@@ -32,20 +32,20 @@ License
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
 
-template<class Specie>
-void Foam::PengRobinsonMixture<Specie>::write(Ostream& os) const
+template<class ThermoMixture>
+void Foam::PengRobinsonMixture<ThermoMixture>::write(Ostream& os) const
 {
-    Specie::write(os);
+    ThermoMixture::write(os);
 }
 
 
 // * * * * * * * * * * * * * * * Ostream Operator  * * * * * * * * * * * * * //
 
-template<class Specie>
+template<class ThermoMixture>
 Foam::Ostream& Foam::operator<<
 (
     Ostream& os,
-    const PengRobinsonMixture<Specie>& pg
+    const PengRobinsonMixture<ThermoMixture>& pg
 )
 {
     pg.write(os);

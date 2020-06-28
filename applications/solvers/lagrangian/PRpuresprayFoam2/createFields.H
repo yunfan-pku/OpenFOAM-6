@@ -87,7 +87,6 @@ autoPtr<compressible::turbulenceModel> turbulence
     )
 );
 
-
 Info<< "Creating combustion model\n" << endl;
 autoPtr<CombustionModel<psiReactionThermo>> combustion
 (
@@ -116,8 +115,7 @@ forAll(Y, i)
     fields.add(Y[i]);
 }
 fields.add(thermo.he());
-Info<< "Creating field reading thermo.he, Tabulate he in creatFields00000000\n" << endl;
-
+//Info<< "Creating field reading thermo.he, Tabulate he in creatFields00000000\n" << endl;
 
 volScalarField Qdot
 (
@@ -137,3 +135,18 @@ volScalarField Qdot
 #include "createClouds.H"
 #include "createRadiationModel.H"
 #include "createFvOptions.H"
+
+
+volScalarField xcoord
+(
+    IOobject
+    (
+        "xcoord",
+        runTime.timeName(),
+        mesh,
+        IOobject::READ_IF_PRESENT,
+        IOobject::AUTO_WRITE
+    ),
+    mesh,
+    dimensionedScalar("xcoord", dimLength, 0.0)
+);

@@ -123,6 +123,7 @@ void tablegen(dictionary &dict)
           }
 
           PR.TPn_flash(t_pres, t_temp, t_comp, comp_liq, comp_gas, vaporfra, equalconstant);
+          //Info<<"vaporfra= "<<vaporfra<<endl;
 
           forAll(comp, isp)
           {
@@ -195,7 +196,8 @@ void tablegen(dictionary &dict)
           PR.kappa_phase(1, t_pres, t_temp, comp_liq, kappa_liq, mu_liq);
           kappaMixture = kappa_gas * ygas + kappa_liq * (1.0 - ygas); //W/mK
 
-          muMixture = 1.0e+06 * (mu_gas * ygas + mu_liq * (1.0 - ygas)); //up
+          //muMixture = 1.0e+06 * (mu_gas * ygas + mu_liq * (1.0 - ygas)); //up
+          muMixture =  (mu_gas * ygas + mu_liq * (1.0 - ygas)); 
 
           //Dij_binary_high	= PR.Dij_highP(t_pres, t_temp, comp);//cm2/s
 
@@ -223,7 +225,7 @@ void tablegen(dictionary &dict)
         //kappaMixture;//<<' '<<' '<<muMixture<<' '<<' '<<
 
         //ZMixture;<<' '<<' '<<Dij_binary_high*1.0e+06;
-        Info << t_temp << "  " << t_pres << "  " << t_comp[0] << "  "<<muMixture<<endl;
+        //Info << t_temp << "  " << t_pres << "  " << t_comp[0] << "  "<<muMixture<<endl;
 
         output << t_temp << "  " << t_pres << "  " << t_comp[0] << "  " <<
 
@@ -236,6 +238,8 @@ void tablegen(dictionary &dict)
             ZMixture << "  " << Dij_binary_high << "  " <<
 
             comp_liq[0] << "  " << comp_gas[0] << "  " << alphagas;
+
+        Info<<"t="<<t_temp << "  p=" << t_pres<<" vaporfra="<<vaporfra<<endl;
 
         //output << t_temp << ',' << ' ' << t_pres <<" ," << state<<","<<t_pres/(rhoMixture* t_temp);
 

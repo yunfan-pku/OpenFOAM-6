@@ -50,6 +50,9 @@ makeChemistryReader(constAdiabaticFluidHThermoPhysics);
 makeChemistryReader(constHThermoPhysics);
 makeChemistryReader(PRgasEThermoPhysics);
 
+//makeChemistryReader(VLEPRHThermoPhysics);
+makeChemistryReader(VLEChungPRHThermoPhysics);
+
 makeChemistryReaderType(foamChemistryReader, constGasHThermoPhysics);
 makeChemistryReaderType(foamChemistryReader, gasHThermoPhysics);
 makeChemistryReaderType
@@ -64,6 +67,8 @@ makeChemistryReaderType(foamChemistryReader, constAdiabaticFluidHThermoPhysics);
 makeChemistryReaderType(foamChemistryReader, constHThermoPhysics);
 makeChemistryReaderType(foamChemistryReader, PRgasEThermoPhysics);
 //makeChemistryReaderType(HYfoamChemistryReader, PRgasEThermoPhysics);
+//makeChemistryReaderType(foamChemistryReader, VLEPRHThermoPhysics);
+makeChemistryReaderType(foamChemistryReader, VLEChungPRHThermoPhysics);
 
 
 // Solid chemistry readers based on sensibleInternalEnergy

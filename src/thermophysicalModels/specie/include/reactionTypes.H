@@ -65,6 +65,9 @@ namespace Foam
 
     typedef Reaction<PRgasEThermoPhysics> PRgasEThermoPhysicsReaction;
 
+    //typedef Reaction<VLEPRHThermoPhysics> VLEPRHThermoPhysicsReaction;
+
+    typedef Reaction<VLEChungPRHThermoPhysics> VLEChungPRHThermoPhysicsReaction;
 
     // internal ennergy based reactions
     typedef Reaction<constGasEThermoPhysics> constGasEReaction;
@@ -85,7 +88,7 @@ namespace Foam
         constAdiabaticFluidEReaction;
 
     typedef Reaction<constEThermoPhysics> constEReaction;
-}
+} // namespace Foam
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

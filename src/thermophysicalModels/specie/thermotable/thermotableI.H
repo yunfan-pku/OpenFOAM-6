@@ -389,10 +389,10 @@ Foam::scalar Foam::thermotable<ThermoType>::THE(
     this->from_Y_to_z(Y_, zi);
 
     
-        double test_rho=this->from_tpn_to_property(T0, p, zi[0], 4);
-        double test_sie=this->from_tpn_to_property(T0, p, zi[0], 5);
-        double test_T=this->get_property_from_tpn_reverse( test_rho, test_sie, zi[0], 1);
-        double test_p=this->get_property_from_tpn_reverse( test_rho, test_sie, zi[0], 2);
+        //double test_rho=this->from_tpn_to_property(T0, p, zi[0], 4);
+        //double test_sie=this->from_tpn_to_property(T0, p, zi[0], 5);
+        //double test_T=this->get_property_from_tpn_reverse( test_rho, test_sie, zi[0], 1);
+        //double test_p=this->get_property_from_tpn_reverse( test_rho, test_sie, zi[0], 2);
 
     
 

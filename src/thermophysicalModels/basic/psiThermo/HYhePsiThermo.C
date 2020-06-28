@@ -37,9 +37,13 @@ void Foam::HYhePsiThermo<BasicPsiThermo, MixtureType>::calculate()
     scalarField& psiCells = this->psi_.primitiveFieldRef();
     scalarField& muCells = this->mu_.primitiveFieldRef();
     scalarField& alphaCells = this->alpha_.primitiveFieldRef();
-
+int z=0;
     forAll(TCells, celli)
     {
+        if(celli==99398)
+        {
+z++;
+        }
         const typename MixtureType::thermoType& mixture_ =
             this->cellMixture(celli);
 

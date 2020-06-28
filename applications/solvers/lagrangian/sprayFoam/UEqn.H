@@ -1,7 +1,7 @@
 // Solve the Momentum equation
 
 MRF.correctBoundaryVelocity(U);
-
+Info<<"!!!!!!!!!!!!!!!!!!!!!!!!!"<<Y[0][0]<<" "<<p[0]<<" "<<T[0]<<endl;
 tmp<fvVectorMatrix> tUEqn
 (
     fvm::ddt(rho, U) + fvm::div(phi, U)

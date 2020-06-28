@@ -29,17 +29,30 @@ License
 
 namespace Foam
 {
+    template <class Thermo>
+    Foam::multispecie<Thermo>::multispecie(
+        const word &name,
+        PtrList<Thermo> &speciesData,
+        const speciesTable &specieNames,
+        const dictionary &thermoDict)
+        : N_(specieNames.size()),
+          Y_(specieNames.size()),
+          X_(specieNames.size()),
+          speciesData_(speciesData),
+          species_(specieNames)
+    {
+    }
 
     template <class Thermo>
-    Foam::multispecie<Thermo>::multispecie(const dictionary &thermoDict)
+    Foam::multispecie<Thermo>::multispecie(const dictionary &thermoDict, PtrList<Thermo> &speciesData)
         : Y_(0),
           X_(0),
           speciesData_(0),
-          species_()
+          species_(speciesData)
 
     {
         wordList s(thermoDict.lookup("species"));
-        species_.transfer(s);
+        //species_.transfer(s);
         N_ = species_.size();
         speciesData_.setSize(N_);
         Y_.setSize(N_);

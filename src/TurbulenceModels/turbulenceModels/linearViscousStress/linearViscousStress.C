@@ -95,6 +95,11 @@ Foam::linearViscousStress<BasicTurbulenceModel>::divDevRhoReff
     volVectorField& U
 ) const
 {
+    /*Info<<" "<<" "<<this->mu()()[0]<<endl;
+    FatalErrorInFunction
+            << "test"
+            << exit(FatalError);
+            */
     return
     (
       - fvc::div((this->alpha_*this->rho_*this->nuEff())*dev2(T(fvc::grad(U))))

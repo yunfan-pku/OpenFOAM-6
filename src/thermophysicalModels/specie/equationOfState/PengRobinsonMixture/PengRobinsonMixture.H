@@ -44,53 +44,55 @@ namespace Foam
 
     // Forward declaration of friend functions and operators
 
-    template <class Specie>
+    template <class ThermoMixture>
     class PengRobinsonMixture;
 
-    template <class Specie>
-    inline PengRobinsonMixture<Specie> operator+(
-        const PengRobinsonMixture<Specie> &,
-        const PengRobinsonMixture<Specie> &);
+    template <class ThermoMixture>
+    inline PengRobinsonMixture<ThermoMixture> operator+(
+        const PengRobinsonMixture<ThermoMixture> &,
+        const PengRobinsonMixture<ThermoMixture> &);
 
-    template <class Specie>
-    inline PengRobinsonMixture<Specie> operator*(
+    template <class ThermoMixture>
+    inline PengRobinsonMixture<ThermoMixture> operator*(
         const scalar,
-        const PengRobinsonMixture<Specie> &);
+        const PengRobinsonMixture<ThermoMixture> &);
 
-    template <class Specie>
-    inline PengRobinsonMixture<Specie> operator==(
-        const PengRobinsonMixture<Specie> &,
-        const PengRobinsonMixture<Specie> &);
+    template <class ThermoMixture>
+    inline PengRobinsonMixture<ThermoMixture> operator==(
+        const PengRobinsonMixture<ThermoMixture> &,
+        const PengRobinsonMixture<ThermoMixture> &);
 
-    template <class Specie>
+    template <class ThermoMixture>
     Ostream &operator<<(
         Ostream &,
-        const PengRobinsonMixture<Specie> &);
+        const PengRobinsonMixture<ThermoMixture> &);
 
     /*---------------------------------------------------------------------------*\
                            Class PengRobinsonMixture Declaration
 \*---------------------------------------------------------------------------*/
 
-    template <class Specie>
+    template <class ThermoMixture>
     class PengRobinsonMixture
-        : public Specie
+        : public ThermoMixture
     {
     public:
-        
-
         scalarListList bico;
         label phaseFlag; //gas 1,liq 0
 
     public:
+        typedef typename ThermoMixture::SingleThermoType SingleThermoType;
+        typedef typename SingleThermoType::EOS EOS;
         // Constructors
 
         //- Construct from components
 
         //- Construct from dictionary
-        PengRobinsonMixture(const dictionary &dict);
+        PengRobinsonMixture(const dictionary &dict, PtrList<SingleThermoType> &);
 
         //- Construct as named copy
         inline PengRobinsonMixture(const word &name, const PengRobinsonMixture &);
+
+        inline PengRobinsonMixture(const word &name, PtrList<SingleThermoType> &, const speciesTable &, const dictionary &);
 
         //- Construct and return a clone
         inline autoPtr<PengRobinsonMixture> clone() const;
@@ -104,23 +106,37 @@ namespace Foam
         //- Return the instantiated type name
         static word typeName()
         {
-            return "PengRobinsonMixture<" + word(Specie::typeName_()) + '>';
+            return word(ThermoMixture::typeName());
         }
 
         // Fundamental properties
-        inline scalar A(scalar p, scalar T, const scalarList* Xinp=NULL) const;
-        inline scalar B(scalar p, scalar T, const scalarList* Xinp=NULL) const;
-        inline autoPtr<scalarList> A2(scalar p,scalar T) const;
-        inline static scalar cubicSolve(scalar a2,scalar a1,scalar a0,label flag);
+        inline scalar A(scalar p, scalar T, const scalarList *Xinp = NULL) const;
+        inline scalar B(scalar p, scalar T, const scalarList *Xinp = NULL) const;
+        inline scalar a(scalar p, scalar T, const scalarList *Xinp = NULL) const;
+        inline scalar b(scalar p, scalar T, const scalarList *Xinp = NULL) const;
+        inline scalar dadt(scalar p, scalar T, const scalarList *Xinp = NULL) const;
+        inline scalar d2adt2(scalar p, scalar T, const scalarList *Xinp = NULL) const;
+        inline autoPtr<scalarList> A2(scalar p, scalar T, const scalarList *Xinp = NULL) const;
+        inline static scalar cubicSolve(scalar a2, scalar a1, scalar a0, label flag);
 
-            //- Return density [kg/m^3]
-            inline scalar rho(scalar p, scalar T) const;
-
+        //- Return density [kg/m^3]
+        inline scalar rho(scalar p, scalar T, const label *pf = NULL, const scalarList *Xinp = NULL) const;
+        //inline scalar V(scalar p, scalar T, const label *pf = NULL, const scalarList *Xinp = NULL) const;
+        inline scalar Ha(scalar p, scalar T, const label *pf = NULL, const scalarList *Xinp = NULL) const;
+        inline scalar Hc(const scalarList *Xinp = NULL) const;
+        inline scalar Hideal(scalar p, scalar T, const scalarList *Xinp = NULL) const;
+        inline scalar Hig_phase(scalar T, const scalarList *Xinp = NULL) const;
+        inline scalar Hig2_phase(scalar T, const scalarList *Xinp = NULL) const;
+        inline scalar V(scalar p, scalar T, const label *pf = NULL, const scalarList *Xinp = NULL) const;
+        inline scalar CpMCv(scalar p, scalar T, const label *pf = NULL, const scalarList *Xinp = NULL) const;
+        inline scalar Cp(scalar p, scalar T, const label *pf = NULL, const scalarList *Xinp = NULL) const;
+        inline scalar S(scalar p, scalar T, const label *pf = NULL, const scalarList *Xinp = NULL) const;
+        inline scalar Sideal(scalar p, scalar T, const scalarList *Xinp = NULL) const;
         //- Return enthalpy departure [J/kg]
         inline scalar H(const scalar p, const scalar T) const;
 
         //- Return Cp departure [J/(kg K)]
-        inline scalar Cp(scalar p, scalar T) const;
+        //inline scalar Cp(scalar p, scalar T) const;
 
         //- Return entropy [J/(kg K)]
         inline scalar S(const scalar p, const scalar T) const;
@@ -129,12 +145,12 @@ namespace Foam
         inline scalar psi(scalar p, scalar T) const;
 
         //- Return compression factor []
-        inline scalar Z(scalar p, scalar T,const label* pf=NULL,const scalarList* Xinp=NULL) const;
+        inline scalar Z(scalar p, scalar T, const label *pf = NULL, const scalarList *Xinp = NULL) const;
 
         //- Return molecular weight [kg/mol]
-        inline scalar W() const;
+        inline scalar W(const scalarList *Xinp = NULL) const;
 
-        inline autoPtr<scalarList> fugacityCoefficient(scalar p,scalar T) const;
+        inline autoPtr<scalarList> fugacityCoefficient(scalar p, scalar T, const label *pf = NULL, const scalarList *Xinp = NULL) const;
 
         //- Return species compressibility coefficient in each phase []
         inline void fugcoef_phase(int phasei, scalar p, scalar T, scalar *comp_inp, scalar *fugcoef) const;
@@ -332,10 +348,9 @@ namespace Foam
         //- Write to Ostream
         void write(Ostream &os) const;
 
-       
         // Ostream Operator
 
-        friend Ostream &operator<<<Specie>(
+        friend Ostream &operator<<<ThermoMixture>(
             Ostream &,
             const PengRobinsonMixture &);
     };

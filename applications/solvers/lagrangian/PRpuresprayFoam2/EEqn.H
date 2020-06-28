@@ -3,7 +3,7 @@
     volScalarField& he = thermo.he();
     //volScalarField& sos = thermo.sos();
 
-    Info<<"I'm 2nd!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n";
+    //Info<<"I'm 2nd!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n";
 
     //volScalarField gammastar=rho*sos*sos/p;
     //volScalarField estar=he-p/rho/(gammastar-1);
@@ -39,7 +39,7 @@
             )
           : -dpdt
         )
-      //- fvm::laplacian(turbulence->alphaEff(), he)
+       - fvm::laplacian(turbulence->alphaEff(), he)
      ==
         rho*(U&g)
       + parcels.Sh(he)
@@ -57,6 +57,23 @@
     fvOptions.correct(he);
 
     thermo.correct();
+    /*
+      forAll(psi,i)
+    {
+      if(psi[i]<0.0)
+      Info<<"index:"<<i<<endl;
+    } 
+    forAll(T.boundaryField(), patchi)
+    {
+       forAll(T.boundaryField()[patchi], facei)
+       {
+         if(psi.boundaryField()[patchi][facei]<0.0)
+         Info<<"psi="<<psi.boundaryField()[patchi][facei]<<" index:"<<patchi<<","<<facei<<"xyz "<<mesh.Cf().boundaryField()[patchi][facei].x()<<","<<mesh.Cf().boundaryField()[patchi][facei].y()<<","<<mesh.Cf().boundaryField()[patchi][facei].z()<<endl;
+       }
+    }
+Info<< "psi max/min!!!!!!!2 : " << max(psi).value()
+    << " " << min(psi).value() << endl;
+    */
     radiation->correct();
 
 /*

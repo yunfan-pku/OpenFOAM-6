@@ -119,10 +119,92 @@ inline Foam::scalar Foam::PengRobinson<Specie>::A(
 template <class Specie>
 inline Foam::scalar Foam::PengRobinson<Specie>::B(
     scalar P,
-    scalar T ) const
+    scalar T) const
 {
     return 0.07780 * P / Pc_ * Tc_ / T;
 }
+
+template <class Specie>
+inline Foam::scalar Foam::PengRobinson<Specie>::EOSalpha(
+    scalar P,
+    scalar T) const
+{
+    scalar kappa;
+    if (omega_ > 0.49)
+    {
+        kappa = omega_ * (omega_ * (omega_ * (0.016666) - 0.164423) + 1.48503) + 0.379642;
+    }
+    else
+    {
+        kappa = omega_ * (omega_ * (-0.26992) + 1.54226) + 0.37464;
+    }
+    return sqr(1.0 + kappa * (1.0 - sqrt(T / Tc_)));
+}
+template <class Specie>
+inline Foam::scalar Foam::PengRobinson<Specie>::a(
+    scalar P,
+    scalar T) const
+{
+    return 0.45724 * EOSalpha(P, T) * sqr(RR * 1.0e-03 * Tc_) / Pc_;
+}
+template <class Specie>
+inline Foam::scalar Foam::PengRobinson<Specie>::dadt(
+    scalar P,
+    scalar T) const
+{
+    scalar kappa;
+    if (omega_ > 0.49)
+    {
+        kappa = omega_ * (omega_ * (omega_ * (0.016666) - 0.164423) + 1.48503) + 0.379642;
+    }
+    else
+    {
+        kappa = omega_ * (omega_ * (-0.26992) + 1.54226) + 0.37464;
+    }
+    return 0.45724 * (1.0 + kappa * (1.0 - sqrt(T / Tc_))) * sqr(RR * 1.0e-03 * Tc_) / Pc_ * (-kappa / sqrt(Tc_ * T));
+}
+template <class Specie>
+inline Foam::scalar Foam::PengRobinson<Specie>::d2adt2(
+    scalar P,
+    scalar T) const
+{
+    scalar kappa;
+    if (omega_ > 0.49)
+    {
+        kappa = omega_ * (omega_ * (omega_ * (0.016666) - 0.164423) + 1.48503) + 0.379642;
+    }
+    else
+    {
+        kappa = omega_ * (omega_ * (-0.26992) + 1.54226) + 0.37464;
+    }
+    return 0.45724 * ((1.0 + kappa * (1.0 - sqrt(T / Tc_))) * (kappa / (2 * T * sqrt(Tc_ * T))) + kappa * kappa / (Tc_ * T)) * sqr(RR * 1.0e-03 * Tc_) / Pc_;
+}
+template <class Specie>
+inline Foam::scalar Foam::PengRobinson<Specie>::b(
+    scalar P,
+    scalar T) const
+{
+    return 0.07780 * RR * 1.0e-03 * Tc_ / Pc_;
+}
+/*
+inline Foam::scalar Foam::PengRobinson<Specie>::c(
+    scalar P,
+    scalar T) const
+{
+    scalar kappa;
+    scalar alpha;
+    if (omega_ > 0.49)
+    {
+        kappa = omega_ * (omega_ * (omega_ * (0.016666) - 0.164423) + 1.48503) + 0.379642;
+    }
+    else
+    {
+        kappa = omega_ * (omega_ * (-0.26992) + 1.54226) + 0.37464;
+    }
+    return kappa / sqrt(Tc_);
+}
+*/
+
 template <class Specie>
 inline Foam::scalar Foam::PengRobinson<Specie>::cubicSolve(
     scalar a2,
@@ -163,8 +245,8 @@ inline Foam::scalar Foam::PengRobinson<Specie>::cubicSolve(
     {
         // One root is real: in supercritical zone
         scalar D05 = sqrt(D);
-        scalar S = sign(Rl + D05)*pow(mag(Rl + D05), 1.0 / 3.0);
-        scalar Tl = sign(Rl - D05)*pow(mag(Rl - D05), 1.0 / 3.0);
+        scalar S = sign(Rl + D05) * pow(mag(Rl + D05), 1.0 / 3.0);
+        scalar Tl = sign(Rl - D05) * pow(mag(Rl - D05), 1.0 / 3.0);
         /*
         scalar RlD = Rl + D05;
         scalar S = 0.0;
@@ -200,7 +282,7 @@ inline Foam::scalar Foam::PengRobinson<Specie>::Z(
     scalar p,
     scalar T) const
 {
-    scalar A = this->A(p,T), B = this->B(p,T);
+    scalar A = this->A(p, T), B = this->B(p, T);
     scalar a2 = B - 1.0;
     scalar a1 = A - 2.0 * B - 3.0 * B * B;
     scalar a0 = -A * B + B * B + B * B * B;
@@ -362,8 +444,23 @@ Foam::PengRobinson<Specie> Foam::operator==(
         Tc,
         Vc,
         Zc,
-        RR * Zc * Tc / Vc,
         Y2 * pg2.omega_ - Y1 * pg1.omega_);
+}
+
+//temp E
+template <class Specie>
+inline Foam::scalar Foam::PengRobinson<Specie>::Hig_phase(
+    scalar T) const
+{
+    return RR * 1.0e-03 * T * (T * (T * (T * (T * Hig_phase_[4] / 5.0 + Hig_phase_[3] / 4.0) + Hig_phase_[2] / 3.0) + Hig_phase_[1] / 2.0) + Hig_phase_[0]);
+}
+
+template <class Specie>
+inline Foam::scalar Foam::PengRobinson<Specie>::Hig2_phase(
+    scalar T) const
+{
+    //return   Hig2_phase_[0]*T +Hig2_phase_[1]*Hig2_phase_[2]*(2.0/(exp(2.0*Hig2_phase_[2]/T)-1.0))+ 2.0*Hig2_phase_[3]*Hig2_phase_[4]*(1.0/(exp(2.0*Hig2_phase_[4]/T)+1.0));
+    return Hig2_phase_[0]+Hig2_phase_[1] * T + Hig2_phase_[2] * Hig2_phase_[3] * ( (exp(2.0 * Hig2_phase_[3] / T)+1)/ (exp(2.0 * Hig2_phase_[3] / T) - 1.0)) +  Hig2_phase_[4] * Hig2_phase_[5] * ((exp(2.0 * Hig2_phase_[5] / T) - 1.0) / (exp(2.0 * Hig2_phase_[5] / T) + 1.0));
 }
 
 // ************************************************************************* //

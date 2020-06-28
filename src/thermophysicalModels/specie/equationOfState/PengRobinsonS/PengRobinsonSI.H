@@ -102,8 +102,8 @@ inline Foam::scalar Foam::PengRobinsonS<Specie>::Zc() const
 
 template <class Specie>
 inline void Foam::PengRobinsonS<Specie>::AzBz(
-    scalar Pr,
-    scalar Tr,
+    scalar Pr,//0.014905149051490514
+    scalar Tr,//0.59191055573824392
     scalar &Az,
     scalar &Bz) const
 {

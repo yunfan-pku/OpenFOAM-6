@@ -50,6 +50,16 @@ License
 #include "singleStepReactingMixture.H"
 #include "singleComponentMixture.H"
 
+#include "multispecie.H"
+#include "PengRobinson.H"
+#include "PengRobinsonMixture.H"
+#include "VLE.H"
+#include "janafThermo.H"
+#include "chungTransport.H"
+#include "chungTransportPH.H"
+#include "chungTransportMixture.H"
+#include "nLreactingMixture.H"
+
 #include "thermoPhysicsTypes.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -340,6 +350,35 @@ makeThermoPhysicsReactionThermos
     HYhePsiThermo,
     HYreactingMixture,
     gasHThermoPhysics
+);
+/*
+makeThermoPhysicsReactionThermos
+(
+    psiThermo,
+    psiReactionThermo,
+    hePsiThermo,
+    nLreactingMixture,
+    VLEPRHThermoPhysics
+);
+*/
+
+
+
+
+template <class Thermo>
+using  Hmultithermo= species::multithermo<Thermo, sensibleEnthalpy> ;
+template <class Thermo>
+using VLEthermo=Hmultithermo<VLE<chungTransportMixture<PengRobinsonMixture<multispecie<Thermo>>>>>;
+template <class Thermo>
+using  nLreactingMixtureChungPR= nLreactingMixture<Thermo, VLEthermo> ;
+
+makeThermoPhysicsReactionThermos
+(
+    psiThermo,
+    psiReactionThermo,
+    hePsiThermo,
+    nLreactingMixtureChungPR,
+    VLEChungPRHThermoPhysics
 );
 
 

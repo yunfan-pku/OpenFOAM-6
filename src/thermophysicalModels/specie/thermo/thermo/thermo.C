@@ -48,6 +48,8 @@ Foam::species::thermo<Thermo, Type>::thermo(const dictionary& dict)
 template<class Thermo, template<class> class Type>
 void Foam::species::thermo<Thermo, Type>::write(Ostream& os) const
 {
+
+    
     Thermo::write(os);
 }
 

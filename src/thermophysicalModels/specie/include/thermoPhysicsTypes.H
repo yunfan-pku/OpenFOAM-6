@@ -52,6 +52,16 @@ Description
 #include "hPolynomialThermo.H"
 #include "polynomialTransport.H"
 
+#include "multispecie.H"
+#include "PengRobinson.H"
+#include "PengRobinsonMixture.H"
+#include "VLE.H"
+#include "janafThermo.H"
+#include "chungTransport.H"
+#include "chungTransportPH.H"
+#include "chungTransportMixture.H"
+#include "multithermo.H"
+
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
@@ -82,6 +92,52 @@ namespace Foam
             sensibleEnthalpy
         >
     > gasHThermoPhysics;
+/*
+    typedef
+chungTransportPH
+<    
+    species::multithermo
+    <
+        VLE
+        <
+            chungTransportMixture
+            <
+                PengRobinsonMixture
+                <
+                    multispecie
+                    <
+                        chungTransport
+                        <
+                            janafThermo
+                            <
+                                PengRobinson
+                                <
+                                    specie
+                                >
+                            >
+                        >
+                    >
+                >
+            >
+        >,
+        sensibleEnthalpy
+    >
+> VLEPRHThermoPhysics;
+*/
+
+
+    typedef 
+    chungTransport
+    <
+        species::thermo
+        <  
+            janafThermo
+            <
+                PengRobinson<specie>>
+            ,
+            sensibleEnthalpy
+        >
+    > VLEChungPRHThermoPhysics;
 
     typedef
     constTransport

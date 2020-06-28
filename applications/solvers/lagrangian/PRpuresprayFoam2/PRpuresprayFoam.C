@@ -42,65 +42,70 @@ Description
 #include <fstream>
 #include <sstream>
 #include "smallthermo.C"
-
+#include "csvfile.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-//int PRflag = 1;
-//if use this method, please use extern int PRflag in sub
-
-//namespace Foam{int PRflag = 1;}
-//If use this method, please use Foam::PRflag in sub
-
-
 int main(int argc, char *argv[])
 {
-    #include "postProcess.H"
+#include "postProcess.H"
 
-    #include "setRootCaseLists.H"
-    #include "createTime.H"
-    #include "createMesh.H"
-    #include "createControl.H"
-    #include "createTimeControls.H"
-    #include "createFields.H"
-    #include "createFieldRefs.H"
-    #include "compressibleCourantNo.H"
-    #include "setInitialDeltaT.H"
-    #include "initContinuityErrs.H"
+#include "setRootCaseLists.H"
+#include "createTime.H"
+#include "createMesh.H"
+#include "createControl.H"
+#include "createTimeControls.H"
+#include "createFields.H"
+#include "createFieldRefs.H"
+#include "compressibleCourantNo.H"
+#include "setInitialDeltaT.H"
+#include "initContinuityErrs.H"
 
     turbulence->validate();
-    int timei=0;
-    int loop1=0;
-    int loop2=0;
+    int timei = 0;
+    int loop1 = 0;
+    int loop2 = 0;
+    forAll(xcoord, i)
+    {
+        xcoord[i] = mesh.C()[i].x();
+    }
+
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-    Info<< "\nStarting time loop\n" << endl;
+    Info << "\nStarting time loop\n"
+         << endl;
 
     while (runTime.run())
     {
 
         timei++;
-        #include "readTimeControls.H"
-        #include "compressibleCourantNo.H"
-        #include "setDeltaT.H"
+#include "readTimeControls.H"
+#include "compressibleCourantNo.H"
+#include "setDeltaT.H"
 
         runTime++;
 
-        Info<< "Time = " << runTime.timeName() << nl << endl;
+        std::stringstream sstream1;
+        sstream1 << timei << "_ptest.csv";
+        std::string filename;
+        sstream1 >> filename;
+        //csvwrite(filename, xcoord, "x");
+
+        Info << "Time = " << runTime.timeName() << nl << endl;
 
         parcels.evolve();
 
         if (!pimple.frozenFlow())
         {
-            #include "rhoEqn.H"
-            loop1=0;
+#include "rhoEqn.H"
+            loop1 = 0;
 
             // --- Pressure-velocity PIMPLE corrector loop
             while (pimple.loop())
             {
-                /*
-                loop1++;
 
+                loop1++;
+                /*
                 std::stringstream sstream1;
                 sstream1<<timei<<"_"<<loop1<<"_"<<loop2<<"Us.csv";
                 std::string s;
@@ -108,23 +113,27 @@ int main(int argc, char *argv[])
                 std::ofstream foutl1(s);
                 */
 
-                #include "UEqn.H"
-                #include "YEqn.H"
-                #include "EEqn.H"
-                /*
-                foutl1.close();
+#include "UEqn.H"
+#include "YEqn.H"
+#include "EEqn.H"
 
-                loop2=0;
-                */
+                //foutl1.close();
+
+                loop2 = 0;
+
                 // --- Pressure corrector loop
                 while (pimple.correct())
                 {
-                    /*
+
                     loop2++;
                     std::stringstream sstream1;
-                    sstream1<<timei<<"_"<<loop1<<"_"<<loop2<<"s.csv";
+                    sstream1 << "_"<< timei << "_" << loop1 << "_" << loop2 << "_";
                     std::string s;
-                    sstream1>>s;
+                    sstream1 >> s;
+
+                    
+                    
+/*
                     std::ofstream fout(s);
 
                     forAll(p,i)
@@ -134,6 +143,8 @@ int main(int argc, char *argv[])
                     fout<<std::endl;
                     */
                     #include "pEqn.H"
+
+                    
                     /*
                     forAll(p,i)
                     {
@@ -165,15 +176,15 @@ int main(int argc, char *argv[])
             }
         }
 
-        Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
-            << "  ClockTime = " << runTime.elapsedClockTime() << " s"
-            << nl << endl;
+        Info << "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
+             << "  ClockTime = " << runTime.elapsedClockTime() << " s"
+             << nl << endl;
     }
 
-    Info<< "End\n" << endl;
+    Info << "End\n"
+         << endl;
 
     return 0;
 }
-
 
 // ************************************************************************* //
