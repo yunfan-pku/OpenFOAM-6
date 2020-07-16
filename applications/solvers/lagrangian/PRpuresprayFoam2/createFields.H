@@ -1,5 +1,20 @@
 #include "readGravitationalAcceleration.H"
 
+/*
+volScalarField vaporfrac
+(
+    IOobject
+    (
+        "vaporfrac",
+        runTime.timeName(),
+        mesh,
+        IOobject::READ_IF_PRESENT,
+        IOobject::NO_WRITE
+    ),
+    mesh,
+    dimensionedScalar("vaporfrac", dimLess, 0.0)
+);*/
+
 Info<< "Reading thermophysical properties\n" << endl;
 autoPtr<psiReactionThermo> pThermo(psiReactionThermo::New(mesh));
 psiReactionThermo& thermo = pThermo();

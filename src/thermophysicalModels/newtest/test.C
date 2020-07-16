@@ -41,10 +41,29 @@ int main()
     dictionary thermoDictM(IFstream("system/thermoMixture")());
     Mtype thermo("test", speciesData, species, thermoDictM);
 
-    scalarList X(2);
-    X[0] = 0.7;
-    X[1] = 0.3;
-    thermo.setX(X);
+    scalarList Y(2);
+    Y[0] = 0.1;
+    Y[1] = 0.9;
+    //X[2] = 0.01;
+    thermo.setY(Y);
+    //Info<<thermo.TPn_flash(7000000,320)().vaporfra<<endl;
+    //Info<<thermo.TPn_flash(7000000,320)().fu<<endl;
+    //Info<<thermo.TPn_flash(7000000,350)().vaporfra<<endl;
+    for(scalar i=570;i<580;i+=1)
+    {
+        Info<<"T="<<i<<endl;
+    thermo.TPn_validation(10000000,i);
+    }
+    //thermo.TPn_validation(23000000,393);
+   // thermo.TPn_validation(19900000,355.5);
+   // thermo.TPn_validation(19900000,356);
+    //thermo.TPn_validation(7000000,300);
+    //thermo.TPn_validation(7000000,350);
+
+    //Info<<thermo.THE(130436,6000000, 900);
+    //for(scalar i=400;i<=530;i+=1)
+    //Info<<i<<","<<thermo.Hs(6000000, i)-130436<<endl;
+    //Info<<thermo.THE(130436,6000000, 514.489)<<endl;
     //Info << thermo.rho(23000000, 500) << endl;
     // Info<<thermo.Cp(23000000,500)<<endl;
     // Info<<thermo.Hs(23000000,500)<<endl;
@@ -81,10 +100,10 @@ int main()
     Info<<i<<","<<thermo.Hs(341.064, i)+32739.9<<endl;
 */
     //Info<<110000<<","<<180<<","<<(thermo.TPn_flash(110000,180))().vaporfra<<endl;
-    ofstream fout("de.csv");
-    for(double p=10000;p<10000000;p+=100000)
-    for(double T=100;T<600;T+=10)
-    fout<<p<<","<<T<<","<<(thermo.TPn_flash(p,T))().vaporfra<<std::endl;
+    //ofstream fout("de.csv");
+   // for(double p=10000;p<10000000;p+=100000)
+    //for(double T=100;T<600;T+=10)
+    //fout<<p<<","<<T<<","<<(thermo.TPn_flash(p,T))().vaporfra<<std::endl;
     //Info<<"!_!_!_!_!_!_!"<<(thermo.TPn_flash(100000,341.066))().vaporfra<<endl;
     
     //Info<<thermo.Hs(100000,341.064)<<endl;

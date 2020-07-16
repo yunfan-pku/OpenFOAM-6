@@ -13,7 +13,7 @@ Info<< "rho gas min/max   " << min(rho).value() << ", "
         << max(rho).value() << endl;
 Info<< "p max/min01 : " << max(p).value()
     << " " << min(p).value() << endl;
-thermo.correct();
+//thermo.correct();
 rho = max(rho, rhoMin);
 rho = min(rho, rhoMax);
 rho.relax();

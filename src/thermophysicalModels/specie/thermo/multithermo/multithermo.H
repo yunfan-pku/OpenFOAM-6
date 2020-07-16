@@ -115,7 +115,17 @@ class multithermo
             scalar (multithermo::*dFdT)(const scalar, const scalar) const,
             scalar (multithermo::*limit)(const scalar) const
         ) const;
-
+/*
+        inline scalar T_IQI
+        (
+            scalar f,
+            scalar p,
+            scalar T0,
+            scalar (multithermo::*F)(const scalar, const scalar) const,
+            scalar (multithermo::*dFdT)(const scalar, const scalar) const,
+            scalar (multithermo::*limit)(const scalar) const
+        ) const;
+*/
 
 public:
 

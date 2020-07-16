@@ -153,12 +153,17 @@ namespace Foam
             solution() : X_liq(), X_gas(), equalconstant(), vaporfra(0){};
             solution(const solution &ref) : X_liq(ref.X_liq), X_gas(ref.X_gas), equalconstant(ref.equalconstant), vaporfra(ref.vaporfra){};
         };
+        inline scalar vaporfra(scalar p, scalar T) const;
         inline scalar alpha(scalar p, scalar T, solution &sol) const;
         inline label solve_vaporf(scalar p, scalar T, solution &sol) const;
         inline label noramlize(scalarList &X_in) const;
         inline autoPtr<scalarList> wilsoneq(scalar p, scalar T) const;
         autoPtr<solution> TPn_flash(scalar p, scalar T) const;
+        void  TPn_validation(scalar p, scalar T) const;
+        
 
+         //mutable solution temp_sol;
+         //mutable scalar temp_p,temp_T;
         /* friend VLE operator==<ThermoMixture>(
             const VLE &,
             const VLE &);

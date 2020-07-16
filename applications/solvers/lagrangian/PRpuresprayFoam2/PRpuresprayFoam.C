@@ -43,6 +43,7 @@ Description
 #include <sstream>
 #include "smallthermo.C"
 #include "csvfile.H"
+#include "clockTime.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -61,10 +62,13 @@ int main(int argc, char *argv[])
 #include "setInitialDeltaT.H"
 #include "initContinuityErrs.H"
 
+   
     turbulence->validate();
     int timei = 0;
     int loop1 = 0;
     int loop2 = 0;
+    //Time clockTime_vle(runTime);
+    double thermotime=0;
     forAll(xcoord, i)
     {
         xcoord[i] = mesh.C()[i].x();
@@ -175,7 +179,7 @@ int main(int argc, char *argv[])
                 parcels.write();
             }
         }
-
+        Info <<"VLE time ="<<thermotime<<endl;
         Info << "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
              << "  ClockTime = " << runTime.elapsedClockTime() << " s"
              << nl << endl;

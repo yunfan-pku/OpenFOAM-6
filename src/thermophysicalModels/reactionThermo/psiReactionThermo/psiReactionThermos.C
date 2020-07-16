@@ -28,6 +28,7 @@ License
 #include "psiReactionThermo.H"
 #include "hePsiThermo.H"
 #include "HYhePsiThermo.H"
+#include "VLEhePsiThermo.H"
 
 #include "specie.H"
 #include "perfectGas.H"
@@ -351,6 +352,16 @@ makeThermoPhysicsReactionThermos
     HYreactingMixture,
     gasHThermoPhysics
 );
+
+
+makeThermoPhysicsReactionThermos
+(
+    psiThermo,
+    psiReactionThermo,
+    VLEhePsiThermo,
+    HYreactingMixture,
+    gasHThermoPhysics
+);
 /*
 makeThermoPhysicsReactionThermos
 (
@@ -377,6 +388,15 @@ makeThermoPhysicsReactionThermos
     psiThermo,
     psiReactionThermo,
     hePsiThermo,
+    nLreactingMixtureChungPR,
+    VLEChungPRHThermoPhysics
+);
+
+makeThermoPhysicsReactionThermos
+(
+    psiThermo,
+    psiReactionThermo,
+    VLEhePsiThermo,
     nLreactingMixtureChungPR,
     VLEChungPRHThermoPhysics
 );

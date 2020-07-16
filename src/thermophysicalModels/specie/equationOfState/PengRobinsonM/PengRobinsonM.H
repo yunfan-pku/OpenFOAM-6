@@ -175,9 +175,11 @@ public:
 
             //- Return phase mixture ideal internal energy [J/kg]
             inline Foam::scalar sieig_phase(scalar T, scalarList &comp_phase) const;
+            inline Foam::scalar hig_phase(scalar T, scalarList &comp_phase) const;
 
             //- Return phase mixture ideal entropy [J/(kg K)]
             inline Foam::scalar Sig_phase(scalar T, scalar *comp) const;
+            inline Foam::scalar hig_phase(scalar T, scalar *comp) const;
 
             //- Return phase mixture ideal enthalpy [J/kg]
             inline Foam::scalar Hig_phase(scalar T, scalarList&comp_phase) const;
@@ -257,6 +259,7 @@ public:
 
             //- Return internal energy for mixture [kg/m3]
             inline Foam::scalar siemix_phase(int phasei, scalar p, scalar T, scalarList&comp_phase) const;
+            inline Foam::scalar hmix_phase(int phasei, scalar p, scalar T, scalarList&comp_phase) const;
 
             //- Return enthalpy for mixture [J/kg]
             inline Foam::scalar Hmix(int phasei, scalar p, scalar T, scalar *comp_phase) const;

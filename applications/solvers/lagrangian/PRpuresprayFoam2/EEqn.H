@@ -56,7 +56,10 @@
 
     fvOptions.correct(he);
 
+
+    runTime.cpuTimeIncrement();
     thermo.correct();
+    thermotime += runTime.cpuTimeIncrement();
     /*
       forAll(psi,i)
     {

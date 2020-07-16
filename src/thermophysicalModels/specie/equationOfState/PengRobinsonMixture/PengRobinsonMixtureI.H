@@ -470,9 +470,9 @@ inline Foam::autoPtr<scalarList> Foam::PengRobinsonMixture<ThermoMixture>::fugac
     scalar cc1 = 1.0 + sqrt(2.0);
     scalar cc2 = 1.0 - sqrt(2.0);
 
-    scalar zfactor00 = Zmix;//0.0020455756600868957
-    scalar ZMB = zfactor00 - Bmixz;//0.0002558026230427609
-
+    scalar zfactor00 = Zmix;//0.26235244271549435
+    scalar ZMB = zfactor00 - Bmixz;//0.1013534229665235
+ //bmix=0.16099901974897085//Amixz=1.1294554597739093//Amix2[spid] =0.84205472420476557,1.4168561953430532
     if (ZMB < 0.0)
     {
         zfactor00 = Bmixz + small8;
@@ -480,11 +480,11 @@ inline Foam::autoPtr<scalarList> Foam::PengRobinsonMixture<ThermoMixture>::fugac
     }
     forAll(X, spid)
     {
-        scalar b = (*this)[spid].B(p, T);//0.0019591145739235173,0.0013946427843255767
+        scalar b = (*this)[spid].B(p, T);//0.18809680742215584,0.13390123207578589
         fugcoef[spid] = exp(b / Bmixz * (zfactor00 - 1.0) - log(ZMB) - Amixz / (cc0 * Bmixz) * (2.0 * Amix2[spid] / Amixz - b / Bmixz) * log((zfactor00 + cc1 * Bmixz) / (zfactor00 + cc2 * Bmixz)));//1.4644880820052337,
     }
     return autoPtr<scalarList>(&fugcoef);
-}
+}//-0.8618012131024434,-2.2891416329344323,2.4802809852493097,0.3227706217002746,1.202167438354282
 
 template <class ThermoMixture>
 inline Foam::scalar Foam::PengRobinsonMixture<ThermoMixture>::H(scalar p, scalar T) const

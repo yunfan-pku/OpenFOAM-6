@@ -76,6 +76,8 @@ void tablegen(dictionary &dict)
   scalar t_temp;
   int state;
   label PCFlag(readLabel(dict.lookup("PCFlag")));
+  label HEFlag(readLabel(dict.lookup("HEFlag")));
+   output << "A"<<std::endl;
   for (label ncomp = 0; ncomp <= num_comp; ncomp++)
   {
     forAll(comp, i)
@@ -105,6 +107,7 @@ void tablegen(dictionary &dict)
     scalar VspecificGas = 0.0, VspecificLiq = 0.0;
     scalar ZGas = 0.0, ZLiq = 0.0;
     scalar Dij_binary_high = 0.0;
+    scalar hMixture=0;
 
     for (label npres = 0; npres <= num_pres; npres++)
     {
@@ -195,9 +198,14 @@ void tablegen(dictionary &dict)
           PR.kappa_phase(0, t_pres, t_temp, comp_gas, kappa_gas, mu_gas); //W/mK
           PR.kappa_phase(1, t_pres, t_temp, comp_liq, kappa_liq, mu_liq);
           kappaMixture = kappa_gas * ygas + kappa_liq * (1.0 - ygas); //W/mK
+          
 
+          scalar hReal_gas = PR.hmix_phase(0, t_pres, t_temp, comp_gas); //J/kg
+          scalar hReal_liq = PR.hmix_phase(1, t_pres, t_temp, comp_liq);
+          hMixture = hReal_gas * ygas + hReal_liq * (1.0 - ygas);
+          //hMixture=sieMixture + t_pres*mw_mixture / rhoMixture;
           //muMixture = 1.0e+06 * (mu_gas * ygas + mu_liq * (1.0 - ygas)); //up
-          muMixture =  (mu_gas * ygas + mu_liq * (1.0 - ygas)); 
+          muMixture = (mu_gas * ygas + mu_liq * (1.0 - ygas));
 
           //Dij_binary_high	= PR.Dij_highP(t_pres, t_temp, comp);//cm2/s
 
@@ -226,20 +234,27 @@ void tablegen(dictionary &dict)
 
         //ZMixture;<<' '<<' '<<Dij_binary_high*1.0e+06;
         //Info << t_temp << "  " << t_pres << "  " << t_comp[0] << "  "<<muMixture<<endl;
+        if (HEFlag == 1)
+        {
+          output << t_temp << "  " << t_pres << "  " << t_comp[0] << "  " <<
 
-        output << t_temp << "  " << t_pres << "  " << t_comp[0] << "  " <<
+              rhoMixture << "  " << sieMixture << "  " <<
 
-            rhoMixture << "  " << sieMixture << "  " <<
+              CpMixture << "  " << CvMixture << "  " << CsMixture << "  " <<
 
-            CpMixture << "  " << CvMixture << "  " << CsMixture << "  " <<
+              kappaMixture << "  " << muMixture << "  " <<
 
-            kappaMixture << "  " << muMixture << "  " <<
+              ZMixture << "  " << Dij_binary_high << "  " <<
 
-            ZMixture << "  " << Dij_binary_high << "  " <<
+              comp_liq[0] << "  " << comp_gas[0] << "  " << alphagas;
+        }
+        else if (HEFlag == 0)
+        {
+          output << t_temp << "  " << t_pres << "  " << t_comp[0] << "  " << hMixture << "  " << t_pres  << "  " << CpMixture << "  " << CvMixture << "  " << CsMixture << "  " <<kappaMixture << "  " << muMixture << "  " <<ZMixture << "  " << Dij_binary_high << "  " <<comp_liq[0] << "  " << comp_gas[0] << "  " << alphagas<<" "<<rhoMixture<<" "<<vaporfra;
+          //          1               2                 3                     4                    5                        6                 7                         8                9                     10                  11                   12                          13                      14                  15       16                17
+        }
 
-            comp_liq[0] << "  " << comp_gas[0] << "  " << alphagas;
-
-        Info<<"t="<<t_temp << "  p=" << t_pres<<" vaporfra="<<vaporfra<<endl;
+        Info << "t=" << t_temp << "  p=" << t_pres << " vaporfra=" << vaporfra << endl;
 
         //output << t_temp << ',' << ' ' << t_pres <<" ," << state<<","<<t_pres/(rhoMixture* t_temp);
 
@@ -358,7 +373,7 @@ void TPdiagram(dictionary &dict)
       if (ntemp == num_temp - 1)
       {
         for (int i = 0; i < ndettpd; i++)
-          output << tempphase_pt[i] << ' ' << ' ' << ' ';
+          output << tempphase_pt[i] << ',';
         output << presphase * 1.0e-05;
         output << "\n";
       }
@@ -540,20 +555,19 @@ void phase(dictionary &dict)
   scalarList comp_gas(2);
   double vaporfra;
   scalarList equalconstant(2);
-  double state,st;
+  double state, st;
   t_comp[0] = c1;
   t_comp[1] = c2;
   while (!input.eof())
   {
-    input >> c1 >> C >> p >> C >> t >> C >> c2 >> C >> x1 >> C >> x2 >> C >> x3>>C>>st;
+    input >> c1 >> C >> p >> C >> t >> C >> c2 >> C >> x1 >> C >> x2 >> C >> x3 >> C >> st;
     Info << c1 << " " << p << " " << t << " " << c2 << " " << x1 << " " << x2 << " " << x3 << " " << endl;
-    c1=c1/44/(c1/44+c2/18);
-    c2=1-c1;
-    p=10000000;
-    t=350;
+    c1 = c1 / 44 / (c1 / 44 + c2 / 18);
+    c2 = 1 - c1;
+    p = 10000000;
+    t = 350;
     t_comp[0] = c1;
     t_comp[1] = c2;
-
 
     PR.TPn_flash(p, t, t_comp, comp_liq, comp_gas, vaporfra, equalconstant);
     if (vaporfra > 1.0)
@@ -576,7 +590,7 @@ void phase(dictionary &dict)
     {
       state = 2;
     }
-    output<<x1<<","<<x2<<","<<x3<<","<<state<<std::endl;
+    output << x1 << "," << x2 << "," << x3 << "," << state << std::endl;
   }
 }
 

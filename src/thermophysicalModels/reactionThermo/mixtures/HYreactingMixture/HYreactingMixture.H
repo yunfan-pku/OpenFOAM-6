@@ -68,7 +68,7 @@ class HYreactingMixture
 public:
 
     //- The type of thermo package this mixture is instantiated for
-    typedef  thermotable<ThermoType> thermoType;
+    typedef  thermotableH<ThermoType> thermoType;
 
 
     // Constructors

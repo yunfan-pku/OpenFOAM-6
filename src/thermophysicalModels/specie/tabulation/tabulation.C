@@ -138,7 +138,7 @@ bool tabulation::point_in_tab_quad_2d(const Point& a_point, const Quad_2d& a_qua
 	if(delta<0)
 		return false;
 
-	if(abs(a1)<(10e-12))
+	if(fabs(a1)<(10e-12))
 	{
 		x=-a3/a2;
 		if(x>=x1-eps&&x<=x2+eps)

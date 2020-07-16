@@ -37,7 +37,7 @@ SourceFiles
 
 #include "basicSpecieMixture.H"
 #include "HashPtrTable.H"
-#include "thermotable.H"
+#include "thermotableH.H"
 #include "table.H"
 #include "tabulation.H"
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -46,7 +46,7 @@ namespace Foam
 {
 
 template<class ThermoType>
-class thermotable;
+class thermotableH;
 
 /*---------------------------------------------------------------------------*\
                     Class HYmultiComponentMixture Declaration
@@ -60,7 +60,7 @@ class HYmultiComponentMixture
 
 public:
        //- The type of thermodynamics this mixture is instantiated for
-    typedef thermotable<ThermoType> thermoType;
+    typedef thermotableH<ThermoType> thermoType;
 
     tabulation table;
 

@@ -29,7 +29,7 @@ License
 
 
 template<class ThermoType>
-const Foam::thermotable<ThermoType>& Foam::HYmultiComponentMixture<ThermoType>::constructSpeciesData
+const Foam::thermotableH<ThermoType>& Foam::HYmultiComponentMixture<ThermoType>::constructSpeciesData
 (
     const dictionary& thermoDict
 )
@@ -39,7 +39,7 @@ const Foam::thermotable<ThermoType>& Foam::HYmultiComponentMixture<ThermoType>::
         speciesData_.set
         (
             i,
-            new Foam::thermotable<ThermoType>(thermoDict.subDict(species_[i]))
+            new Foam::thermotableH<ThermoType>(thermoDict.subDict(species_[i]))
         );
     }
 
@@ -129,7 +129,7 @@ Foam::HYmultiComponentMixture<ThermoType>::HYmultiComponentMixture
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
 template<class ThermoType>
-const Foam::thermotable<ThermoType>& Foam::HYmultiComponentMixture<ThermoType>::cellMixture
+const Foam::thermotableH<ThermoType>& Foam::HYmultiComponentMixture<ThermoType>::cellMixture
 (
     const label celli
 ) const
@@ -153,7 +153,7 @@ const Foam::thermotable<ThermoType>& Foam::HYmultiComponentMixture<ThermoType>::
 
 
 template<class ThermoType>
-const Foam::thermotable<ThermoType>& Foam::HYmultiComponentMixture<ThermoType>::patchFaceMixture
+const Foam::thermotableH<ThermoType>& Foam::HYmultiComponentMixture<ThermoType>::patchFaceMixture
 (
     const label patchi,
     const label facei
@@ -182,7 +182,7 @@ const Foam::thermotable<ThermoType>& Foam::HYmultiComponentMixture<ThermoType>::
 
 
 template<class ThermoType>
-const Foam::thermotable<ThermoType>& Foam::HYmultiComponentMixture<ThermoType>::cellVolMixture
+const Foam::thermotableH<ThermoType>& Foam::HYmultiComponentMixture<ThermoType>::cellVolMixture
 (
     const scalar p,
     const scalar T,
@@ -209,7 +209,7 @@ const Foam::thermotable<ThermoType>& Foam::HYmultiComponentMixture<ThermoType>::
 
 
 template<class ThermoType>
-const Foam::thermotable<ThermoType>& Foam::HYmultiComponentMixture<ThermoType>::
+const Foam::thermotableH<ThermoType>& Foam::HYmultiComponentMixture<ThermoType>::
 patchFaceVolMixture
 (
     const scalar p,
@@ -248,7 +248,7 @@ void Foam::HYmultiComponentMixture<ThermoType>::read
 {
     forAll(species_, i)
     {
-        speciesData_[i] = Foam::thermotable<ThermoType>(thermoDict.subDict(species_[i]));
+        speciesData_[i] = Foam::thermotableH<ThermoType>(thermoDict.subDict(species_[i]));
     }
 }
 

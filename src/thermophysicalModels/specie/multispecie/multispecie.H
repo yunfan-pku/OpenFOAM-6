@@ -76,6 +76,7 @@ namespace Foam
         //- mole fraction
         List<scalar> X_;
 
+        //mutable label changed;
         //- thermo lib
         PtrList<Thermo>& speciesData_;
 
@@ -129,6 +130,7 @@ namespace Foam
         inline const speciesTable &species() const;
         //- Gas constant [J/(kg K)]
         //inline scalar R() const;
+
 
         inline void setX(scalarList &);
         inline void setY(scalarList &);

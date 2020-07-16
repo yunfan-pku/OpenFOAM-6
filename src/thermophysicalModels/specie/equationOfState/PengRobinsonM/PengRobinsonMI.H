@@ -89,7 +89,7 @@ inline void Foam::PengRobinsonM<Specie>::ABZmix(
     scalar &Bmixz,        //outp
     scalarList &Amix2,    //outp
     scalarList &Bz        //outp
-    ) const
+) const
 {
     scalarList Pr_sp(comp_inp.size(), Zero);
     scalarList Tr_sp(comp_inp.size(), Zero);
@@ -241,7 +241,7 @@ inline void Foam::PengRobinsonM<Specie>::fugcoef_phase(
     scalar T,             //input
     scalarList &comp_inp, //input
     scalarList &fugcoef   //output
-    ) const
+) const
 {
     scalar Amixz = 0.0;
     scalar Bmixz = 0.0;
@@ -304,30 +304,30 @@ inline void Foam::PengRobinsonM<Specie>::fugcoef_phase(
     scalar cc1 = 1.0 + sqrt(2.0);
     scalar cc2 = 1.0 - sqrt(2.0);
 
-    scalar zfactor00 = Zmix;
-    scalar zdiff = zfactor00 - Bmixz;
-
+    scalar zfactor00 = Zmix;//0.26235244271549435
+    scalar zdiff = zfactor00 - Bmixz;//0.1013534229665235
+//Bmix0.16099901974897085//amix=1.1294554597739093//amix2=0.84205472420476557,1.4168561953430532
     if (zdiff < 0.0)
     {
         zfactor00 = Bmixz + small8;
         zdiff = small8;
     }
-//b=0.0019591145739235169,0.0013946427843255767
+    //b=0.18809680742215584,0.13390123207578586
     forAll(comp_inp, spid)
     {
         fugcoef[spid] = Bz[spid] / Bmixz * (zfactor00 - 1.0) - log(zdiff) - Amixz / (cc0 * Bmixz) * (2.0 * Amix2[spid] / Amixz - Bz[spid] / Bmixz) * log((zfactor00 + cc1 * Bmixz) / (zfactor00 + cc2 * Bmixz));
 
-        fugcoef[spid] = exp(fugcoef[spid]);
+        fugcoef[spid] =  ;
     }
     //printf("fugcoef_phase_2222= %+5.15f,%+5.15f\n", fugcoef[0], fugcoef[1] );
-}
+}//-0.8618012131024434,-2.2891416329344323,2.4802809852493097,0.3227706217002746,1.202167438354282
 
 template <class Specie>
 inline void Foam::PengRobinsonM<Specie>::wilsoneq(
     scalar p,                 //inp
     scalar T,                 //inp
     scalarList &equl_constant //outp
-    ) const
+) const
 {
     scalarList dummy(equl_constant.size(), Zero);
 
@@ -379,10 +379,10 @@ inline Foam::scalar Foam::PengRobinsonM<Specie>::OAD217_function( //????? useles
 
 template <class Specie>
 inline void Foam::PengRobinsonM<Specie>::OAD013_function( //noramlize
-    scalarList &comp_in,  // input
-    scalarList &comp_out, // output
-    int &ierr             //outpur
-    ) const
+    scalarList &comp_in,                                  // input
+    scalarList &comp_out,                                 // output
+    int &ierr                                             //outpur
+) const
 {
     ierr = 0;
     scalar sum = 0.0;
@@ -406,15 +406,15 @@ inline void Foam::PengRobinsonM<Specie>::OAD013_function( //noramlize
 
 template <class Specie>
 inline void Foam::PengRobinsonM<Specie>::OAD012_function( //solve vaporf
-    scalar p,                  //input
-    scalar T,                  //input
-    scalarList &comp_inp,      //input
-    scalarList &equalconstant, //input
-    scalarList &comp_liq,      //output
-    scalarList &comp_gas,      //output
-    scalar &vaporf,            //output
-    int &ierr                  //output
-    ) const
+    scalar p,                                             //input
+    scalar T,                                             //input
+    scalarList &comp_inp,                                 //input
+    scalarList &equalconstant,                            //input
+    scalarList &comp_liq,                                 //output
+    scalarList &comp_gas,                                 //output
+    scalar &vaporf,                                       //output
+    int &ierr                                             //output
+) const
 {
     int miter = 1;
 
@@ -440,15 +440,15 @@ inline void Foam::PengRobinsonM<Specie>::OAD012_function( //solve vaporf
         //printf("OAD012function0******= %+5.8f %+5.8f \n", comp_liq[spid],equalconstant[spid]);
         if (comp_inp[spid] > 0.0)
         {
-            if (comp_liq[spid] > 0.0)//g=l
+            if (comp_liq[spid] > 0.0) //g=l
             {
                 ag = max(ag, -1.0 / comp_liq[spid]);
                 dumm = (comp_inp[spid] - 1.0) / comp_liq[spid] + comp_inp[spid];
                 tetag = max(tetag, dumm);
             }
-            else if (comp_liq[spid] < 0.0)//d=u
+            else if (comp_liq[spid] < 0.0) //d=u
             {
-                ad = min(ad, -1.0 / comp_liq[spid]);//1ci,2ci
+                ad = min(ad, -1.0 / comp_liq[spid]); //1ci,2ci
                 dumm = (comp_inp[spid] - 1.0) / comp_liq[spid];
                 tetad = min(tetad, dumm);
             }
@@ -478,7 +478,7 @@ inline void Foam::PengRobinsonM<Specie>::OAD012_function( //solve vaporf
         ierr = 4; //change to 0
     }
     else if (ag == crita1) //Not very sure, no physics, please double check
-    {//!
+    {                      //!
         vaporf = 1.0e-07;
         forAll(comp_inp, spid)
         {
@@ -622,7 +622,7 @@ inline void Foam::PengRobinsonM<Specie>::gibbs_phase(
     scalar T,
     scalarList &comp_inp,
     scalar &gibbsenergy //outp
-    ) const
+) const
 {
     scalarList fugcoef(comp_inp.size(), Zero);
     gibbsenergy = 0.0;
@@ -645,7 +645,7 @@ inline void Foam::PengRobinsonM<Specie>::TPn_flash // PY:with a course initializ
         scalarList &comp_gas,     //output
         scalar &vaporfra,         //output
         scalarList &equalconstant //output
-        ) const
+    ) const
 {
     const int maxiter = 1000;
     const int igas = 0, iliquid = 1;
@@ -673,10 +673,13 @@ inline void Foam::PengRobinsonM<Specie>::TPn_flash // PY:with a course initializ
     }
     //scalar tpdvalue = 0;
     //this->TPD(p, T, comp, comp_liq, comp_gas, tpdvalue);
-    this->fugcoef_phase(iliquid, p, T, comp_liq, fugcoef_liq);//1.46448808200523,2.6869515270026286e-05
-    this->fugcoef_phase(igas, p, T, comp_gas, fugcoef_gas);//0.97726773370530451,0.9512528961701644
+    this->fugcoef_phase(iliquid, p, T, comp_liq, fugcoef_liq); //1.5919044211983415,0.035959248268458546
+    this->fugcoef_phase(igas, p, T, comp_gas, fugcoef_gas);    //1.5919044211983415,0.035959248268458546
+    Info<<fugcoef_liq<<endl;
+    Info<<fugcoef_gas<<endl;
+    
     //this->fugcoef_mixture(p, T, comp, fugcoef_mix, gibbsenergy);
-    this->wilsoneq(p, T, equalconstant);//0.71761427682247247,1.4584982618390764e-06
+    this->wilsoneq(p, T, equalconstant); //1.4037894924124943,0.008729616583312786
     //printf("TPflash_OAD012_function0 = %+5.8f %+5.8f %+5.8f %+5.8f\n", p,T,equalconstant[0],equalconstant[1]);
 
     /*for (label spid = 0; spid < num_sp; spid++)//0725
@@ -738,7 +741,7 @@ inline void Foam::PengRobinsonM<Specie>::TPn_flash // PY:with a course initializ
 	}
         */
         vaporfra_iter0 = vaporfra;
-        this->OAD012_function(p, T, comp, equalconstant, comp_liq, comp_gas, vaporfra, ierr);//9.9999999999999995e-08
+        this->OAD012_function(p, T, comp, equalconstant, comp_liq, comp_gas, vaporfra, ierr); //9.9999999999999995e-08
         //printf("TPflash_OAD012_function1 = %+5.2i %+5.8f %+5.8f %+5.8f\n", ierr,vaporfra,equalconstant[0],equalconstant[1]);
 
         // only for Hn flash at high temperature and pressure conditions
@@ -760,7 +763,7 @@ inline void Foam::PengRobinsonM<Specie>::TPn_flash // PY:with a course initializ
             break;
         }
 
-        if (vaporfra > 0.99999999) //!!!!&& flag_tp > 0
+       /* if (vaporfra > 0.99999999) //!!!!&& flag_tp > 0
         {
             vaporfra = 0.99999999;
             forAll(comp, spid)
@@ -779,7 +782,8 @@ inline void Foam::PengRobinsonM<Specie>::TPn_flash // PY:with a course initializ
                 comp_gas[spid] = comp_gas0[spid];
             }
             break;
-        }
+        }*/
+        
 
         vaporfra_iter1 = vaporfra;
         if ((ierr == 10) && iter > 2)
@@ -871,9 +875,27 @@ inline void Foam::PengRobinsonM<Specie>::TPn_flash // PY:with a course initializ
             epsilon2 = errr2;
             //printf("TPflash_epsilon44444444444 = %+5.15f\n",epsilon2);
         }
-        Info<<"vaporfra="<<vaporfra<<endl;
+        Info << "vaporfra=" << vaporfra << endl;
         if (epsilon1 < tol_fug || epsilon2 < tol_fug2)
         {
+            if (vaporfra > 0.99999999) //!!!!&& flag_tp > 0
+            {
+                vaporfra = 0.99999999;
+                forAll(comp, spid)
+                {
+                    comp_liq[spid] = comp_liq0[spid];
+                    comp_gas[spid] = comp_gas0[spid];
+                }
+            }
+            if (vaporfra < 1.0e-08) //!!!!&& flag_tp > 0
+            {
+                vaporfra = 1.0e-08;
+                forAll(comp, spid)
+                {
+                    comp_liq[spid] = comp_liq0[spid];
+                    comp_gas[spid] = comp_gas0[spid];
+                }
+            }
             //printf("TPflash_epsilon****** = %+5.2i %+5.8f %+5.6f %+5.15f\n",ierr, vaporfra, T, epsilon1);
             break;
         }
@@ -1220,7 +1242,8 @@ inline Foam::scalar Foam::PengRobinsonM<Specie>::Hig2_phase(
         H_ideal = H_ideal + comp_phase[i] * single_specie[i].Hig2_phase(T);
     }
 
-    return H_ideal * 4.18680;;
+    return H_ideal * 4.18680;
+    ;
 }
 
 // ======================================================================//
@@ -1234,7 +1257,7 @@ template <class Specie>
 inline Foam::scalar Foam::PengRobinsonM<Specie>::sieig_phase(
     scalar T,
     scalarList &comp_phase //note, it is phase compositions
-    ) const
+) const
 {
     scalar mw_phase = this->mwmix(comp_phase);
     int sieflag = 2;
@@ -1249,6 +1272,36 @@ inline Foam::scalar Foam::PengRobinsonM<Specie>::sieig_phase(
     }
 
     sie_igkg = sie_igkg - RR * 1.0e-03 * T;
+
+    return sie_igkg / mw_phase;
+}
+
+// ======================================================================//
+// Ideal phase mixture internal energy => U = H - PV			 //
+// Input: temperature, phase compositions				 //
+// Output: ideal phase mixture sie			 		 //
+//									 //
+// History :   Creation.	     P. YI			2019     //
+// ======================================================================//
+template <class Specie>
+inline Foam::scalar Foam::PengRobinsonM<Specie>::hig_phase(
+    scalar T,
+    scalarList &comp_phase //note, it is phase compositions
+) const
+{
+    scalar mw_phase = this->mwmix(comp_phase);
+    int sieflag = 2;
+    scalar sie_igkg = 0.0;
+    if (sieflag == 1)
+    {
+        sie_igkg = this->Hig_phase(T, comp_phase);
+    }
+    else if (sieflag == 2)
+    {
+        sie_igkg = this->Hig2_phase(T, comp_phase);
+    }
+
+    sie_igkg = sie_igkg;
 
     return sie_igkg / mw_phase;
 }
@@ -1289,6 +1342,47 @@ inline Foam::scalar Foam::PengRobinsonM<Specie>::siemix_phase // internal energy
     // Based on Eq.12, Internal energy is estimated based on ideal(close to absolute 0 T) + departure
     scalar sieReal_phase = 0.0;
     scalar sieig = this->sieig_phase(T, comp_phase);
+    sieReal_phase = dsie_phase + sieig;
+
+    return sieReal_phase;
+}
+
+template <class Specie>
+inline Foam::scalar Foam::PengRobinsonM<Specie>::hmix_phase // internal energy with unit of J/kg
+    (
+        int phasei, //input
+        scalar p,
+        scalar T,
+        scalarList &comp_phase) const
+{
+    scalar amix = 0.0;
+    scalar bmix = 0.0;
+    scalar dadt = 0.0;
+    scalar dadt2 = 0.0;
+    scalar mw_phase = this->mwmix(comp_phase);                       //kg*mol-1
+    scalar rho_phase = this->rhomix_phase(phasei, p, T, comp_phase); //kg*m-3
+
+    scalar cc1 = 1.0 + sqrt(2.0);
+    scalar cc2 = 1.0 - sqrt(2.0);
+
+    scalar VV = mw_phase / rho_phase; //m3*mol-1, phase specific volume
+
+    this->abmix(T, comp_phase, amix, bmix, dadt, dadt2);
+    scalar xxx = ((VV + cc1 * bmix) / (VV + cc2 * bmix));
+    scalar dsie_phase = 0.0;
+    if (xxx > 0)
+    {
+        dsie_phase = ((T * dadt - amix) / (2.0 * sqrt(2.0) * bmix)) * log((VV + cc1 * bmix) / (VV + cc2 * bmix));
+    }
+    else
+    {
+        dsie_phase = 0.0;
+    }
+
+    dsie_phase = dsie_phase / mw_phase; // J/kg
+    // Based on Eq.12, Internal energy is estimated based on ideal(close to absolute 0 T) + departure
+    scalar sieReal_phase = 0.0;
+    scalar sieig = this->hig_phase(T, comp_phase);
     sieReal_phase = dsie_phase + sieig;
 
     return sieReal_phase;
@@ -1476,7 +1570,7 @@ inline void Foam::PengRobinsonM<Specie>::kappa_phase(
     {
         forAll(comp_phase, spjd)
         {
-            w[spid][spjd] = 0.50 * (single_specie[spid].omega() +single_specie[spjd].omega());
+            w[spid][spjd] = 0.50 * (single_specie[spid].omega() + single_specie[spjd].omega());
             sigma[spid][spjd] = sqrt((0.8090 * pow(Vc_sp3[spid], 1.0 / 3.0)) * (0.8090 * pow(Vc_sp3[spjd], 1.0 / 3.0)));
             //sigma(i,j)= bip_kij(i,j)*sqrt((0.809d0*vc(i)**(1.d0/3.d0))*(0.809d0*vc(j)**(1.d0/3.d0)))
             e_k0[spid][spjd] = sqrt(e_k[spid] * e_k[spjd]);
@@ -1503,27 +1597,26 @@ inline void Foam::PengRobinsonM<Specie>::kappa_phase(
         {
             sigma_mix3 += comp_phase[spid] * comp_phase[spjd] * pow3(sigma[spid][spjd]);
             sigma_mix2 += comp_phase[spid] * comp_phase[spjd] * sqr(sigma[spid][spjd]);
-            e_k_mix +=  comp_phase[spid] * comp_phase[spjd] * e_k0[spid][spjd] * pow3(sigma[spid][spjd]);
+            e_k_mix += comp_phase[spid] * comp_phase[spjd] * e_k0[spid][spjd] * pow3(sigma[spid][spjd]);
         }
     }
 
-        forAll(comp_phase, spid)
+    forAll(comp_phase, spid)
     {
         forAll(comp_phase, spjd)
         {
-            
-            w_mix   +=  comp_phase[spid] * comp_phase[spjd] * w[spid][spjd] * pow3(sigma[spid][spjd]);
-            mu4     +=  comp_phase[spid] * comp_phase[spjd] * sqr(single_specie[spid].mu())*sqr(single_specie[spjd].mu() ) / (pow3(sigma[spid][spjd])*e_k0[spid][spjd] );
-            k_mix   +=  comp_phase[spid] * comp_phase[spjd] * kij[spid][spjd];
-            mw_binary += (comp_phase[spid] * comp_phase[spjd] * e_k0[spid][spjd] * sqr(sigma[spid][spjd]) * sqrt(mwij[spid][spjd])) ;// (e_k_mix * sigma_mix2);
+
+            w_mix += comp_phase[spid] * comp_phase[spjd] * w[spid][spjd] * pow3(sigma[spid][spjd]);
+            mu4 += comp_phase[spid] * comp_phase[spjd] * sqr(single_specie[spid].mu()) * sqr(single_specie[spjd].mu()) / (pow3(sigma[spid][spjd]) * e_k0[spid][spjd]);
+            k_mix += comp_phase[spid] * comp_phase[spjd] * kij[spid][spjd];
+            mw_binary += (comp_phase[spid] * comp_phase[spjd] * e_k0[spid][spjd] * sqr(sigma[spid][spjd]) * sqrt(mwij[spid][spjd])); // (e_k_mix * sigma_mix2);
         }
     }
-    e_k_mix   /=sigma_mix3;
-    w_mix     /=sigma_mix3;
-    mu4       *=sigma_mix3* e_k_mix;
-    mw_binary /=(e_k_mix * sigma_mix2);
+    e_k_mix /= sigma_mix3;
+    w_mix /= sigma_mix3;
+    mu4 *= sigma_mix3 * e_k_mix;
+    mw_binary /= (e_k_mix * sigma_mix2);
     mw_binary = sqr(mw_binary);
-
 
     scalar volu_mix = sigma_mix3 / pow3(0.8090); //Eq.(9-5.43);Eq.(9-4.8) bug??
     //scalar volu_mix= pow3(sigma_mix3/0.8090);
@@ -1531,7 +1624,7 @@ inline void Foam::PengRobinsonM<Specie>::kappa_phase(
     scalar mur_mix4 = pow4(131.30) * mu4 / sqr(tempc_mix * volu_mix); //volu_mix in cm3/mol, mu4 in debyes
     scalar t_mix = T / e_k_mix;
     scalar Fcm = 1.0 - 0.2756 * w_mix + 0.0590350 * mur_mix4 + k_mix;
-    scalar omegav = 1.161450 * (pow(t_mix, -0.148740) + 0.524870 * exp(-0.773200 * t_mix) + 2.161780 * exp(-2.437870 * t_mix))+(-6.435e-4)*pow(t_mix, 0.148740)*sin(18.0323*pow(t_mix, -0.7683)-7.27371);//???GT...
+    scalar omegav = 1.161450 * (pow(t_mix, -0.148740) + 0.524870 * exp(-0.773200 * t_mix) + 2.161780 * exp(-2.437870 * t_mix)) + (-6.435e-4) * pow(t_mix, 0.148740) * sin(18.0323 * pow(t_mix, -0.7683) - 7.27371); //???GT...
 
     //1. mixture phases viscosity 40.785 ? 26.69 there is error in 9-5.24
     viscos = 1e-07 * 26.69 * Fcm * sqrt(mw_binary * T) / (sigma_mix2 * omegav);

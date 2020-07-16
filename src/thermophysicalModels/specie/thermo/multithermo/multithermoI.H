@@ -59,18 +59,31 @@ inline Foam::scalar Foam::species::multithermo<ThermoMixture, Type>::T(
             << "Negative initial temperature T0: " << T0
             << abort(FatalError);
     }
-
-    scalar Test = T0;
-    scalar Tnew = T0;
+    //static int call_n=0; 
+    //static int inter_n=0;
+    scalar T1 = T0;
+    scalar T2 = T0+1;
+    scalar F1=(this->*F)(p, T1), F2=F1;
+    //scalar F1=(this->*F)(p, T1);
+    //scalar F2=(this->*F)(p, T2);
+    //scalar Tnew = T0;
     scalar Ttol = T0 * tol_;
+    scalar dF=0,dfdt=0;
     int iter = 0;
-
+    scalar relax=1;
     do
     {
-        Test = Tnew;
-        Tnew =
-            (this->*limit)(Test - ((this->*F)(p, Test) - f) / (this->*dFdT)(p, Test));
+        if(abs(F2)>abs(F1))
+            relax*=0.5;
+        F1=F2;
+        F2=(this->*F)(p, T2);
 
+        dF= (F2 - f);
+        dfdt=(F2 - F1)/(T2-T1);//(this->*dFdT)(p, Test);
+        T1 = T2;
+        //Tnew =
+         //   (this->*limit)(Test - ((this->*F)(p, Test) - f) / (this->*dFdT)(p, Test));
+        T2=  (this->*limit)(T1 - relax*dF / dfdt);
         if (iter++ > maxIter_)
         {
             FatalErrorInFunction
@@ -78,15 +91,146 @@ inline Foam::scalar Foam::species::multithermo<ThermoMixture, Type>::T(
                 << " f: " << f
                 << " p: " << p
                 << " T0: " << T0
-                << "  Tg: " << Tnew
+                << "  Tg: " << T2
+                <<" X: "<<this->X_
                 << abort(FatalError);
         }
 
-    } while (mag(Tnew - Test) > Ttol);
+    } while (mag(T2 - T1) > Ttol && iter++<30);
+    //call_n++;
+    //inter_n+=iter;
+    //if(call_n%10000==0)
+    //Info<<"-------------------call N="<<call_n<<",average iter="<<inter_n*1.0/call_n<<endl;
+    return T2;
+    
 
-    return Tnew;
+/*IQI wrong 
+   if (T0 < 0)
+    {
+        FatalErrorInFunction
+            << "Negative initial temperature T0: " << T0
+            << abort(FatalError);
+    }
+    
+    static int call_n=0; 
+    static int inter_n=0;
+    scalar T1 = T0;
+    scalar T2 = T0+10;
+    scalar T3 = T0+20;
+    
+    scalar F1=0, F2=0,F3=0;
+    F2=(this->*F)(p, T1)-f;
+    if(F2==0)
+    return T1;
+    F3=(this->*F)(p, T2)-f;
+    if(F3==0)
+    return T2;
+    F1=F2;
+    
+    scalar Ttol = T0 * tol_;
+    int iter = 0;
+    scalar r,q,s;
+    
+    do
+    {
+        
+        F1=F2;
+        F2=F3;
+        F3=(this->*F)(p, T3)-f;
+        if(F3==0)
+        return T3;
+
+        q=F1/F2;
+        r=F3/F2;
+        s=F3/F1;
+
+        T1 = T2;
+        T2 = T3;
+        T3=  T3 - (r*(r-q)*(T3-T2)+(1-r)*s*(T3-T1))/((q-1)*(r-1)*(s-1));
+        
+        if (iter++ > maxIter_)
+        {
+            FatalErrorInFunction
+                << "Maximum number of iterations exceeded: " << maxIter_
+                << " f: " << f
+                << " p: " << p
+                << " T0: " << T0
+                << "  Tg: " << T2
+                <<" X: "<<this->X_
+                << abort(FatalError);
+        }
+
+    } while (mag(T3 - T2) > Ttol);
+    call_n++;
+    inter_n+=iter;
+    if(call_n%10000==0)
+    Info<<"-------------------call N="<<call_n<<",average iter="<<inter_n*1.0/call_n<<endl;
+    
+    return T3;
+    */
 }
+/*
+template <class ThermoMixture, template <class> class Type>
+inline Foam::scalar Foam::species::multithermo<ThermoMixture, Type>::T(
+    scalar f,
+    scalar p,
+    scalar T0,
+    scalar (multithermo<ThermoMixture, Type>::*F)(const scalar, const scalar) const,
+    scalar (multithermo<ThermoMixture, Type>::*dFdT)(const scalar, const scalar)
+        const,
+    scalar (multithermo<ThermoMixture, Type>::*limit)(const scalar) const) const
+{
+    if (T0 < 0)
+    {
+        FatalErrorInFunction
+            << "Negative initial temperature T0: " << T0
+            << abort(FatalError);
+    }
+    static int call_n=0; 
+    static int inter_n=0;
+    scalar T1 = T0-10;
+    scalar T2 = T0;
+    scalar T3 = T0+10;
+    scalar F1=0, F2=0,F3=0;
+    F2=(this->*F)(p, T1);
+    F3=(this->*F)(p, T2);
+    F1=F2;
+    scalar Ttol = T0 * tol_;
+    int iter = 0;
+    scalar r,q,s;
+    do
+    {
+        F1=F2;
+        F2=F3;
+        F3=(this->*F)(p, T3);
 
+        q=F1/F2;
+        r=F3/F2;
+        s=F3/F1;
+
+        T1 = T2;
+        T2 = T3;
+        T3=  T3 - (r*(r-q)*(T3-T2)+(1-r)*s*(T3-T1))/((q-1)*(r-1)*(s-1));
+        if (iter++ > maxIter_)
+        {
+            FatalErrorInFunction
+                << "Maximum number of iterations exceeded: " << maxIter_
+                << " f: " << f
+                << " p: " << p
+                << " T0: " << T0
+                << "  Tg: " << T2
+                <<" X: "<<this->X_
+                << abort(FatalError);
+        }
+
+    } while (mag(T3 - T2) > Ttol && iter++<30);
+    call_n++;
+    inter_n+=iter;
+    if(call_n%10000==0)
+    Info<<"-------------------call N="<<call_n<<",average iter="<<inter_n*1.0/call_n<<endl;
+    return T3;
+}
+*/
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
 template <class ThermoMixture, template <class> class Type>
