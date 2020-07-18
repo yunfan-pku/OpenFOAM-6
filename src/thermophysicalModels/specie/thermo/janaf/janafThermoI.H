@@ -120,7 +120,7 @@ inline Foam::scalar Foam::janafThermo<EquationOfState>::limit
             << Tlow_ << " -> " << Thigh_ << ";  T = " << T
             << endl;
 
-        return min(max(T, Tlow_), Thigh_);
+        return 0;//min(max(T, Tlow_), Thigh_);
     }
     else
     {

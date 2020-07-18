@@ -62,8 +62,10 @@ inline Foam::scalar Foam::species::multithermo<ThermoMixture, Type>::T(
     //static int call_n=0; 
     //static int inter_n=0;
     scalar T1 = T0;
-    scalar T2 = T0+1;
     scalar F1=(this->*F)(p, T1), F2=F1;
+    scalar T2 =(this->*limit)(T0+1);
+   // if(F1>f)
+   //     T2=(this->*limit)(T0-30);
     //scalar F1=(this->*F)(p, T1);
     //scalar F2=(this->*F)(p, T2);
     //scalar Tnew = T0;
@@ -81,9 +83,24 @@ inline Foam::scalar Foam::species::multithermo<ThermoMixture, Type>::T(
         dF= (F2 - f);
         dfdt=(F2 - F1)/(T2-T1);//(this->*dFdT)(p, Test);
         T1 = T2;
+        if (mag(relax*dF / dfdt)>50)
+        T2=  (this->*limit)(T1 - sign(relax*dF / dfdt)*50);
+        else 
+        T2=  (this->*limit)(T1 - relax*dF / dfdt);
         //Tnew =
          //   (this->*limit)(Test - ((this->*F)(p, Test) - f) / (this->*dFdT)(p, Test));
-        T2=  (this->*limit)(T1 - relax*dF / dfdt);
+        
+        if (T2==0)
+        {
+             FatalErrorInFunction
+                << "Maximum number of iterations exceeded: " << maxIter_
+                << " f: " << f
+                << " p: " << p
+                << " T0: " << T0
+                << "  Tg: " << T2
+                <<" X: "<<this->X_
+                << abort(FatalError);
+        }
         if (iter++ > maxIter_)
         {
             FatalErrorInFunction
@@ -96,7 +113,7 @@ inline Foam::scalar Foam::species::multithermo<ThermoMixture, Type>::T(
                 << abort(FatalError);
         }
 
-    } while (mag(T2 - T1) > Ttol && iter++<30);
+    } while (mag(T2 - T1) > Ttol && mag(f-F2) >0.0001 );
     //call_n++;
     //inter_n+=iter;
     //if(call_n%10000==0)

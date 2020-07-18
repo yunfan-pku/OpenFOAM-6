@@ -16,6 +16,7 @@
 #include "chungTransportMixture.H"
 #include "HashPtrTable.H"
 #include "multithermo.H"
+#include "IOmanip.H"
 using namespace Foam;
 int main()
 {
@@ -41,19 +42,22 @@ int main()
     dictionary thermoDictM(IFstream("system/thermoMixture")());
     Mtype thermo("test", speciesData, species, thermoDictM);
 
-    scalarList Y(2);
-    Y[0] = 0.1;
-    Y[1] = 0.9;
+    scalarList X(2);
+    X[0] = 0.0135755;
+    X[1] = 0.986425;
     //X[2] = 0.01;
-    thermo.setY(Y);
+    thermo.setX(X);
     //Info<<thermo.TPn_flash(7000000,320)().vaporfra<<endl;
     //Info<<thermo.TPn_flash(7000000,320)().fu<<endl;
     //Info<<thermo.TPn_flash(7000000,350)().vaporfra<<endl;
-    for(scalar i=570;i<580;i+=1)
+   
+   /* 
+    for(scalar i=500;i<600;i+=1)
     {
-        Info<<"T="<<i<<endl;
-    thermo.TPn_validation(10000000,i);
+        Info<<"T="<<i<<","<<(thermo.TPn_flash(11000000,i))().vaporfra<<endl;
+    //thermo.TPn_validation(10000000,i);
     }
+    */
     //thermo.TPn_validation(23000000,393);
    // thermo.TPn_validation(19900000,355.5);
    // thermo.TPn_validation(19900000,356);
@@ -61,9 +65,10 @@ int main()
     //thermo.TPn_validation(7000000,350);
 
     //Info<<thermo.THE(130436,6000000, 900);
-    //for(scalar i=400;i<=530;i+=1)
-    //Info<<i<<","<<thermo.Hs(6000000, i)-130436<<endl;
-    //Info<<thermo.THE(130436,6000000, 514.489)<<endl;
+    for(scalar i=500;i<600;i+=1)
+    Info<<i<<","<<thermo.Hs(5.30911e+06, i)+1.00408e+06<<endl;
+    
+    Info<<thermo.THE(-1.00408e+06,5.30911e+06, 583.346)<<endl;
     //Info << thermo.rho(23000000, 500) << endl;
     // Info<<thermo.Cp(23000000,500)<<endl;
     // Info<<thermo.Hs(23000000,500)<<endl;
@@ -95,10 +100,12 @@ int main()
     Info << te << "," << thermo.Hs(1.50416e+07, te) - 128817 << endl;
 */
     //Info << thermo.rho(15149200, 567.096) << endl; //15149200	567.096	129.742
-/*
-    for(scalar i=341.06;i<=341.07;i+=0.0001)
-    Info<<i<<","<<thermo.Hs(341.064, i)+32739.9<<endl;
-*/
+
+    //for(scalar i=500;i<=600;i+=1)
+    //Info<<setprecision(15)<<i<<","<<thermo.Hs(7.11705e+06, i)+981310<<endl;
+
+
+  // Info<<thermo.THE(-981310,7.11705e+06, 571.776 )<<endl;
     //Info<<110000<<","<<180<<","<<(thermo.TPn_flash(110000,180))().vaporfra<<endl;
     //ofstream fout("de.csv");
    // for(double p=10000;p<10000000;p+=100000)
