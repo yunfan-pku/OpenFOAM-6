@@ -84,8 +84,8 @@ inline Foam::scalar Foam::species::multithermo<ThermoMixture, Type>::T(
         dF= (F2 - f);
         dfdt=(F2 - F1)/(T2-T1);//(this->*dFdT)(p, Test);
         T1 = T2;
-        if (mag(relax*dF / dfdt)>50)
-        T2=  (this->*limit)(T1 - sign(relax*dF / dfdt)*50);
+        if (mag(relax*dF / dfdt)>30)
+        T2=  (this->*limit)(T1 - sign(relax*dF / dfdt)*30);
         else 
         T2=  (this->*limit)(T1 - relax*dF / dfdt);
         //Tnew =
@@ -102,7 +102,7 @@ inline Foam::scalar Foam::species::multithermo<ThermoMixture, Type>::T(
                 <<" X: "<<this->X_
                 << abort(FatalError);
         }
-        if (iter++ > maxIter_||1)
+        if (iter++ > maxIter_)
         {
             FatalErrorInFunction<<setprecision(50)
                 << "Maximum number of iterations exceeded: " << maxIter_
