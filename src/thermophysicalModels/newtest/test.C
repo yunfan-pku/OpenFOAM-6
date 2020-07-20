@@ -65,10 +65,10 @@ int main()
     //thermo.TPn_validation(7000000,350);
 
     //Info<<thermo.THE(130436,6000000, 900);
-    for(scalar i=300;i<600;i+=1)
-    Info<<i<<","<<thermo.Hs(9.99136e+06, i)+63439<<endl;
+   // for(scalar i=300;i<600;i+=1)
+   // Info<<i<<","<<thermo.Hs(9.99136e+06, i)+63439<<endl;
     
-     Info<<thermo.THE(-63439,9.99136e+06, 341.71)<<endl;
+     Info<<thermo.THE(-63439,9.99136e+06,  1)<<endl;
     //Info << thermo.rho(23000000, 500) << endl;
     // Info<<thermo.Cp(23000000,500)<<endl;
     // Info<<thermo.Hs(23000000,500)<<endl;

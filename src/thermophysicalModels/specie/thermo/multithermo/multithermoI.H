@@ -76,7 +76,7 @@ inline Foam::scalar Foam::species::multithermo<ThermoMixture, Type>::T(
     scalar relax=1;
     do
     {
-        if(abs(F2)>abs(F1))
+        if(fabs(F2)>fabs(F1))
             relax*=0.5;
         F1=F2;
         F2=(this->*F)(p, T2);
@@ -91,9 +91,9 @@ inline Foam::scalar Foam::species::multithermo<ThermoMixture, Type>::T(
         //Tnew =
          //   (this->*limit)(Test - ((this->*F)(p, Test) - f) / (this->*dFdT)(p, Test));
         
-        if (T2==0)
+        if(T2==0)
         {
-             FatalErrorInFunction<<setprecision(10)
+             FatalErrorInFunction<<setprecision(50)
                 << "Maximum number of iterations exceeded: " << maxIter_
                 << " f: " << f
                 << " p: " << p
@@ -102,9 +102,9 @@ inline Foam::scalar Foam::species::multithermo<ThermoMixture, Type>::T(
                 <<" X: "<<this->X_
                 << abort(FatalError);
         }
-        if (iter++ > maxIter_)
+        if (iter++ > maxIter_||1)
         {
-            FatalErrorInFunction
+            FatalErrorInFunction<<setprecision(50)
                 << "Maximum number of iterations exceeded: " << maxIter_
                 << " f: " << f
                 << " p: " << p
