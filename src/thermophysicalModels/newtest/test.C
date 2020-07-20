@@ -43,8 +43,8 @@ int main()
     Mtype thermo("test", speciesData, species, thermoDictM);
 
     scalarList X(2);
-    X[0] = 0.0135755;
-    X[1] = 0.986425;
+    X[0] = 1;
+    X[1] = 8.5818e-14;
     //X[2] = 0.01;
     thermo.setX(X);
     //Info<<thermo.TPn_flash(7000000,320)().vaporfra<<endl;
@@ -65,10 +65,10 @@ int main()
     //thermo.TPn_validation(7000000,350);
 
     //Info<<thermo.THE(130436,6000000, 900);
-    for(scalar i=500;i<600;i+=1)
-    Info<<i<<","<<thermo.Hs(5.30911e+06, i)+1.00408e+06<<endl;
+    for(scalar i=300;i<600;i+=1)
+    Info<<i<<","<<thermo.Hs(9.99136e+06, i)+63439<<endl;
     
-    Info<<thermo.THE(-1.00408e+06,5.30911e+06, 583.346)<<endl;
+     Info<<thermo.THE(-63439,9.99136e+06, 341.71)<<endl;
     //Info << thermo.rho(23000000, 500) << endl;
     // Info<<thermo.Cp(23000000,500)<<endl;
     // Info<<thermo.Hs(23000000,500)<<endl;

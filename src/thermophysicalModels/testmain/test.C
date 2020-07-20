@@ -533,6 +533,151 @@ void PXdiagram(dictionary &dict)
   output.close();
 }
 
+void TXdiagram(dictionary &dict)
+{
+  speciesTable s(dict.lookup("species"));
+  PengRobinsonM<specie> PR(s, dict);
+  string ThermoTable;
+  scalar vaporfra = 0.9;
+  scalarList equalconstant(s.size(), Zero);
+  scalarList comp_liq(s.size(), Zero);
+  scalarList comp_gas(s.size(), Zero);
+  scalarList comp_liq0(s.size(), Zero);
+  scalarList comp_gas0(s.size(), Zero);
+
+  ofstream output;
+  word outputfilename(word(dict.lookup("outputfilename")));
+  output.open(outputfilename);
+  scalarList comp(dict.lookup("component_ini"));
+  scalarList comp1(dict.lookup("component_fin"));
+  label num_comp(readLabel(dict.lookup("num_comp")));
+  regularize(comp);
+  regularize(comp1);
+  scalarList det_comp(comp.size());
+  scalarList t_comp(comp.size());
+  if (num_comp > 0)
+    forAll(comp, i)
+    {
+      det_comp[i] = (comp1[i] - comp[i]) / num_comp;
+    }
+
+  forAll(comp, isp)
+  {
+    comp_liq0[isp] = comp[isp];
+    comp_gas0[isp] = comp[isp];
+  }
+
+  scalar temperature(readScalar(dict.lookup("temperature_ini")));
+  scalar temperature1(readScalar(dict.lookup("temperature_fin")));
+  label num_temp(readLabel(dict.lookup("num_temp")));
+  scalar det_temp;
+  if (num_temp > 0)
+    det_temp= (temperature1 - temperature) / num_temp;
+
+  scalar t_temp;
+
+  scalar pressure(readScalar(dict.lookup("pressure")));
+
+  scalar tpdtest = 0.0;
+  scalar compphase_pt[10] = {0.0};
+  scalar tempphase = 0.0;
+  scalar tpdlast = 1.0;
+  scalar dettpd = 0.0;
+  int ndettpd = 0;
+
+  scalarList comple(s.size(), Zero);
+  scalarList compr(s.size(), Zero);
+  scalarList compm(s.size(), Zero);
+
+  for (label ntemp = 0; ntemp < num_temp; ntemp++)
+  {
+    tpdlast = 0;
+    t_temp = temperature + ntemp * det_temp;
+    ndettpd = 0;
+
+    for (label ncomp = 0; ncomp <= num_comp; ncomp++)
+    {
+      forAll(comp, i)
+      {
+        t_comp[i] = comp[i] + det_comp[i] * ncomp;
+      }
+
+      PR.TPn_flash(pressure, t_temp, t_comp, comp_liq, comp_gas, vaporfra, equalconstant);
+      //alphagas = PR.Evaluate_alpha(press, temp, vaporfra, comp_liq, comp_gas,comp);
+
+      scalar detCompPhase = 0.0;
+
+      tpdtest = phasestate(vaporfra);
+      dettpd = tpdtest - tpdlast; //if tpd change first time, abs(dettpd) > 0;
+      scalar maxtpd = max(tpdtest, tpdlast);
+      /*
+		    if (dettpd != 0.0 && maxtpd == 2.0)
+		    {
+			ndettpd = ndettpd + 1;
+			int ndettpd0 = ndettpd-1;
+			for (label nwrite = ndettpd0; nwrite < ndettpd; nwrite++)
+			{
+			    tempphase_pt[nwrite] = temp;
+			}
+		    }
+            */
+
+      if (dettpd != 0.0)
+      {
+
+        forAll(comp, i)
+        {
+          comple[i] = t_comp[i] - det_comp[i];
+          compr[i] = t_comp[i];
+          compm[i] = (comple[i] + compr[i]) / 2;
+        }
+        double tpdtest_t = 0;
+        while (compr[0] - comple[0] > 1e-3)
+        {
+          forAll(comp, i)
+          {
+            compm[i] = (comple[i] + compr[i]) / 2;
+          }
+          PR.TPn_flash(pressure, t_temp, compm, comp_liq, comp_gas, vaporfra, equalconstant);
+          tpdtest_t = phasestate(vaporfra);
+          if (tpdtest_t == tpdlast)
+          {
+            forAll(comp, i)
+            {
+              comple[i] = compm[i];
+            }
+          }
+          if (tpdtest_t == tpdtest)
+          {
+            forAll(comp, i)
+            {
+              compr[i] = compm[i];
+            }
+          }
+        }
+        compphase_pt[ndettpd++] = compm[0];
+      }
+      tempphase = t_temp;
+
+      //if (dettpd != 0.0 && ndettpd == 2)
+      if (ncomp == num_comp - 1)
+      {
+        for (int i = 0; i < ndettpd; i++)
+          output << compphase_pt[i] << ',';
+        output << tempphase;
+        output << "\n";
+      }
+      tpdlast = tpdtest;
+
+      Info << "PY:Screen_TPnFlash"
+           << ", x=" << comp_liq[0] << ", y=" << comp_gas[0] << ", vap=" << vaporfra << "\n"
+           << endl;
+    }
+  }
+  //}
+  output.close();
+}
+
 void phase(dictionary &dict)
 {
   speciesTable s(dict.lookup("species"));
@@ -633,4 +778,6 @@ int main()
     PXdiagram(dict.subDict("PX"));
   if (readLabel(dict.lookup("phaseFlag")) == 1)
     phase(dict.subDict("phase"));
+  if (readLabel(dict.lookup("TXFlag")) == 1)
+    TXdiagram(dict.subDict("TX"));
 }

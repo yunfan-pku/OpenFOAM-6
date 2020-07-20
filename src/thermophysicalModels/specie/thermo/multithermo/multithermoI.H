@@ -24,6 +24,7 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "multithermo.H"
+#include "IOmanip.H"
 
 // * * * * * * * * * * * * * Private Member Functions  * * * * * * * * * * * //
 
@@ -92,7 +93,7 @@ inline Foam::scalar Foam::species::multithermo<ThermoMixture, Type>::T(
         
         if (T2==0)
         {
-             FatalErrorInFunction
+             FatalErrorInFunction<<setprecision(10)
                 << "Maximum number of iterations exceeded: " << maxIter_
                 << " f: " << f
                 << " p: " << p

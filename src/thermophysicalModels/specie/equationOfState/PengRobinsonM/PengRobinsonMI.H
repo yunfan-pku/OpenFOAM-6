@@ -317,7 +317,7 @@ inline void Foam::PengRobinsonM<Specie>::fugcoef_phase(
     {
         fugcoef[spid] = Bz[spid] / Bmixz * (zfactor00 - 1.0) - log(zdiff) - Amixz / (cc0 * Bmixz) * (2.0 * Amix2[spid] / Amixz - Bz[spid] / Bmixz) * log((zfactor00 + cc1 * Bmixz) / (zfactor00 + cc2 * Bmixz));
 
-        fugcoef[spid] =  ;
+        fugcoef[spid] = exp(fugcoef[spid]) ;
     }
     //printf("fugcoef_phase_2222= %+5.15f,%+5.15f\n", fugcoef[0], fugcoef[1] );
 }//-0.8618012131024434,-2.2891416329344323,2.4802809852493097,0.3227706217002746,1.202167438354282
