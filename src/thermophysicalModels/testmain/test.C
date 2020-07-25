@@ -236,7 +236,7 @@ void tablegen(dictionary &dict)
         //Info << t_temp << "  " << t_pres << "  " << t_comp[0] << "  "<<muMixture<<endl;
         if (HEFlag == 1)
         {
-          output << t_temp << "  " << t_pres << "  " << t_comp[0] << "  " <<
+          output << t_temp << "  " << t_pres << "  " << t_comp[0]/*+t_comp[1]*/<< "  " <<
 
               rhoMixture << "  " << sieMixture << "  " <<
 
@@ -250,7 +250,7 @@ void tablegen(dictionary &dict)
         }
         else if (HEFlag == 0)
         {
-          output << t_temp << "  " << t_pres << "  " << t_comp[0] << "  " << hMixture << "  " << t_pres  << "  " << CpMixture << "  " << CvMixture << "  " << CsMixture << "  " <<kappaMixture << "  " << muMixture << "  " <<ZMixture << "  " << Dij_binary_high << "  " <<comp_liq[0] << "  " << comp_gas[0] << "  " << alphagas<<" "<<rhoMixture<<" "<<vaporfra;
+          output << t_temp << "  " << t_pres << "  " << t_comp[0]+t_comp[1] << "  " << hMixture << "  " << t_pres  << "  " << CpMixture << "  " << CvMixture << "  " << CsMixture << "  " <<kappaMixture << "  " << muMixture << "  " <<ZMixture << "  " << Dij_binary_high << "  " <<comp_liq[0] << "  " << comp_gas[0] << "  " << alphagas<<" "<<rhoMixture<<" "<<vaporfra;
           //          1               2                 3                     4                    5                        6                 7                         8                9                     10                  11                   12                          13                      14                  15       16                17
         }
 

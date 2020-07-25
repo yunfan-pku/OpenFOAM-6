@@ -330,9 +330,9 @@ inline Foam::scalar Foam::PengRobinsonMixture<ThermoMixture>::cubicSolve(
         else //liquid
         {
             root = max(r1, max(r2, r3));
-            root = min(r1 > 1e-3 ? r1 : root, root);
-            root = min(r2 > 1e-3 ? r2 : root, root);
-            root = min(r3 > 1e-3 ? r3 : root, root);
+            root = min(r1 > 1e-10 ? r1 : root, root);
+            root = min(r2 > 1e-10 ? r2 : root, root);
+            root = min(r3 > 1e-10 ? r3 : root, root);
         }
     }
     else

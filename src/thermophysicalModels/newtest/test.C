@@ -43,32 +43,32 @@ int main()
     Mtype thermo("test", speciesData, species, thermoDictM);
 
     scalarList X(2);
-    X[0] = 1.253983583e-06;
-    X[1] = 0.999998746;
+    X[0] = 0.98;
+    X[1] = 0.02;
     //X[2] = 0.01;
-    thermo.setX(X);
+    thermo.setY(X);
     //Info<<thermo.TPn_flash(7000000,320)().vaporfra<<endl;
     //Info<<thermo.TPn_flash(7000000,320)().fu<<endl;
     //Info<<thermo.TPn_flash(7000000,350)().vaporfra<<endl;
    
-   /* 
-    for(scalar i=500;i<600;i+=1)
+   
+    for(scalar i=382;i<683;i+=10)
     {
-        Info<<"T="<<i<<","<<(thermo.TPn_flash(11000000,i))().vaporfra<<endl;
+        Info<<setprecision(10)<<"T="<<i<<","<<(thermo.TPn_flash(10000000,i))().vaporfra<<endl;
     //thermo.TPn_validation(10000000,i);
     }
-    */
-    //thermo.TPn_validation(23000000,393);
+    
+   // thermo.TPn_validation(23000000,393);
    // thermo.TPn_validation(19900000,355.5);
    // thermo.TPn_validation(19900000,356);
     //thermo.TPn_validation(7000000,300);
     //thermo.TPn_validation(7000000,350);
 
     //Info<<thermo.THE(130436,6000000, 900);
-    for(scalar i=200;i<600;i+=1)
-    Info<<i<<","<<thermo.Hs(94419.092, i)+693451.2184<<endl;
+    //for(scalar i=200;i<600;i+=1)
+    //Info<<i<<","<<thermo.Hs(94419.092, i)+693451.2184<<endl;
     
-     Info<<thermo.THE(-693451.2184,94419.092,  441.9815523)<<endl;
+     //Info<<thermo.THE(-693451.2184,94419.092,  441.9815523)<<endl;
     //Info << thermo.rho(23000000, 500) << endl;
     // Info<<thermo.Cp(23000000,500)<<endl;
     // Info<<thermo.Hs(23000000,500)<<endl;

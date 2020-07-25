@@ -39,8 +39,8 @@ namespace Foam
           Y_(specieNames.size()),
           X_(specieNames.size()),
           speciesData_(speciesData),
-          species_(specieNames)//,
-          //changed(1)
+          species_(specieNames) //,
+                                //changed(1)
     {
     }
 
@@ -49,8 +49,8 @@ namespace Foam
         : Y_(0),
           X_(0),
           speciesData_(0),
-          species_(speciesData)//,
-          //changed(1)
+          species_(speciesData) //,
+                                //changed(1)
 
     {
         wordList s(thermoDict.lookup("species"));
@@ -86,15 +86,18 @@ namespace Foam
     inline void Foam::multispecie<Thermo>::setX(scalarList &X)
     {
         //changed=1;
-        scalar sum = 0;
+        scalar sum = 0, sn = 0;
+
         forAll(speciesData_, i)
         {
             X_[i] = X[i];
             sum += X[i] * speciesData_[i].W();
+            sn += X[i];
         }
         forAll(speciesData_, i)
         {
             Y_[i] = X[i] * speciesData_[i].W() / sum;
+            X_[i] /= sn;
         }
     }
 

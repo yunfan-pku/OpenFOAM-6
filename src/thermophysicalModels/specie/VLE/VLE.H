@@ -158,6 +158,7 @@ namespace Foam
         inline label solve_vaporf(scalar p, scalar T, solution &sol) const;
         inline label noramlize(scalarList &X_in) const;
         inline autoPtr<scalarList> wilsoneq(scalar p, scalar T) const;
+        inline autoPtr<scalarList> myinitial(scalar p, scalar T) const;
         autoPtr<solution> TPn_flash(scalar p, scalar T) const;
         void  TPn_validation(scalar p, scalar T) const;
         
