@@ -10,7 +10,7 @@ int main()
     //ISATNode C(&A, &B);
     ISATbinaryTree T;
     scalarList L(2);
-    for (int i=0;i<=5;i++)
+    for (int i=0;i<=5000;i++)
     {
         L[0]=rand() % 100;
         L[1]=rand() % 100;
@@ -28,6 +28,7 @@ int main()
     Info<<T<<endl;
     Info<<T.size()<<" "<<T.depth()<<endl;
     L[0]=27.5;
+    L[1]=10.5;
     T.binaryTreeSearch(L, T.root(), pl);
     Info<<(*pl).value()<<endl;
     T.clear();

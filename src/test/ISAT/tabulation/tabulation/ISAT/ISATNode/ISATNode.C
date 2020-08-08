@@ -53,6 +53,10 @@ Foam::ISATNode::ISATNode(
     calcV(elementLeft, elementRight, v_);
     scalarList v(v_.size());
     a_ = calcA(elementLeft, elementRight);
+    forAll(v,i)
+    {
+        v[i]=0;
+    }
     v[0]=1;
     scalar s=0;
     forAll(v,i)
