@@ -349,20 +349,19 @@ inline autoPtr<typename Foam::VLE<ThermoMixture>::solution> Foam::VLE<ThermoMixt
     autoPtr<scalarList> fugcoef_liq, fugcoef_gas;              //, fugcoef_mix[num_sp] = {0.0};
     scalarList X_liq0(this->N_, Zero), X_gas0(this->N_, Zero); //, fugcoef_mix[num_sp] = {0.0};
 
-    int newN=0;
+    int newN = 0;
     labelList mapi(this->N_);
-    forAll(this->X_,i)
+    forAll(this->X_, i)
     {
-        if(this->X_[i]>1e-10)
+        if (this->X_[i] > 1e-10)
         {
-            mapi[newN++]=i;
+            mapi[newN++] = i;
         }
     }
-    if(newN==0)
+    if (newN == 0)
     {
-        FatalErrorInFunction<<"newN=0"<<exit(FatalError);
+        FatalErrorInFunction << "newN=0" << exit(FatalError);
     }
-    
 
     Sol.X_liq.reset(new scalarList(this->N_));
     Sol.X_gas.reset(new scalarList(this->N_));
@@ -374,15 +373,19 @@ inline autoPtr<typename Foam::VLE<ThermoMixture>::solution> Foam::VLE<ThermoMixt
         X_gas0[i] = Sol.X_gas()[i];
     }
 
-    fugcoef_liq.reset(this->fugacityCoefficient(p, T, &iliquid).ptr()); //1.5919044211983415,0.035959248268458546
-    fugcoef_gas.reset(this->fugacityCoefficient(p, T, &igas).ptr());    //1.5919044211983415,0.035959248268458546
+    fugcoef_liq.reset(this->fugacityCoefficient(p, T, &iliquid).ptr()); //0.30637832246552882,0.057000001844270946,0.74015085224153332
+    fugcoef_gas.reset(this->fugacityCoefficient(p, T, &igas).ptr());    //0.30637832246552882,0.057000001844270946,0.74015085224153332
 
     //Info <<"fugcoef_liq="<<fugcoef_liq()<<endl;
     //Info <<"fugcoef_gas="<<fugcoef_gas()<<endl;
     Sol.equalconstant.reset(this->wilsoneq(p, T).ptr()); //1.4037894924124943,0.008729616583312786
     //Sol.equalconstant.reset(this->myinitial(p, T).ptr());
     //Info << "equalconstant= " << Sol.equalconstant() << endl;
-
+    /*
+    Sol.equalconstant()[0] = 300.98332688687367;
+    Sol.equalconstant()[1] = 0.012591909335566309;
+    Sol.equalconstant()[2] = 3302.6955988917484;
+    */
     if (newN == 1)
     {
         //Info << "gas:" << fugcoef_gas()[0] << " liq:" << fugcoef_liq()[0] << endl;
@@ -410,7 +413,8 @@ inline autoPtr<typename Foam::VLE<ThermoMixture>::solution> Foam::VLE<ThermoMixt
 
         if (ierr == 4 || ierr == 3)
         {
-            WarningInFunction<< "VLE "<< "p="<<p<<" T="<<T<<" X="<<this->X_<<endl;
+            WarningInFunction << "VLE "
+                              << "p=" << p << " T=" << T << " X=" << this->X_ << endl;
             forAll(this->X_, i)
             {
                 Sol.X_liq()[i] = X_liq0[i];
@@ -452,7 +456,8 @@ inline autoPtr<typename Foam::VLE<ThermoMixture>::solution> Foam::VLE<ThermoMixt
         //vaporfra_iter1 = Sol.vaporfra;
         if ((ierr == 10) && iter > 2)
         {
-            FatalErrorInFunction<< "VLE!! "<< "p="<<p<<" T="<<T<<" X="<<this->X_<<exit(FatalError);
+            FatalErrorInFunction << "VLE!! "
+                                 << "p=" << p << " T=" << T << " X=" << this->X_ << exit(FatalError);
             //this->TPD(p, T, comp, comp_liq, comp_gas, tpdvalue);
 
             fugcoef_liq.reset(this->fugacityCoefficient(p, T, &iliquid, &(Sol.X_liq())).ptr());
@@ -495,18 +500,18 @@ inline autoPtr<typename Foam::VLE<ThermoMixture>::solution> Foam::VLE<ThermoMixt
         //Info << "vaporfra2= " << pS().vaporfra << endl;
         scalar errr = 0.0;
         scalarList re_iter0(this->N_);
-        scalarList save_k(this->N_);
-        scalar rate=0.1,temp_vf;
-        rate=1;
+        //scalarList save_k(this->N_);
+        //scalar rate=0.1,temp_vf;
+        //rate=1;
         forAll(this->X_, i)
         {
             re_iter0[i] = re_iter1[i];
             fugcoef_gas()[i] *= Sol.X_gas()[i] * p; //14702443.333238741,16374.974213553087
             fugcoef_liq()[i] *= Sol.X_liq()[i] * p; //12945283.239314515,684406.75748597819
             errr = errr + sqr(fugcoef_liq()[i] / fugcoef_gas()[i] - 1.0);
-            save_k[i]=Sol.equalconstant()[i];
-            Sol.equalconstant()[i] *=max( min(1+rate,(fugcoef_liq()[i] / fugcoef_gas()[i]) * coeff_tpn),1-rate); //1.2360158223884925,0.36486216722930281
-            
+            //save_k[i]=Sol.equalconstant()[i];
+            Sol.equalconstant()[i] *= (fugcoef_liq()[i] / fugcoef_gas()[i]) * coeff_tpn; //1.2360158223884925,0.36486216722930281
+
             re_iter1[i] = fugcoef_liq()[i] / fugcoef_gas()[i];
         }
         /*
@@ -549,7 +554,6 @@ inline autoPtr<typename Foam::VLE<ThermoMixture>::solution> Foam::VLE<ThermoMixt
             }
             epsilon2 = errr2;
         }
-        
 
         if (epsilon1 < tol_fug || epsilon2 < tol_fug2)
         {

@@ -115,7 +115,7 @@ inline void Foam::PengRobinsonM<Specie>::ABZmix(
         forAll(comp_inp, j)
         {
             Aijz[i][j] = sqrt(Az[i] * Az[j]) * (1.0 - bico[i][j]);
-        }
+        } //10,0.13700000000000001,20,0.10299999999999999,12,0.17000000000000001,21,0.031199999999999999
     }
     Amixz = 0.0;
     Bmixz = 0.0;
@@ -251,7 +251,7 @@ inline void Foam::PengRobinsonM<Specie>::fugcoef_phase(
     scalarList comp1(comp_inp.size(), Zero);
     const scalar small8 = 1.e-08; //PY: need to be noticed
     //printf("fugcoef_phase_0000= %+5.8f,%+5.8f\n", comp_inp[0],comp_inp[1]);
-
+    //Amix0.95162004434848391,Bmix0.26519936756304863
     this->ABZmix(p, T, comp_inp, Amixz, Bmixz, Amix2, Bz);
 
     Zmix = this->Zmix(phasei, Amixz, Bmixz);
@@ -304,24 +304,24 @@ inline void Foam::PengRobinsonM<Specie>::fugcoef_phase(
     scalar cc1 = 1.0 + sqrt(2.0);
     scalar cc2 = 1.0 - sqrt(2.0);
 
-    scalar zfactor00 = Zmix;//0.26235244271549435
-    scalar zdiff = zfactor00 - Bmixz;//0.1013534229665235
-//Bmix0.16099901974897085//amix=1.1294554597739093//amix2=0.84205472420476557,1.4168561953430532
+    scalar zfactor00 = Zmix;          //0.72035267657888213
+    scalar zdiff = zfactor00 - Bmixz; //0.40409932450993769
+                                      //Bmix0.31625335206894445//amix=1.2896009577909204//amix2=1.5119595938297477,2.3403328587579959,1.0861369827698191
     if (zdiff < 0.0)
     {
         zfactor00 = Bmixz + small8;
         zdiff = small8;
     }
-    //b=0.18809680742215584,0.13390123207578586
+    //b=0.31845932267269694,0.22670292099211659,0.32089979844514821
     forAll(comp_inp, spid)
     {
         fugcoef[spid] = Bz[spid] / Bmixz * (zfactor00 - 1.0) - log(zdiff) - Amixz / (cc0 * Bmixz) * (2.0 * Amix2[spid] / Amixz - Bz[spid] / Bmixz) * log((zfactor00 + cc1 * Bmixz) / (zfactor00 + cc2 * Bmixz));
 
-        fugcoef[spid] = exp(fugcoef[spid]) ;
+        fugcoef[spid] = exp(fugcoef[spid]);
     }
     //printf("fugcoef_phase_2222= %+5.15f,%+5.15f\n", fugcoef[0], fugcoef[1] );
-}//-0.8618012131024434,-2.2891416329344323,2.4802809852493097,0.3227706217002746,1.202167438354282
-
+} //0.31458251744171117,0.041927053434388399,0.76394229244304168
+//-0.20046227068408684,-0.90609457849045072,1.4417010544125899,2.9127061996314145,0.92336841694787342
 template <class Specie>
 inline void Foam::PengRobinsonM<Specie>::wilsoneq(
     scalar p,                 //inp
@@ -673,13 +673,17 @@ inline void Foam::PengRobinsonM<Specie>::TPn_flash // PY:with a course initializ
     }
     //scalar tpdvalue = 0;
     //this->TPD(p, T, comp, comp_liq, comp_gas, tpdvalue);
-    this->fugcoef_phase(iliquid, p, T, comp_liq, fugcoef_liq); //1.5919044211983415,0.035959248268458546
-    this->fugcoef_phase(igas, p, T, comp_gas, fugcoef_gas);    //1.5919044211983415,0.035959248268458546
-    Info<<fugcoef_liq<<endl;
-    Info<<fugcoef_gas<<endl;
-    
+    this->fugcoef_phase(iliquid, p, T, comp_liq, fugcoef_liq); //0.31458251744171117,0.041927053434388399,0.76394229244304168
+    this->fugcoef_phase(igas, p, T, comp_gas, fugcoef_gas);    //0.31458251744171117,0.041927053434388399,0.76394229244304168
+    Info << fugcoef_liq << endl;
+    Info << fugcoef_gas << endl;
+
     //this->fugcoef_mixture(p, T, comp, fugcoef_mix, gibbsenergy);
-    this->wilsoneq(p, T, equalconstant); //1.4037894924124943,0.008729616583312786
+    this->wilsoneq(p, T, equalconstant); //0.23499475230630407,0.00019176518346248809,2.4457952855293881
+    equalconstant[0] = 300.98332688687367;
+    equalconstant[1] = 0.012591909335566309;
+    equalconstant[2] = 3302.6955988917484;
+
     //printf("TPflash_OAD012_function0 = %+5.8f %+5.8f %+5.8f %+5.8f\n", p,T,equalconstant[0],equalconstant[1]);
 
     /*for (label spid = 0; spid < num_sp; spid++)//0725
@@ -741,9 +745,9 @@ inline void Foam::PengRobinsonM<Specie>::TPn_flash // PY:with a course initializ
 	}
         */
         vaporfra_iter0 = vaporfra;
-        this->OAD012_function(p, T, comp, equalconstant, comp_liq, comp_gas, vaporfra, ierr); //9.9999999999999995e-08
+        this->OAD012_function(p, T, comp, equalconstant, comp_liq, comp_gas, vaporfra, ierr); //0.47998699452634352
         //printf("TPflash_OAD012_function1 = %+5.2i %+5.8f %+5.8f %+5.8f\n", ierr,vaporfra,equalconstant[0],equalconstant[1]);
-
+        
         // only for Hn flash at high temperature and pressure conditions
         if (ierr == 4 || ierr == 3)
         {
@@ -763,7 +767,7 @@ inline void Foam::PengRobinsonM<Specie>::TPn_flash // PY:with a course initializ
             break;
         }
 
-       /* if (vaporfra > 0.99999999) //!!!!&& flag_tp > 0
+        /* if (vaporfra > 0.99999999) //!!!!&& flag_tp > 0
         {
             vaporfra = 0.99999999;
             forAll(comp, spid)
@@ -783,7 +787,6 @@ inline void Foam::PengRobinsonM<Specie>::TPn_flash // PY:with a course initializ
             }
             break;
         }*/
-        
 
         vaporfra_iter1 = vaporfra;
         if ((ierr == 10) && iter > 2)
@@ -939,6 +942,25 @@ inline void Foam::PengRobinsonM<Specie>::TPn_flash // PY:with a course initializ
         else
         {
             iaccelation = 0; //1;
+        }
+    }
+
+    if (vaporfra > 0.99999999) //!!!!&& flag_tp > 0
+    {
+        vaporfra = 0.99999999;
+        forAll(comp, spid)
+        {
+            comp_liq[spid] = comp_liq0[spid];
+            comp_gas[spid] = comp_gas0[spid];
+        }
+    }
+    if (vaporfra < 1.0e-08) //!!!!&& flag_tp > 0
+    {
+        vaporfra = 1.0e-08;
+        forAll(comp, spid)
+        {
+            comp_liq[spid] = comp_liq0[spid];
+            comp_gas[spid] = comp_gas0[spid];
         }
     }
     //printf("TPflashEnd= %+5.8f %+5.8f\n", comp_liq[0], comp_gas[0]);

@@ -4,10 +4,8 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-
     
 
-        
 
 
 
@@ -123,7 +121,7 @@
             "program": "/home/zhy/Documents/git/OpenFOAM-6/platforms/linux64GccDPInt32Debug/bin/PRpuresprayFoam2",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "/home/zhy/newsolvertest/ST_highp_vle_vs_3",
+            "cwd": "/home/zhy/spray3D/tem/0/JICF_one_table_CH4_300k",
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",
@@ -177,5 +175,26 @@
             ]
             
         }
+        {
+            "name": "(gdb) ISAT dev Launch",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "/home/zhy/Documents/git/OpenFOAM-6/src/test/ISAT/tabulation/test.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "/home/zhy/Documents/git/OpenFOAM-6/src/test/ISAT/tabulation/",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+            
+        }
+
     ]
 }

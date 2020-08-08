@@ -42,19 +42,20 @@ int main()
     dictionary thermoDictM(IFstream("system/thermoMixture")());
     Mtype thermo("test", speciesData, species, thermoDictM);
 
-    scalarList X(2);
-    X[0] = 0.98;
-    X[1] = 0.02;
+    scalarList X(3);
+    X[0] = 0.85;
+    X[1] = 0.15;
+    X[2] = 1;
     //X[2] = 0.01;
-    thermo.setY(X);
+    thermo.setX(X);
     //Info<<thermo.TPn_flash(7000000,320)().vaporfra<<endl;
     //Info<<thermo.TPn_flash(7000000,320)().fu<<endl;
     //Info<<thermo.TPn_flash(7000000,350)().vaporfra<<endl;
    
    
-    for(scalar i=382;i<683;i+=10)
+    for(scalar i=200;i<1000;i+=10)
     {
-        Info<<setprecision(10)<<"T="<<i<<","<<(thermo.TPn_flash(10000000,i))().vaporfra<<endl;
+        Info<<setprecision(10)<<"T="<<i<<","<<(thermo.TPn_flash(30000000,i))().vaporfra<<endl;
     //thermo.TPn_validation(10000000,i);
     }
     

@@ -329,6 +329,21 @@
         "Matrix.C": "cpp",
         "binaryNode.C": "cpp",
         "binaryNodeISAT.C": "cpp",
-        "leafISAT.C": "cpp"
+        "leafISAT.C": "cpp",
+        "foamyQuadMesh.C": "cpp",
+        "thermotableH.C": "cpp",
+        "VLEhePsiThermo.C": "cpp",
+        "Test-io.C": "cpp",
+        "IOerror.C": "cpp",
+        "initial.C": "cpp",
+        "potentialFoam.C": "cpp",
+        "SortableList.C": "cpp",
+        "ISATbinaryTree.C": "cpp",
+        "int32IO.C": "cpp",
+        "ISATleaf.C": "cpp",
+        "ISATNode.C": "cpp",
+        "surfaceCheck.C": "cpp",
+        "vector.C": "cpp",
+        "scalarList.C": "cpp"
     }
 }

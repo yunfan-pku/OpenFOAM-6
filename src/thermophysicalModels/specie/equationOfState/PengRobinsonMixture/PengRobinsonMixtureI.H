@@ -199,7 +199,7 @@ inline Foam::scalar Foam::PengRobinsonMixture<ThermoMixture>::B(
     scalar Bmix = 0.0;
     forAll(X, i)
     {
-        Bmix += X[i] * This[i].B(p, T);
+        Bmix += X[i] * This[i].B(p, T); //0.31845932267269694,0.22670292099211661,0.32089979844514827
     }
     return Bmix;
 }
@@ -407,11 +407,11 @@ inline Foam::autoPtr<scalarList> Foam::PengRobinsonMixture<ThermoMixture>::A2(
         Amix2[i] = 0.0;
         forAll(X, j)
         {
-            Amix2[i] += X[j] * sqrt((*this)[i].EOS::A(p, T) * (*this)[j].EOS::A(p, T)) * (1.0 - bico[i][j]);
+            Amix2[i] += X[j] * sqrt((*this)[i].EOS::A(p, T) * (*this)[j].EOS::A(p, T)) * (1.0 - bico[j][i]);
         }
     }
     return autoPtr<scalarList>(&Amix2);
-}
+}//01,0.13700000000000001,02,0.10299999999999999,12,0.17000000000000001,21,0.031199999999999999
 
 // PY: fugacity coefficient of species in each phase
 template <class ThermoMixture>
@@ -470,9 +470,9 @@ inline Foam::autoPtr<scalarList> Foam::PengRobinsonMixture<ThermoMixture>::fugac
     scalar cc1 = 1.0 + sqrt(2.0);
     scalar cc2 = 1.0 - sqrt(2.0);
 
-    scalar zfactor00 = Zmix;//0.26235244271549435
-    scalar ZMB = zfactor00 - Bmixz;//0.1013534229665235
- //bmix=0.16099901974897085//Amixz=1.1294554597739093//Amix2[spid] =0.84205472420476557,1.4168561953430532
+    scalar zfactor00 = Zmix;//0.72035267657888225
+    scalar ZMB = zfactor00 - Bmixz;//0.40409932450993774
+ //bmix=0.3162533520689445//Amixz=1.2896009577909204//Amix2[spid] =1.5119595938297477,2.163834966904516,1.0979035088933846
     if (ZMB < 0.0)
     {
         zfactor00 = Bmixz + small8;
@@ -484,8 +484,8 @@ inline Foam::autoPtr<scalarList> Foam::PengRobinsonMixture<ThermoMixture>::fugac
         fugcoef[spid] = exp(b / Bmixz * (zfactor00 - 1.0) - log(ZMB) - Amixz / (cc0 * Bmixz) * (2.0 * Amix2[spid] / Amixz - b / Bmixz) * log((zfactor00 + cc1 * Bmixz) / (zfactor00 + cc2 * Bmixz)));//1.4644880820052337,
     }
     return autoPtr<scalarList>(&fugcoef);
-}//-0.8618012131024434,-2.2891416329344323,2.4802809852493097,0.3227706217002746,1.202167438354282
-
+}//0.31458251744171106,0.060359573482065519,0.74560778211582079
+//-0.20046227068408676,-0.9060945784904505,1.4417010544125894,2.6389813845447074,0.92336841694787364
 template <class ThermoMixture>
 inline Foam::scalar Foam::PengRobinsonMixture<ThermoMixture>::H(scalar p, scalar T) const
 {
