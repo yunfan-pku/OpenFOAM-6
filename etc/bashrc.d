@@ -100,7 +100,7 @@ export FOAM_SIGFPE=
 #    set or unset
 #export FOAM_SETNAN=
 
-
+export WM_BRANCH=VLE
 ################################################################################
 
 # The old dirs to be cleaned from the environment variables
