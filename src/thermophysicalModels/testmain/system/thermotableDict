@@ -31,11 +31,11 @@ phase
 table
 {
     #include "thermo"
-    outputfilename ThermoTable_O2.txt;
-    species (CO2 H2O O2);
+    outputfilename ThermoTable_CH4_H2O1.txt;
+    species (CO2 H2O CH4);
 
-    component_ini (0.80 0.2 0.0001);
-    component_fin (0.08 0.02 100);
+    component_ini (0.90 0.1 0.0001);
+    component_fin (0.09 0.01 100);
     num_comp 50;
     pressure_ini  28000000;//30000000;	567.096	129.742
     pressure_fin  70000000;
