@@ -94,4 +94,4 @@ log.make
 *.exe
 *.txt
 
-setting.json
+settings.json
