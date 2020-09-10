@@ -93,3 +93,5 @@ log.make
 *.csv
 *.exe
 *.txt
+
+setting.json
