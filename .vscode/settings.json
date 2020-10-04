@@ -344,6 +344,11 @@
         "ISATNode.C": "cpp",
         "surfaceCheck.C": "cpp",
         "vector.C": "cpp",
-        "scalarList.C": "cpp"
-    }
+        "scalarList.C": "cpp",
+        "functionObjectList.C": "cpp",
+        "thermotabledict": "c",
+        "VLEinterface.C": "cpp",
+        "VLEinterface_wrap.C": "cpp"
+    },
+    "python.pythonPath": "/home/zhy/anaconda3/envs/cantera/bin/python"
 }

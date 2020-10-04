@@ -1,0 +1,9 @@
+EXE_INC = \
+    -I$(LIB_SRC)/thermophysicalModels/specie/lnInclude \
+    -I/usr/local/include \
+    -I/home/zhy/anaconda3/envs/cantera/include/python3.8 \
+    -DPYTHON_LIST
+
+
+LIB_LIBS = \
+    -lspecie

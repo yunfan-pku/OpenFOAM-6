@@ -114,7 +114,8 @@ inline Foam::scalar Foam::janafThermo<EquationOfState>::limit
 {
     if (T < Tlow_ || T > Thigh_)
     {
-        WarningInFunction
+        //WarningInFunction
+        FatalErrorInFunction 
             << "attempt to use janafThermo<EquationOfState>"
                " out of temperature range "
             << Tlow_ << " -> " << Thigh_ << ";  T = " << T

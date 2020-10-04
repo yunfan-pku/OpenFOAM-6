@@ -292,7 +292,7 @@ public:
             inline void GDEM_SS(scalar *vt, scalar *vt1, scalar *v2, scalar *vout) const;
 
             //- TPn_flash
-            inline void TPn_flash(scalar p, scalar T, scalarList& comp, scalarList& comp_liq, scalarList& comp_gas, scalar& vaporfra, scalarList& equalconstant) const;
+            inline void TPn_flash(scalar p, scalar T, scalarList& comp, scalarList& comp_liq, scalarList& comp_gas, scalar& vaporfra, scalarList& equalconstant,bool eq_ini_flag=true) const;
  
             //- TPn_flash
             inline void TPn_simple(scalar p, scalar T, scalar *comp, scalar *comp_liq, scalar *comp_gas, scalar& vaporfra, scalar *equalconstant) const;

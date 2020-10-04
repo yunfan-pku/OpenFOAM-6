@@ -1,0 +1,2 @@
+swig3.0 -python -c++ -o VLEinterface_wrap.C VLEinterface.i
+wmake

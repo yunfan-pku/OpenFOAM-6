@@ -4,11 +4,13 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-    
-
-
-
-
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal"
+        },
         {
             "name": "(gdb) Launch",
             "type": "cppdbg",
@@ -33,10 +35,10 @@
             "name": "(gdb) sparyFoam Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "/home/zhy/Documents/git/OpenFOAM-6/platforms/linux64GccDPInt32Debug/bin/PRpuresprayFoam2",
+            "program": "/home/zhy/Documents/git/OpenFOAM-6/platforms/linux64GccDPInt32DebugVLE/bin/PRpuresprayFoam2",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "/home/zhy/ST_PR_Evaporation_wave_NEW_best",
+            "cwd": "/home/zhy/newsolvertest/ST_highp_vle_paper_2",
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",
@@ -47,7 +49,6 @@
                     "ignoreFailures": true
                 }
             ]
-            
         }
 
         {
@@ -68,7 +69,6 @@
                     "ignoreFailures": true
                 }
             ]
-            
         }
 
 
@@ -90,7 +90,6 @@
                     "ignoreFailures": true
                 }
             ]
-            
         }
 
         {
@@ -111,7 +110,6 @@
                     "ignoreFailures": true
                 }
             ]
-            
         }
 
         {
@@ -132,7 +130,6 @@
                     "ignoreFailures": true
                 }
             ]
-            
         }
 
         {
@@ -153,7 +150,6 @@
                     "ignoreFailures": true
                 }
             ]
-            
         }
         {
             "name": "(gdb) ISAT test Launch",
@@ -173,7 +169,6 @@
                     "ignoreFailures": true
                 }
             ]
-            
         }
         {
             "name": "(gdb) ISAT dev Launch",
@@ -193,8 +188,25 @@
                     "ignoreFailures": true
                 }
             ]
-            
         }
-
+        {
+            "name": "(gdb) table test Launch",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "/home/zhy/Documents/git/OpenFOAM-6/platforms/linux64GccDPInt32DebugVLE/bin/PRpuresprayFoam2",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "/home/zhy/preplot/JICF_one_table_CH4_300k_fine_LW",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        }
     ]
 }

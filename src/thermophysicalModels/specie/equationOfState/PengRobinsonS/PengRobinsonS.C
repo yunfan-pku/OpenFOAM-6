@@ -33,7 +33,7 @@ Foam::PengRobinsonS<Specie>::PengRobinsonS
 (
     const dictionary& dict
 )
-:   Specie(dict),
+    : Specie(dict),
     Tc_(readScalar(dict.subDict("equationOfState").lookup("Tc"))),
     Vc_(readScalar(dict.subDict("equationOfState").lookup("Vc"))),
     Pc_(readScalar(dict.subDict("equationOfState").lookup("Pc"))),
@@ -44,7 +44,7 @@ Foam::PengRobinsonS<Specie>::PengRobinsonS
     mu_(readScalar(dict.subDict("equationOfState").lookup("mu"))),
     kappa_(readScalar(dict.subDict("equationOfState").lookup("kappa")))
 {
-    Zc_ = Pc_*Vc_/(RR*Tc_);
+    Zc_ = Pc_ * Vc_ / (RR * Tc_);
 }
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
@@ -64,11 +64,12 @@ Foam::Ostream& Foam::operator<<
 (
     Ostream& os,
     const PengRobinsonS<Specie>& pg
-)
+    )
 {
     pg.write(os);
     return os;
 }
+
 
 
 // ************************************************************************* //

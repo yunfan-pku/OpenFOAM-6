@@ -381,11 +381,15 @@ inline autoPtr<typename Foam::VLE<ThermoMixture>::solution> Foam::VLE<ThermoMixt
     Sol.equalconstant.reset(this->wilsoneq(p, T).ptr()); //1.4037894924124943,0.008729616583312786
     //Sol.equalconstant.reset(this->myinitial(p, T).ptr());
     //Info << "equalconstant= " << Sol.equalconstant() << endl;
-    /*
-    Sol.equalconstant()[0] = 300.98332688687367;
-    Sol.equalconstant()[1] = 0.012591909335566309;
-    Sol.equalconstant()[2] = 3302.6955988917484;
-    */
+    
+    //Sol.equalconstant()[0] = 300.98332688687367;
+    //Sol.equalconstant()[1] = 0.012591909335566309;
+    //Sol.equalconstant()[2] = 3302.6955988917484;
+
+        
+    Sol.equalconstant()[0] = 40.006;
+    Sol.equalconstant()[1] = 0.240333;
+    
     if (newN == 1)
     {
         //Info << "gas:" << fugcoef_gas()[0] << " liq:" << fugcoef_liq()[0] << endl;

@@ -1,32 +1,18 @@
 
-
-/*
-species (CO2 CH4 O2 N2);
-
-component_ini (0.15 0.1 0.15 0.6);
-component_fin (0.01666666666666666 0.9 0.016666666666666666 0.0666666666666666666);
-num_comp 8;
-pressure_ini 100000;
-pressure_fin 290000;
-num_pre  19;
-
-temperature_ini 200;
-temperature_fin 390;
-num_temp  19;
-*/
-TableFlag 1;
+TableFlag 0;
 PTFlag 0;
 PXFlag 0;
 TXFlag 0;
 phaseFlag 0;
-
+pointFlag 1;
+/*
 phase
 {
     #include "thermo"
     inputfilename H.0.csv;
     outputfilename H.out.csv;
-    species (CO2 H2O);
-}
+    species(CO2 H2O);
+}*/
 
 table
 {
@@ -98,6 +84,15 @@ TX
     temperature_ini 300;
     temperature_fin 500;
     num_temp  1000;
+}
+
+pState
+{
+    #include "thermo"
+    species (CO2 H2O);
+    component (0.1 0.9);//(0.488372 0.511628);//(0.290323 0.709677);//(0.929712 0.070288);//(0.012494 0.987506);
+    pressure 230e5;
+    temperature 500;
 }
 
 

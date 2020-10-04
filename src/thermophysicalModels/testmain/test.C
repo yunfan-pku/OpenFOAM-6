@@ -11,7 +11,7 @@
 #include "PengRobinsonM.H"
 
 using namespace Foam;
-void regularize(scalarList &a)
+void regularize(scalarList& a)
 {
     scalar sum = 0;
     forAll(a, i)
@@ -24,7 +24,7 @@ void regularize(scalarList &a)
     }
 }
 
-void tablegen(dictionary &dict)
+void tablegen(dictionary& dict)
 {
     speciesTable s(dict.lookup("species"));
     PengRobinsonM<specie> PR(s, dict);
@@ -48,9 +48,9 @@ void tablegen(dictionary &dict)
     scalarList t_comp(comp.size());
     if (num_comp > 0)
         forAll(comp, i)
-        {
-            det_comp[i] = (comp1[i] - comp[i]) / num_comp;
-        }
+    {
+        det_comp[i] = (comp1[i] - comp[i]) / num_comp;
+    }
 
     forAll(comp, isp)
     {
@@ -191,7 +191,7 @@ void tablegen(dictionary &dict)
                     PR.soundspeedmix(1, t_pres, t_temp, comp_liq, Ct_liq, Cs_liq);
 
                     CsMixture = ::sqrt(1.0 / (rhoMixture * (alphagas / (rho_gas * sqr(Cs_gas)) +
-                                                            (1.0 - alphagas) / (rho_liq * sqr(Cs_liq)))));
+                        (1.0 - alphagas) / (rho_liq * sqr(Cs_liq)))));
                     //CtMixture           = CsMixture * sqr(GammaMixture);
 
                     //Transport	Properties
@@ -235,7 +235,7 @@ void tablegen(dictionary &dict)
                 //Info << t_temp << "  " << t_pres << "  " << t_comp[0] << "  "<<muMixture<<endl;
                 if (HEFlag == 1)
                 {
-                    output << t_temp << "  " << t_pres << "  " << t_comp[0] /*+t_comp[1]*/ << "  " <<
+                    output << t_temp << "  " << t_pres << "  " << t_comp[0] + t_comp[1] << "  " <<
 
                         rhoMixture << "  " << sieMixture << "  " <<
 
@@ -266,7 +266,7 @@ void tablegen(dictionary &dict)
     return;
 }
 
-void TPdiagram(dictionary &dict)
+void TPdiagram(dictionary& dict)
 {
     speciesTable s(dict.lookup("species"));
     PengRobinsonM<specie> PR(s, dict);
@@ -308,7 +308,7 @@ void TPdiagram(dictionary &dict)
     scalar t_temp;
 
     scalar tpdtest = 0.0;
-    scalar tempphase_pt[10] = {0.0};
+    scalar tempphase_pt[10] = { 0.0 };
     scalar presphase = 0.0;
     scalar tpdlast = 1.0;
     scalar dettpd = 0.0;
@@ -333,15 +333,15 @@ void TPdiagram(dictionary &dict)
             dettpd = tpdtest - tpdlast; //if tpd change first time, abs(dettpd) > 0;
             scalar maxtpd = max(tpdtest, tpdlast);
             /*
-		    if (dettpd != 0.0 && maxtpd == 2.0)
-		    {
-			ndettpd = ndettpd + 1;
-			int ndettpd0 = ndettpd-1;
-			for (label nwrite = ndettpd0; nwrite < ndettpd; nwrite++)
-			{
-			    tempphase_pt[nwrite] = temp;
-			}
-		    }
+            if (dettpd != 0.0 && maxtpd == 2.0)
+            {
+            ndettpd = ndettpd + 1;
+            int ndettpd0 = ndettpd-1;
+            for (label nwrite = ndettpd0; nwrite < ndettpd; nwrite++)
+            {
+                tempphase_pt[nwrite] = temp;
+            }
+            }
             */
             if (dettpd != 0.0)
             {
@@ -379,15 +379,15 @@ void TPdiagram(dictionary &dict)
             tpdlast = tpdtest;
 
             Info << "PY:Screen_TPnFlash"
-                 << ", x=" << comp_liq[0] << ", y=" << comp_gas[0] << ", vap=" << vaporfra << "\n"
-                 << endl;
+                << ", x=" << comp_liq[0] << ", y=" << comp_gas[0] << ", vap=" << vaporfra << "\n"
+                << endl;
         }
     }
     //}
     output.close();
 }
 
-void PXdiagram(dictionary &dict)
+void PXdiagram(dictionary& dict)
 {
     speciesTable s(dict.lookup("species"));
     PengRobinsonM<specie> PR(s, dict);
@@ -411,9 +411,9 @@ void PXdiagram(dictionary &dict)
     scalarList t_comp(comp.size());
     if (num_comp > 0)
         forAll(comp, i)
-        {
-            det_comp[i] = (comp1[i] - comp[i]) / num_comp;
-        }
+    {
+        det_comp[i] = (comp1[i] - comp[i]) / num_comp;
+    }
 
     forAll(comp, isp)
     {
@@ -433,7 +433,7 @@ void PXdiagram(dictionary &dict)
     scalar temperature(readScalar(dict.lookup("temperature")));
 
     scalar tpdtest = 0.0;
-    scalar compphase_pt[10] = {0.0};
+    scalar compphase_pt[10] = { 0.0 };
     scalar presphase = 0.0;
     scalar tpdlast = 1.0;
     scalar dettpd = 0.0;
@@ -465,15 +465,15 @@ void PXdiagram(dictionary &dict)
             dettpd = tpdtest - tpdlast; //if tpd change first time, abs(dettpd) > 0;
             scalar maxtpd = max(tpdtest, tpdlast);
             /*
-		    if (dettpd != 0.0 && maxtpd == 2.0)
-		    {
-			ndettpd = ndettpd + 1;
-			int ndettpd0 = ndettpd-1;
-			for (label nwrite = ndettpd0; nwrite < ndettpd; nwrite++)
-			{
-			    tempphase_pt[nwrite] = temp;
-			}
-		    }
+            if (dettpd != 0.0 && maxtpd == 2.0)
+            {
+            ndettpd = ndettpd + 1;
+            int ndettpd0 = ndettpd-1;
+            for (label nwrite = ndettpd0; nwrite < ndettpd; nwrite++)
+            {
+                tempphase_pt[nwrite] = temp;
+            }
+            }
             */
 
             if (dettpd != 0.0)
@@ -524,15 +524,15 @@ void PXdiagram(dictionary &dict)
             tpdlast = tpdtest;
 
             Info << "PY:Screen_TPnFlash"
-                 << ", x=" << comp_liq[0] << ", y=" << comp_gas[0] << ", vap=" << vaporfra << "\n"
-                 << endl;
+                << ", x=" << comp_liq[0] << ", y=" << comp_gas[0] << ", vap=" << vaporfra << "\n"
+                << endl;
         }
     }
     //}
     output.close();
 }
 
-void TXdiagram(dictionary &dict)
+void TXdiagram(dictionary& dict)
 {
     speciesTable s(dict.lookup("species"));
     PengRobinsonM<specie> PR(s, dict);
@@ -556,9 +556,9 @@ void TXdiagram(dictionary &dict)
     scalarList t_comp(comp.size());
     if (num_comp > 0)
         forAll(comp, i)
-        {
-            det_comp[i] = (comp1[i] - comp[i]) / num_comp;
-        }
+    {
+        det_comp[i] = (comp1[i] - comp[i]) / num_comp;
+    }
 
     forAll(comp, isp)
     {
@@ -578,7 +578,7 @@ void TXdiagram(dictionary &dict)
     scalar pressure(readScalar(dict.lookup("pressure")));
 
     scalar tpdtest = 0.0;
-    scalar compphase_pt[10] = {0.0};
+    scalar compphase_pt[10] = { 0.0 };
     scalar tempphase = 0.0;
     scalar tpdlast = 1.0;
     scalar dettpd = 0.0;
@@ -610,15 +610,15 @@ void TXdiagram(dictionary &dict)
             dettpd = tpdtest - tpdlast; //if tpd change first time, abs(dettpd) > 0;
             scalar maxtpd = max(tpdtest, tpdlast);
             /*
-		    if (dettpd != 0.0 && maxtpd == 2.0)
-		    {
-			ndettpd = ndettpd + 1;
-			int ndettpd0 = ndettpd-1;
-			for (label nwrite = ndettpd0; nwrite < ndettpd; nwrite++)
-			{
-			    tempphase_pt[nwrite] = temp;
-			}
-		    }
+            if (dettpd != 0.0 && maxtpd == 2.0)
+            {
+            ndettpd = ndettpd + 1;
+            int ndettpd0 = ndettpd-1;
+            for (label nwrite = ndettpd0; nwrite < ndettpd; nwrite++)
+            {
+                tempphase_pt[nwrite] = temp;
+            }
+            }
             */
 
             if (dettpd != 0.0)
@@ -669,15 +669,15 @@ void TXdiagram(dictionary &dict)
             tpdlast = tpdtest;
 
             Info << "PY:Screen_TPnFlash"
-                 << ", x=" << comp_liq[0] << ", y=" << comp_gas[0] << ", vap=" << vaporfra << "\n"
-                 << endl;
+                << ", x=" << comp_liq[0] << ", y=" << comp_gas[0] << ", vap=" << vaporfra << "\n"
+                << endl;
         }
     }
     //}
     output.close();
 }
 
-void phase(dictionary &dict)
+void phase(dictionary& dict)
 {
     speciesTable s(dict.lookup("species"));
     PengRobinsonM<specie> PR(s, dict);
@@ -738,6 +738,41 @@ void phase(dictionary &dict)
     }
 }
 
+void pointState(dictionary& dict)
+{
+    speciesTable s(dict.lookup("species"));
+    PengRobinsonM<specie> PR(s, dict);
+    string ThermoTable;
+    scalar vaporfra = 0.9;
+    scalarList equalconstant(s.size(), Zero);
+    scalarList comp_liq(s.size(), Zero);
+    scalarList comp_gas(s.size(), Zero);
+    scalarList comp_liq0(s.size(), Zero);
+    scalarList comp_gas0(s.size(), Zero);
+
+    scalarList comp(dict.lookup("component"));
+    regularize(comp);
+    scalar temperature(readScalar(dict.lookup("temperature")));
+    scalar pressure(readScalar(dict.lookup("pressure")));
+
+    scalar tpdtest = 0.0;
+    scalar compphase_pt[10] = { 0.0 };
+    scalar tempphase = 0.0;
+    scalar tpdlast = 1.0;
+    scalar dettpd = 0.0;
+    int ndettpd = 0;
+
+    scalarList comple(s.size(), Zero);
+    scalarList compr(s.size(), Zero);
+    scalarList compm(s.size(), Zero);
+
+    tpdlast = 0;
+    ndettpd = 0;
+    PR.TPn_flash(pressure, temperature, comp, comp_liq, comp_gas, vaporfra, equalconstant);
+    Info<<"EQ="<<equalconstant<<endl;
+
+
+}
 int main()
 {
 
@@ -763,7 +798,7 @@ int main()
   scalar vf;
   Y[0] = 1;
   Y[1] = 1;
- 
+
   B.setY(Y);
   //Info << B.Y_[0] << B.Y_[1]<< endl;
   B.TPn_flash(1000000, 400, Y, liq, gas, vf, ec);
@@ -779,4 +814,6 @@ int main()
         phase(dict.subDict("phase"));
     if (readLabel(dict.lookup("TXFlag")) == 1)
         TXdiagram(dict.subDict("TX"));
+    if (readLabel(dict.lookup("pointFlag")) == 1)
+        pointState(dict.subDict("pState"));
 }

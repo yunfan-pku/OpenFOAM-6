@@ -364,8 +364,8 @@ inline Foam::scalar Foam::PengRobinsonS<Specie>::Z(
 
     return root;
 }
-
-double phasestate(double vaporfra)
+template <class Specie>
+double Foam::PengRobinsonS<Specie>::phasestate(double vaporfra)
 {
     if (vaporfra > 1.0e-06 && vaporfra < 0.999999)
     {
