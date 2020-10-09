@@ -8,7 +8,7 @@ Created on Sat Oct  3 17:27:13 2020
 
 import csv 
 import matplotlib.pyplot as plt
-data=list(csv.reader(open("test.csv")))[1:]
+data=list(csv.reader(open("test1.csv")))[1:]
 font1 = {'family' : 'Times New Roman',
 'weight' : 'normal',
 'size'   : 14,
@@ -18,7 +18,11 @@ p=[]
 for i in range(len(data)):
     x.append(float(data[i][0]))
     p.append(float(data[i][1])/1e5)
-plt.plot(x,p)
+plt.plot(x,p,"k")
+plt.plot(x,p,".r")
+plt.text(-0.02,50.3,"Pure $O_2$")
+plt.text(0.9,45.4,"Pure $CH_4$")
+plt.ylim([45,52.8])
 plt.xlabel("$x_{CH_4}$",font1)
 plt.ylabel("Critical pressure (bar)",font1)
 plt.savefig("CH4_O2.png",dpi=300)

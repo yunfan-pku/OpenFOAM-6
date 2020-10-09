@@ -442,6 +442,15 @@ class solver(_object):
     __swig_getmethods__["vaporfra"] = _VLE.solver_vaporfra_get
     if _newclass:
         vaporfra = _swig_property(_VLE.solver_vaporfra_get, _VLE.solver_vaporfra_set)
+
+    def density(self):
+        return _VLE.solver_density(self)
+
+    def Z(self):
+        return _VLE.solver_Z(self)
+
+    def twophase(self, rho, lt, rt):
+        return _VLE.solver_twophase(self, rho, lt, rt)
     __swig_setmethods__["equalconstant"] = _VLE.solver_equalconstant_set
     __swig_getmethods__["equalconstant"] = _VLE.solver_equalconstant_get
     if _newclass:

@@ -10612,6 +10612,99 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_solver_density(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver *arg1 = (solver *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_density",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_density" "', argument " "1"" of type '" "solver *""'"); 
+  }
+  arg1 = reinterpret_cast< solver * >(argp1);
+  result = (double)(arg1)->density();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_Z(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver *arg1 = (solver *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_Z",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_Z" "', argument " "1"" of type '" "solver *""'"); 
+  }
+  arg1 = reinterpret_cast< solver * >(argp1);
+  result = (double)(arg1)->Z();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_twophase(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver *arg1 = (solver *) 0 ;
+  double arg2 ;
+  double arg3 ;
+  double arg4 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  PyObject * obj3 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOOO:solver_twophase",&obj0,&obj1,&obj2,&obj3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_twophase" "', argument " "1"" of type '" "solver *""'"); 
+  }
+  arg1 = reinterpret_cast< solver * >(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "solver_twophase" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  ecode3 = SWIG_AsVal_double(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "solver_twophase" "', argument " "3"" of type '" "double""'");
+  } 
+  arg3 = static_cast< double >(val3);
+  ecode4 = SWIG_AsVal_double(obj3, &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "solver_twophase" "', argument " "4"" of type '" "double""'");
+  } 
+  arg4 = static_cast< double >(val4);
+  result = (bool)(arg1)->twophase(arg2,arg3,arg4);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_solver_equalconstant_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   solver *arg1 = (solver *) 0 ;
@@ -10906,6 +10999,9 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"solver_solve", _wrap_solver_solve, METH_VARARGS, NULL},
 	 { (char *)"solver_vaporfra_set", _wrap_solver_vaporfra_set, METH_VARARGS, NULL},
 	 { (char *)"solver_vaporfra_get", _wrap_solver_vaporfra_get, METH_VARARGS, NULL},
+	 { (char *)"solver_density", _wrap_solver_density, METH_VARARGS, NULL},
+	 { (char *)"solver_Z", _wrap_solver_Z, METH_VARARGS, NULL},
+	 { (char *)"solver_twophase", _wrap_solver_twophase, METH_VARARGS, NULL},
 	 { (char *)"solver_equalconstant_set", _wrap_solver_equalconstant_set, METH_VARARGS, NULL},
 	 { (char *)"solver_equalconstant_get", _wrap_solver_equalconstant_get, METH_VARARGS, NULL},
 	 { (char *)"solver_comp_liq_set", _wrap_solver_comp_liq_set, METH_VARARGS, NULL},

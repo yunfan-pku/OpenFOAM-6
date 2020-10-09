@@ -30,6 +30,9 @@ struct solver
     ~solver();
     void solve(bool flag);
     double vaporfra;
+    double density();
+    double Z();
+    bool twophase(double rho, double lt, double rt);
     std::vector<double> equalconstant;
     std::vector<double> comp_liq;
     std::vector<double> comp_gas;
