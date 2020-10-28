@@ -31,18 +31,41 @@ License
 
 // Defined as static to be able to dynamically change it during simulations
 // (all chemPoints refer to the same object)
-
+/*
 void Foam::ISATleaf::print(Foam::Ostream& OFout, int a)
 {
     for (int i = 0;i < a;i++)
         OFout << " ";
     OFout << "*" << value_ << endl;
 }
+*/
 
+Foam::ISATleaf::ISATleaf(int n_in, int n_out,
+    const scalarList& v,
+    ISATNode* node) : node_(node), value_(n_in), data_(n_out), A_(n_in, n_out), EOA_(n_in, n_in)
+{
+    forAll(value_, i)
+    {
+        value_[i] = v[i];
+    }
+}
+Foam::ISATleaf::ISATleaf(int n_in, int n_out, const scalarList& v, ISATNode* node, const scalarList& data_in
+) : node_(node), value_(n_in), data_(n_out), A_(n_in, n_out), EOA_(n_in, n_in)
+{
+    forAll(value_, i)
+    {
+        value_[i] = v[i];
+    }
+    forAll(data_, i)
+    {
+        data_[i] = data_in[i];
+    }
+
+}
 bool Foam::ISATleaf::inEOA(const scalarList& point)
 {
-    scalarRectangularMatrix dx(point.size(), 1);
-    for (int i = 0;i < point.size();i++)
+    scalarRectangularMatrix dx(value_.size(), 1);
+    forAll(value_, i)
         dx[i][0] = point[i] - value_[i];
     //scalarRectangularMatrix a=EOA_ * dx;
     return ((dx.T()) * EOA_ * dx)[0][0] <= 1.0;
@@ -52,20 +75,20 @@ bool Foam::ISATleaf::inEOA(const scalarList& point)
 
 void Foam::ISATleaf::eval(const scalarList& value, scalarList& ret)
 {
-    scalarRectangularMatrix dx(1, value.size()), retm;
+    scalarRectangularMatrix dx(1, value_.size()), retm;
     ret = data_;
-    for (int i = 0;i < value.size();i++)
+    for (int i = 0;i < value_.size();i++)
         dx[0][i] = value[i] - value_[i];
     retm = dx * A_;
-    for (int i = 0;i < retm.size();i++)
+    for (int i = 0;i < data_.size();i++)
         ret[i] += retm[i][0];
 }
 
 void Foam::ISATleaf::grow(const scalarList& point)
 {
-    scalarRectangularMatrix dx(point.size(), 1);
+    scalarRectangularMatrix dx(value_.size(), 1);
     double pbp;
-    for (int i = 0;i < point.size();i++)
+    for (int i = 0;i < value_.size();i++)
         dx[i][0] = point[i] - value_[i];
     pbp = (dx.T() * EOA_ * dx)[0][0];
     EOA_ = EOA_ + EOA_ * dx * (dx.T()) * EOA_ * (1 - pbp) / sqr(pbp);

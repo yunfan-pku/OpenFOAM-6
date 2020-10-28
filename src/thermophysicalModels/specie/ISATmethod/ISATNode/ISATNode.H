@@ -207,7 +207,7 @@ public:
             return a_;
         }
 };
-
+/*
 Foam::Ostream& operator<<(Foam::Ostream& OFout, const Foam::ISATNode& node)
 {
     if (nullptr != node.leafLeft())// phi0 is on the right
@@ -228,13 +228,13 @@ Foam::Ostream& operator<<(Foam::Ostream& OFout, const Foam::ISATNode& node)
     }
     return OFout;
 }
+*/
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 } // End namespace Foam
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
 
 //#ifdef NoRepository
 //    #include "ISATNode.C"

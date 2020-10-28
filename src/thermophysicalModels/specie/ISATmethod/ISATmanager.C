@@ -23,11 +23,229 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "ISAT.H"
+#include "ISATmanager.H"
 #include "LUscalarMatrix.H"
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
+template<class FuncType>
+Foam::ISATmanager<FuncType>::ISATmanager(label in_n, label out_n, FuncType& func)
+    :tableTree_(in_n, out_n), pfunc(&func), epsilon_(1e-3), relepsilon_(0.0), scaleFactor_(out_n, out_n), nRetrieved_(0), nGrowth_(0), nAdd_(0), nCall_(0)
+{
+    for (int i = 0;i < out_n;i++)
+        for (int j = 0;j < out_n;j++)
+            scaleFactor_[i][j] = 0;
+    for (int i = 0;i < out_n;i++)
+        scaleFactor_[i][i] = 1.0;
+    //scaleFactor_[0][0] = 1/10000.0;
 
+    //Info << "haha" << endl;
+}
+
+template<class FuncType>
+Foam::ISATmanager<FuncType>::~ISATmanager()
+{}
+template<class FuncType>
+void Foam::ISATmanager<FuncType>::add(const scalarList& value)
+{
+    ISATbinaryTree& T = tableTree_;
+    ISATleaf* pleaf;
+    scalarList R(tableTree_.n_out());
+    pfunc->value(value, R);
+    pleaf = T.insertNewLeaf(value, R);
+    pfunc->derive(value, pleaf->A());
+    //Info<<pleaf->A()<<endl;
+    pleaf->EOA() = (pleaf->A()) * scaleFactor_ * scaleFactor_ * (pleaf->A().T()) / (epsilon_ * epsilon_);
+    //Info<<pleaf->EOA()<<endl;
+    nAdd_++;
+}
+template<class FuncType>
+Foam::ISATleaf* Foam::ISATmanager<FuncType>::search(const scalarList& value)
+{
+    ISATleaf* p;
+    tableTree_.binaryTreeSearch(value, tableTree_.root_, p);
+    return p;
+}
+template<class FuncType>
+void Foam::ISATmanager<FuncType>::call
+(
+    const Foam::scalarList& value, scalarList& out
+)
+{
+    ISATleaf* pleaf;
+    if (!retrieve(value, out))
+    {
+        pfunc->value(value, out);
+        //Info<<out<<endl;
+        pleaf = search(value);
+        if (!grow(pleaf, value, out))
+            add(value);
+    }
+    nCall_++;
+    if (nCall_ % 1000 == 0)
+    {
+        Info << "ISAT performance: nCall=" << nCall_ << ", nRetrieved=" << nRetrieved_ << ", nGrowth=" << nGrowth_ << ", nAdd=" << nAdd_ << endl;
+    }
+}
+
+template<class FuncType>
+void Foam::ISATmanager<FuncType>::tablevalue
+(
+    const Foam::scalarList& value, scalarList& out
+)
+{
+    ISATleaf* pleaf;
+    pleaf = search(value);
+    pleaf->eval(value, out);
+}
+template<class FuncType>
+bool Foam::ISATmanager<FuncType>::retrieve
+(
+    const Foam::scalarList& value, scalarList& out
+)
+{
+    bool retrieved(false);
+    ISATleaf* plf;
+
+    // If the tree is not empty
+    if (tableTree_.size())
+    {
+        plf = search(value);
+
+        // lastSearch keeps track of the chemPoint we obtain by the regular
+        // binary tree search
+        //lastSearch_ = phi0;
+        if (plf->inEOA(value))
+        {
+            retrieved = true;
+        }
+        // After a successful secondarySearch, phi0 store a pointer to the
+        // found chemPoint
+        /*
+        else if (tableTree_.secondaryBTSearch(phiq, phi0))
+        {
+            retrieved = true;
+        }
+        else if (MRURetrieve_)
+        {
+           typename SLList
+                <
+                chemPointISAT<CompType, ThermoType>*
+                >::iterator iter = MRUList_.begin();
+
+            for (; iter != MRUList_.end(); ++iter)
+            {
+                phi0 = iter();
+                if (phi0->inEOA(phiq))
+                {
+                    retrieved = true;
+                    break;
+                }
+            }
+        }
+        */
+    }
+    // The tree is empty, retrieved is still false
+    else
+    {
+        // There is no chempoints that we can try to grow
+        //lastSearch_ = nullptr;
+    }
+
+    if (retrieved)
+    {
+        //phi0->increaseNumRetrieve();
+        //scalar elapsedTimeSteps =
+        //    this->chemistry_.timeSteps() - phi0->timeTag();
+
+        // Raise a flag when the chemPoint has been used more than the allowed
+        // number of time steps
+        /*
+        if (elapsedTimeSteps > chPMaxLifeTime_ && !phi0->toRemove())
+        {
+            cleaningRequired_ = true;
+            phi0->toRemove() = true;
+        }
+        */
+        /*
+        lastSearch_->lastTimeUsed() = this->chemistry_.timeSteps();
+        addToMRU(phi0);
+        calcNewC(phi0, phiq, Rphiq);
+        nRetrieved_++;
+        */
+        nRetrieved_++;
+        tableTree_.eval(value, out);
+        return true;
+    }
+    else
+    {
+        // This point is reached when every retrieve trials have failed
+        // or if the tree is empty
+        return false;
+    }
+}
+
+template<class FuncType>
+bool Foam::ISATmanager<FuncType>::grow
+(
+    ISATleaf* plf,
+    const scalarList& value,
+    const scalarList& data
+)
+{
+    // If the pointer to the chemPoint is nullptr, the function stops
+    if (!plf)
+    {
+        return false;
+    }
+
+    // Raise a flag when the chemPoint used has been grown more than the
+    // allowed number of time
+    /*
+    if (phi0->nGrowth() > maxGrowth_)
+    {
+        cleaningRequired_ = true;
+        phi0->toRemove() = true;
+        return false;
+    }
+    */
+
+    // If the solution RphiQ is still within the tolerance we try to grow it
+    // in some cases this might result in a failure and the grow function of
+    // the chemPoint returns false
+    scalarList ret(data.size());
+    plf->eval(value, ret);
+    //Info << distance(ret, data) << endl;
+    if (distance(ret, data) <= epsilon_ || distance(ret, data) <= epsilon_ * norm(data))
+    {
+        plf->grow(value);
+        nGrowth_++;
+        return true;
+    }
+    // The actual solution and the approximation given by ISAT are too different
+    else
+    {
+        return false;
+    }
+}
+template<class FuncType>
+double Foam::ISATmanager<FuncType>::distance(const scalarList& l, const scalarList& r)
+{
+    double sum = 0;
+    for (int i = 0;i < l.size();i++)
+        sum += sqr((l[i] - r[i]) * scaleFactor_[i][i]);
+    return sqrt(sum);
+}
+template<class FuncType>
+double Foam::ISATmanager<FuncType>::norm(const scalarList& l)
+{
+    double sum = 0;
+    for (int i = 0;i < l.size();i++)
+        sum += sqr(l[i] * scaleFactor_[i][i]);
+    return sqrt(sum);
+}
+
+
+/*
 template<class CompType, class ThermoType>
 Foam::chemistryTabulationMethods::ISAT<CompType, ThermoType>::ISAT
 (
@@ -40,7 +258,7 @@ Foam::chemistryTabulationMethods::ISAT<CompType, ThermoType>::ISAT
         chemistryProperties,
         chemistry
     ),
-    chemisTree_(chemistry, this->coeffsDict_),
+    tableTree_(chemistry, this->coeffsDict_),
     scaleFactor_(chemistry.nEqns() + ((this->variableTimeStep()) ? 1 : 0), 1),
     runTime_(chemistry.time()),
     chPMaxLifeTime_
@@ -57,15 +275,15 @@ Foam::chemistryTabulationMethods::ISAT<CompType, ThermoType>::ISAT
         this->coeffsDict_.lookupOrDefault
         (
             "maxDepthFactor",
-            (chemisTree_.maxNLeafs() - 1)
-           /(log(scalar(chemisTree_.maxNLeafs()))/log(2.0))
+            (tableTree_.maxNLeafs() - 1)
+           /(log(scalar(tableTree_.maxNLeafs()))/log(2.0))
         )
     ),
     minBalanceThreshold_
     (
         this->coeffsDict_.lookupOrDefault
         (
-            "minBalanceThreshold", 0.1*chemisTree_.maxNLeafs()
+            "minBalanceThreshold", 0.1*tableTree_.maxNLeafs()
         )
     ),
     MRURetrieve_(this->coeffsDict_.lookupOrDefault("MRURetrieve", false)),
@@ -298,17 +516,17 @@ Foam::chemistryTabulationMethods::ISAT<CompType, ThermoType>::cleanAndBalance()
 
     // Check all chemPoints to see if we need to delete some of the chemPoints
     // according to the ellapsed time and number of growths
-    chemPointISAT<CompType, ThermoType>* x = chemisTree_.treeMin();
+    chemPointISAT<CompType, ThermoType>* x = tableTree_.treeMin();
     while(x != nullptr)
     {
         chemPointISAT<CompType, ThermoType>* xtmp =
-            chemisTree_.treeSuccessor(x);
+            tableTree_.treeSuccessor(x);
 
         scalar elapsedTimeSteps = this->chemistry_.timeSteps() - x->timeTag();
 
         if ((elapsedTimeSteps > chPMaxLifeTime_) || (x->nGrowth() > maxGrowth_))
         {
-            chemisTree_.deleteLeaf(x);
+            tableTree_.deleteLeaf(x);
             treeModified = true;
         }
         x = xtmp;
@@ -321,18 +539,18 @@ Foam::chemistryTabulationMethods::ISAT<CompType, ThermoType>::cleanAndBalance()
     //      ideal depth (e.g. 4 leafs can be stored in a tree of depth 2)
     if
     (
-        chemisTree_.size() > minBalanceThreshold_
-     && chemisTree_.depth() >
-        maxDepthFactor_*log(scalar(chemisTree_.size()))/log(2.0)
+        tableTree_.size() > minBalanceThreshold_
+     && tableTree_.depth() >
+        maxDepthFactor_*log(scalar(tableTree_.size()))/log(2.0)
     )
     {
-        chemisTree_.balance();
+        tableTree_.balance();
         treeModified = true;
     }
 
     // Return a bool to specify if the tree structure has been modified and is
     // now below the user specified limit (true if not full)
-    return (treeModified && !chemisTree_.isFull());
+    return (treeModified && !tableTree_.isFull());
 }
 
 
@@ -461,9 +679,9 @@ bool Foam::chemistryTabulationMethods::ISAT<CompType, ThermoType>::retrieve
     chemPointISAT<CompType, ThermoType>* phi0;
 
     // If the tree is not empty
-    if (chemisTree_.size())
+    if (tableTree_.size())
     {
-        chemisTree_.binaryTreeSearch(phiq, chemisTree_.root(), phi0);
+        tableTree_.binaryTreeSearch(phiq, tableTree_.root(), phi0);
 
         // lastSearch keeps track of the chemPoint we obtain by the regular
         // binary tree search
@@ -474,7 +692,7 @@ bool Foam::chemistryTabulationMethods::ISAT<CompType, ThermoType>::retrieve
         }
         // After a successful secondarySearch, phi0 store a pointer to the
         // found chemPoint
-        else if (chemisTree_.secondaryBTSearch(phiq, phi0))
+        else if (tableTree_.secondaryBTSearch(phiq, phi0))
         {
             retrieved = true;
         }
@@ -558,7 +776,7 @@ Foam::label Foam::chemistryTabulationMethods::ISAT<CompType, ThermoType>::add
     // If the code reach this point, it is either because lastSearch_ is not
     // valid, OR because growPoints_ is not on, OR because the grow operation
     // has failed. In the three cases, a new point is added to the tree.
-    if (chemisTree().isFull())
+    if (tableTree().isFull())
     {
         // If cleanAndBalance operation do not result in a reduction of the tree
         // size, the last possibility is to delete completely the tree.
@@ -582,7 +800,7 @@ Foam::label Foam::chemistryTabulationMethods::ISAT<CompType, ThermoType>::add
                     );
                 }
             }
-            chemisTree().clear();
+            tableTree().clear();
 
             // Pointers to chemPoint are not valid anymore, clear the list
             MRUList_.clear();
@@ -592,7 +810,7 @@ Foam::label Foam::chemistryTabulationMethods::ISAT<CompType, ThermoType>::add
             chemPointISAT<CompType, ThermoType>* nulPhi = 0;
             forAll(tempList, i)
             {
-                chemisTree().insertNewLeaf
+                tableTree().insertNewLeaf
                 (
                      tempList[i]->phi(),
                      tempList[i]->Rphi(),
@@ -616,7 +834,7 @@ Foam::label Foam::chemistryTabulationMethods::ISAT<CompType, ThermoType>::add
     scalarSquareMatrix A(ASize, Zero);
     computeA(A, Rphiq, rho, deltaT);
 
-    chemisTree().insertNewLeaf
+    tableTree().insertNewLeaf
     (
         phiq,
         Rphiq,
@@ -658,6 +876,6 @@ Foam::chemistryTabulationMethods::ISAT<CompType, ThermoType>::writePerformance()
             << runTime_.timeOutputValue() << "    " << this->size() << endl;
     }
 }
-
+*/
 
 // ************************************************************************* //

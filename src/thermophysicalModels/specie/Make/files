@@ -4,4 +4,8 @@ reaction/reactions/makeReactions.C
 reaction/reactions/makeLangmuirHinshelwoodReactions.C
 reaction/reactions/makeMichaelisMentenReactions.C
 
+ISATmethod/ISATbinaryTree/ISATbinaryTree.C
+ISATmethod/ISATleaf/ISATleaf.C
+ISATmethod/ISATNode/ISATNode.C
+
 LIB = $(FOAM_LIBBIN)/libspecie

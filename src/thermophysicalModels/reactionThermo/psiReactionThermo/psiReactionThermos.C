@@ -29,6 +29,7 @@ License
 #include "hePsiThermo.H"
 #include "HYhePsiThermo.H"
 #include "VLEhePsiThermo.H"
+#include "ISATVLEhePsiThermo.H"
 
 #include "specie.H"
 #include "perfectGas.H"
@@ -68,350 +69,367 @@ License
 namespace Foam
 {
 
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-// constTransport, hConstThermo
+    // constTransport, hConstThermo
 
-makeReactionThermos
-(
-    psiThermo,
-    psiReactionThermo,
-    hePsiThermo,
-    homogeneousMixture,
-    constTransport,
-    sensibleEnthalpy,
-    hConstThermo,
-    perfectGas,
-    specie
-);
+    makeReactionThermos
+    (
+        psiThermo,
+        psiReactionThermo,
+        hePsiThermo,
+        homogeneousMixture,
+        constTransport,
+        sensibleEnthalpy,
+        hConstThermo,
+        perfectGas,
+        specie
+    );
 
-makeReactionThermos
-(
-    psiThermo,
-    psiReactionThermo,
-    hePsiThermo,
-    inhomogeneousMixture,
-    constTransport,
-    sensibleEnthalpy,
-    hConstThermo,
-    perfectGas,
-    specie
-);
+    makeReactionThermos
+    (
+        psiThermo,
+        psiReactionThermo,
+        hePsiThermo,
+        inhomogeneousMixture,
+        constTransport,
+        sensibleEnthalpy,
+        hConstThermo,
+        perfectGas,
+        specie
+    );
 
-makeReactionThermos
-(
-    psiThermo,
-    psiReactionThermo,
-    hePsiThermo,
-    veryInhomogeneousMixture,
-    constTransport,
-    sensibleEnthalpy,
-    hConstThermo,
-    perfectGas,
-    specie
-);
-
-
-// sutherlandTransport, hConstThermo
-
-makeReactionThermos
-(
-    psiThermo,
-    psiReactionThermo,
-    hePsiThermo,
-    homogeneousMixture,
-    sutherlandTransport,
-    sensibleEnthalpy,
-    hConstThermo,
-    perfectGas,
-    specie
-);
-
-makeReactionThermos
-(
-    psiThermo,
-    psiReactionThermo,
-    hePsiThermo,
-    inhomogeneousMixture,
-    sutherlandTransport,
-    sensibleEnthalpy,
-    hConstThermo,
-    perfectGas,
-    specie
-);
-
-makeReactionThermos
-(
-    psiThermo,
-    psiReactionThermo,
-    hePsiThermo,
-    veryInhomogeneousMixture,
-    sutherlandTransport,
-    sensibleEnthalpy,
-    hConstThermo,
-    perfectGas,
-    specie
-);
+    makeReactionThermos
+    (
+        psiThermo,
+        psiReactionThermo,
+        hePsiThermo,
+        veryInhomogeneousMixture,
+        constTransport,
+        sensibleEnthalpy,
+        hConstThermo,
+        perfectGas,
+        specie
+    );
 
 
-// sutherlandTransport, janafThermo
+    // sutherlandTransport, hConstThermo
 
-makeReactionThermos
-(
-    psiThermo,
-    psiReactionThermo,
-    hePsiThermo,
-    homogeneousMixture,
-    sutherlandTransport,
-    sensibleEnthalpy,
-    janafThermo,
-    perfectGas,
-    specie
-);
+    makeReactionThermos
+    (
+        psiThermo,
+        psiReactionThermo,
+        hePsiThermo,
+        homogeneousMixture,
+        sutherlandTransport,
+        sensibleEnthalpy,
+        hConstThermo,
+        perfectGas,
+        specie
+    );
 
-makeReactionThermos
-(
-    psiThermo,
-    psiReactionThermo,
-    hePsiThermo,
-    inhomogeneousMixture,
-    sutherlandTransport,
-    sensibleEnthalpy,
-    janafThermo,
-    perfectGas,
-    specie
-);
+    makeReactionThermos
+    (
+        psiThermo,
+        psiReactionThermo,
+        hePsiThermo,
+        inhomogeneousMixture,
+        sutherlandTransport,
+        sensibleEnthalpy,
+        hConstThermo,
+        perfectGas,
+        specie
+    );
 
-makeReactionThermos
-(
-    psiThermo,
-    psiReactionThermo,
-    hePsiThermo,
-    veryInhomogeneousMixture,
-    sutherlandTransport,
-    sensibleEnthalpy,
-    janafThermo,
-    perfectGas,
-    specie
-);
-
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
-// Multi-component thermo for sensible enthalpy
-
-makeThermoPhysicsReactionThermos
-(
-    psiThermo,
-    psiReactionThermo,
-    hePsiThermo,
-    multiComponentMixture,
-    constGasHThermoPhysics
-);
-
-makeThermoPhysicsReactionThermos
-(
-    psiThermo,
-    psiReactionThermo,
-    hePsiThermo,
-    multiComponentMixture,
-    gasHThermoPhysics
-);
+    makeReactionThermos
+    (
+        psiThermo,
+        psiReactionThermo,
+        hePsiThermo,
+        veryInhomogeneousMixture,
+        sutherlandTransport,
+        sensibleEnthalpy,
+        hConstThermo,
+        perfectGas,
+        specie
+    );
 
 
-// Multi-component thermo for internal energy
+    // sutherlandTransport, janafThermo
 
-makeThermoPhysicsReactionThermos
-(
-    psiThermo,
-    psiReactionThermo,
-    hePsiThermo,
-    multiComponentMixture,
-    constGasEThermoPhysics
-);
+    makeReactionThermos
+    (
+        psiThermo,
+        psiReactionThermo,
+        hePsiThermo,
+        homogeneousMixture,
+        sutherlandTransport,
+        sensibleEnthalpy,
+        janafThermo,
+        perfectGas,
+        specie
+    );
 
-makeThermoPhysicsReactionThermos
-(
-    psiThermo,
-    psiReactionThermo,
-    hePsiThermo,
-    multiComponentMixture,
-    gasEThermoPhysics
-);
+    makeReactionThermos
+    (
+        psiThermo,
+        psiReactionThermo,
+        hePsiThermo,
+        inhomogeneousMixture,
+        sutherlandTransport,
+        sensibleEnthalpy,
+        janafThermo,
+        perfectGas,
+        specie
+    );
 
+    makeReactionThermos
+    (
+        psiThermo,
+        psiReactionThermo,
+        hePsiThermo,
+        veryInhomogeneousMixture,
+        sutherlandTransport,
+        sensibleEnthalpy,
+        janafThermo,
+        perfectGas,
+        specie
+    );
 
-// Reaction thermo for sensible enthalpy
+    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-makeThermoPhysicsReactionThermos
-(
-    psiThermo,
-    psiReactionThermo,
-    hePsiThermo,
-    reactingMixture,
-    constGasHThermoPhysics
-);
+    // Multi-component thermo for sensible enthalpy
 
-makeThermoPhysicsReactionThermos
-(
-    psiThermo,
-    psiReactionThermo,
-    hePsiThermo,
-    reactingMixture,
-    gasHThermoPhysics
-);
+    makeThermoPhysicsReactionThermos
+    (
+        psiThermo,
+        psiReactionThermo,
+        hePsiThermo,
+        multiComponentMixture,
+        constGasHThermoPhysics
+    );
 
-
-// Single-step reaction thermo for sensible enthalpy
-
-makeThermoPhysicsReactionThermos
-(
-    psiThermo,
-    psiReactionThermo,
-    hePsiThermo,
-    singleStepReactingMixture,
-    gasHThermoPhysics
-);
-
-
-// Reaction thermo for internal energy
-
-makeThermoPhysicsReactionThermos
-(
-    psiThermo,
-    psiReactionThermo,
-    hePsiThermo,
-    reactingMixture,
-    constGasEThermoPhysics
-);
-
-makeThermoPhysicsReactionThermos
-(
-    psiThermo,
-    psiReactionThermo,
-    hePsiThermo,
-    reactingMixture,
-    gasEThermoPhysics
-);
+    makeThermoPhysicsReactionThermos
+    (
+        psiThermo,
+        psiReactionThermo,
+        hePsiThermo,
+        multiComponentMixture,
+        gasHThermoPhysics
+    );
 
 
-// Single-step reaction thermo for internal energy
+    // Multi-component thermo for internal energy
 
-makeThermoPhysicsReactionThermos
-(
-    psiThermo,
-    psiReactionThermo,
-    hePsiThermo,
-    singleStepReactingMixture,
-    gasEThermoPhysics
-);
+    makeThermoPhysicsReactionThermos
+    (
+        psiThermo,
+        psiReactionThermo,
+        hePsiThermo,
+        multiComponentMixture,
+        constGasEThermoPhysics
+    );
 
-
-// Single-component thermo for sensible enthalpy
-
-makeThermoPhysicsReactionThermo
-(
-    psiReactionThermo,
-    hePsiThermo,
-    singleComponentMixture,
-    constGasHThermoPhysics
-);
-
-makeThermoPhysicsReactionThermo
-(
-    psiReactionThermo,
-    hePsiThermo,
-    singleComponentMixture,
-    gasHThermoPhysics
-);
+    makeThermoPhysicsReactionThermos
+    (
+        psiThermo,
+        psiReactionThermo,
+        hePsiThermo,
+        multiComponentMixture,
+        gasEThermoPhysics
+    );
 
 
-// Single-component thermo for internal energy
+    // Reaction thermo for sensible enthalpy
 
-makeThermoPhysicsReactionThermo
-(
-    psiReactionThermo,
-    hePsiThermo,
-    singleComponentMixture,
-    constGasEThermoPhysics
-);
+    makeThermoPhysicsReactionThermos
+    (
+        psiThermo,
+        psiReactionThermo,
+        hePsiThermo,
+        reactingMixture,
+        constGasHThermoPhysics
+    );
 
-makeThermoPhysicsReactionThermo
-(
-    psiReactionThermo,
-    hePsiThermo,
-    singleComponentMixture,
-    gasEThermoPhysics
-);
-
-
-
-makeThermoPhysicsReactionThermos
-(
-    psiThermo,
-    psiReactionThermo,
-    HYhePsiThermo,
-    HYreactingMixture,
-    gasHThermoPhysics
-);
+    makeThermoPhysicsReactionThermos
+    (
+        psiThermo,
+        psiReactionThermo,
+        hePsiThermo,
+        reactingMixture,
+        gasHThermoPhysics
+    );
 
 
-makeThermoPhysicsReactionThermos
-(
-    psiThermo,
-    psiReactionThermo,
-    VLEhePsiThermo,
-    HYreactingMixture,
-    gasHThermoPhysics
-);
-/*
-makeThermoPhysicsReactionThermos
-(
-    psiThermo,
-    psiReactionThermo,
-    hePsiThermo,
-    nLreactingMixture,
-    VLEPRHThermoPhysics
-);
-*/
+    // Single-step reaction thermo for sensible enthalpy
+
+    makeThermoPhysicsReactionThermos
+    (
+        psiThermo,
+        psiReactionThermo,
+        hePsiThermo,
+        singleStepReactingMixture,
+        gasHThermoPhysics
+    );
+
+
+    // Reaction thermo for internal energy
+
+    makeThermoPhysicsReactionThermos
+    (
+        psiThermo,
+        psiReactionThermo,
+        hePsiThermo,
+        reactingMixture,
+        constGasEThermoPhysics
+    );
+
+    makeThermoPhysicsReactionThermos
+    (
+        psiThermo,
+        psiReactionThermo,
+        hePsiThermo,
+        reactingMixture,
+        gasEThermoPhysics
+    );
+
+
+    // Single-step reaction thermo for internal energy
+
+    makeThermoPhysicsReactionThermos
+    (
+        psiThermo,
+        psiReactionThermo,
+        hePsiThermo,
+        singleStepReactingMixture,
+        gasEThermoPhysics
+    );
+
+
+    // Single-component thermo for sensible enthalpy
+
+    makeThermoPhysicsReactionThermo
+    (
+        psiReactionThermo,
+        hePsiThermo,
+        singleComponentMixture,
+        constGasHThermoPhysics
+    );
+
+    makeThermoPhysicsReactionThermo
+    (
+        psiReactionThermo,
+        hePsiThermo,
+        singleComponentMixture,
+        gasHThermoPhysics
+    );
+
+
+    // Single-component thermo for internal energy
+
+    makeThermoPhysicsReactionThermo
+    (
+        psiReactionThermo,
+        hePsiThermo,
+        singleComponentMixture,
+        constGasEThermoPhysics
+    );
+
+    makeThermoPhysicsReactionThermo
+    (
+        psiReactionThermo,
+        hePsiThermo,
+        singleComponentMixture,
+        gasEThermoPhysics
+    );
 
 
 
+    makeThermoPhysicsReactionThermos
+    (
+        psiThermo,
+        psiReactionThermo,
+        HYhePsiThermo,
+        HYreactingMixture,
+        gasHThermoPhysics
+    );
 
-template <class Thermo>
-using  Hmultithermo= species::multithermo<Thermo, sensibleEnthalpy> ;
-template <class Thermo>
-using VLEthermo=Hmultithermo<VLE<chungTransportMixture<PengRobinsonMixture<multispecie<Thermo>>>>>;
-template <class Thermo>
-using  nLreactingMixtureChungPR= nLreactingMixture<Thermo, VLEthermo> ;
+ //TODO temp
+    makeThermoPhysicsReactionThermos
+    (
+        psiThermo,
+        psiReactionThermo,
+        VLEhePsiThermo,
+        HYreactingMixture,
+        gasHThermoPhysics
+    );
 
-makeThermoPhysicsReactionThermos
-(
-    psiThermo,
-    psiReactionThermo,
-    hePsiThermo,
-    nLreactingMixtureChungPR,
-    VLEChungPRHThermoPhysics
-);
-
-makeThermoPhysicsReactionThermos
-(
-    psiThermo,
-    psiReactionThermo,
-    VLEhePsiThermo,
-    nLreactingMixtureChungPR,
-    VLEChungPRHThermoPhysics
-);
+    /*
+    makeThermoPhysicsReactionThermos
+    (
+        psiThermo,
+        psiReactionThermo,
+        hePsiThermo,
+        nLreactingMixture,
+        VLEPRHThermoPhysics
+    );
+    */
 
 
-makeThermoPhysicsReactionThermos
-(
-    psiThermo,
-    psiReactionThermo,
-    hePsiThermo,
-    reactingMixture,
-    PRgasEThermoPhysics
-);
 
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+    template <class Thermo>
+    using  Hmultithermo = species::multithermo<Thermo, sensibleEnthalpy>;
+    template <class Thermo>
+    using VLEthermo = Hmultithermo<VLE<chungTransportMixture<PengRobinsonMixture<multispecie<Thermo>>>>>;
+    template <class Thermo>
+    using  nLreactingMixtureChungPR = nLreactingMixture<Thermo, VLEthermo>;
+
+    makeThermoPhysicsReactionThermos
+    (
+        psiThermo,
+        psiReactionThermo,
+        hePsiThermo,
+        nLreactingMixtureChungPR,
+        VLEChungPRHThermoPhysics
+    );
+//TODO temp
+    makeThermoPhysicsReactionThermos
+    (
+        psiThermo,
+        psiReactionThermo,
+        VLEhePsiThermo,
+        nLreactingMixtureChungPR,
+        VLEChungPRHThermoPhysics
+    );
+    
+
+    template <class Thermo>
+    using  ISATHmultithermo = species::ISATmultithermo<Thermo, sensibleEnthalpy>;
+    template <class Thermo>
+    using ISATVLEthermo = ISATHmultithermo<VLE<chungTransportMixture<PengRobinsonMixture<multispecie<Thermo>>>>>;
+    template <class Thermo>
+    using  nLreactingMixtureISATChungPR = nLreactingMixture<Thermo, ISATVLEthermo>;
+    makeThermoPhysicsReactionThermos
+    (
+        psiThermo,
+        psiReactionThermo,
+        ISATVLEhePsiThermo,
+        nLreactingMixtureISATChungPR,
+        VLEChungPRHThermoPhysics
+    );
+
+
+    makeThermoPhysicsReactionThermos
+    (
+        psiThermo,
+        psiReactionThermo,
+        hePsiThermo,
+        reactingMixture,
+        PRgasEThermoPhysics
+    );
+
+    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 } // End namespace Foam
 

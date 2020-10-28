@@ -384,7 +384,7 @@ Foam::ISATleaf* Foam::ISATbinaryTree::insertNewLeaf
         root_ = new ISATNode();
         // create the new chemPoint which holds the composition point
         // phiq and the data to initialize the EOA
-        newleaf = new ISATleaf(value, root_, data);
+        newleaf = new ISATleaf(n_in_, n_out_, value, root_, data);
         root_->leafLeft() = newleaf;
     }
     else // at least one point stored
@@ -399,7 +399,7 @@ Foam::ISATleaf* Foam::ISATbinaryTree::insertNewLeaf
 
         // create the new chemPoint which holds the composition point
         // phiq and the data to initialize the EOA
-        newleaf = new ISATleaf(value, nullptr, data);
+        newleaf = new ISATleaf(n_in_, n_out_, value, nullptr, data);
         // insert new node on the parent node in the position of the
         // previously stored leaf (phi0)
         // the new node contains phi0 on the left and phiq on the right
@@ -488,15 +488,15 @@ void Foam::ISATbinaryTree::eval(const scalarList& value, scalarList& ret)
     if (pleaf == nullptr)
         return;
     ret = pleaf->data();
-    for(int i=0;i<n_out_;i++)
+    for (int i = 0;i < n_out_;i++)
     {
-        for(int j=0;j<n_in_;j++)
+        for (int j = 0;j < n_in_;j++)
         {
-            ret[i]+=pleaf->A()[i][j]*(value[j]-pleaf->value()[j]);
+            ret[i] += pleaf->A()[i][j] * (value[j] - pleaf->value()[j]);
         }
     }
 }
-
+/*
 void Foam::ISATbinaryTree::print
 (
     Ostream& OFout,
@@ -530,7 +530,7 @@ void Foam::ISATbinaryTree::print
     return;
 }
 
-
+*/
 
 void Foam::ISATbinaryTree::deleteSubTree(ISATNode* subTreeRoot)
 {
@@ -547,6 +547,8 @@ void Foam::ISATbinaryTree::deleteSubTree(ISATNode* subTreeRoot)
 void Foam::ISATbinaryTree::clear()
 {
     // Recursively delete the element in the subTree
+    
+    if(size_>0)
     deleteSubTree();
 
     // Reset root node (should already be nullptr)

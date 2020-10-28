@@ -61,6 +61,7 @@ Description
 #include "chungTransportPH.H"
 #include "chungTransportMixture.H"
 #include "multithermo.H"
+#include "ISATmultithermo.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

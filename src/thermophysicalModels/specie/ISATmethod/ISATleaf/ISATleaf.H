@@ -247,15 +247,8 @@ namespace Foam
         // Constructors
 
         //- Construct from components
-        ISATleaf(
-            const scalarList& v,
-            ISATNode* node = nullptr
-        ) : node_(node), value_(v) {};
-        ISATleaf(
-            const scalarList& v,
-            ISATNode* node,
-            const scalarList& data_in
-        ) : node_(node), value_(v), data_(data_in), A_(value_.size(), data_.size()), EOA_(value_.size()) {};
+        ISATleaf(int n_in, int n_out, const scalarList& v, ISATNode* node = nullptr);
+        ISATleaf(int n_in, int n_out, const scalarList& v, ISATNode* node, const scalarList& data_in);
 
         inline scalarList& value() {
             return value_;
@@ -284,7 +277,7 @@ namespace Foam
             return EOA_;
         };
 
-        inline bool inEOA(const scalarList& point);
+        bool inEOA(const scalarList& point);
 
         void eval(const scalarList& value, scalarList& ret);
         void grow(const scalarList& point);
@@ -355,7 +348,7 @@ namespace Foam
             return node_;
         }
 
-        void print(Ostream& OFout, int a = 0);
+        //void print(Ostream& OFout, int a = 0);
         /*
 
         inline const scalarSquareMatrix& A() const
@@ -484,13 +477,14 @@ namespace Foam
         template <typename T>
         friend class ISATmanager;
     };
+    /*
+        Ostream& operator<<(Ostream& OFout, const Foam::ISATleaf& leaf)
+        {
+            return OFout << leaf.value() << endl;
+        }
+        */
 
-    Ostream& operator<<(Ostream& OFout, const Foam::ISATleaf& leaf)
-    {
-        return OFout << leaf.value() << endl;
-    }
-
-    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 } // End namespace Foam
 

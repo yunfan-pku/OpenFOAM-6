@@ -348,7 +348,17 @@
         "functionObjectList.C": "cpp",
         "thermotabledict": "c",
         "VLEinterface.C": "cpp",
-        "VLEinterface_wrap.C": "cpp"
+        "VLEinterface_wrap.C": "cpp",
+        "pyrolysisChemistryModel.C": "cpp",
+        "MatrixIO.C": "cpp",
+        "cellLimitedGrads.C": "cpp",
+        "sphericalTensorFieldIOField.C": "cpp",
+        "stringIOList.C": "cpp",
+        "ISATmultithermo.C": "cpp",
+        "ISATmanager.C": "cpp",
+        "atmBoundaryLayer.C": "cpp",
+        "meshReader.C": "cpp",
+        "ISATVLEhePsiThermo.C": "cpp"
     },
     "python.pythonPath": "/home/zhy/anaconda3/envs/cantera/bin/python"
 }

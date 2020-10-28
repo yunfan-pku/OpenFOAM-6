@@ -46,7 +46,8 @@ Description
 #define ISATbinaryTree_H
 
 #include "dictionary.H"
-#include "ISATleaf.H"
+//#include "ISATleaf.H"
+#include "ISATNode.H"
 //#include "binaryNode.H"
 //#include "chemPointISAT.H"
 
@@ -138,7 +139,7 @@ namespace Foam
             //dictionary coeffsDict
             label in_n,
             label out_n
-        ) :n_in_(in_n), n_out_(out_n), size_(0) {};
+        ) :n_in_(in_n), n_out_(out_n),root_(nullptr), size_(0) {};
 
         inline ISATNode* root()
         {
@@ -225,12 +226,13 @@ namespace Foam
         );
 
         void eval(const scalarList& value, scalarList& ret);
-        void print
+        /*void print
         (
             Ostream& OFout,
             ISATNode* node = nullptr,
             int a = 0
         );
+        */
 
         //- Removes every entries of the tree and delete the associated objects
         void clear();
@@ -281,15 +283,16 @@ namespace Foam
         template <typename T>
         friend class ISATmanager;
     };
+    /*
+        Ostream& operator<<(Ostream& OFout, const ISATbinaryTree& tree)
+        {
+            return  OFout << (*tree.root());
 
-    Ostream& operator<<(Ostream& OFout, const ISATbinaryTree& tree)
-    {
-        return  OFout << (*tree.root());
-
-    }
+        }
+        */
 
 
-    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 } // End namespace Foam
 

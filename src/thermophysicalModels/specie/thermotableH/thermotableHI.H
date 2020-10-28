@@ -405,14 +405,15 @@ Foam::scalar Foam::thermotableH<ThermoType>::THE(
     //scalar vol = this->volspecific(p, T0);
     //scalar rho = this->rho(p, T0);
     //scalar sie = h - p * vol; // + 10000.0;
-    scalar cell_T2;
-    cell_T2=from_tpn_to_property(630.0,31450900, 0.8412812384, 4);
+
+    //scalar cell_T2;
+    //cell_T2=from_tpn_to_property(630.0,31450900, 0.8412812384, 4);
     if(h<=574781.9556&&h>=574781.9554&&p>=31450899&&p<=31450901)
     {
         from_tpn_to_property(630.0, p, zi[0], 4);
         for(double iT=600;iT<=700;iT+=1)
         Info<<iT<<","<<from_tpn_to_property(iT, p, zi[0], 4)<<endl;
-    cell_T2=0;
+    //cell_T2=0;
     }
     //scalar cell_T1;
     //flag_XYY
