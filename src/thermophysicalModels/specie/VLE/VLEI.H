@@ -47,7 +47,7 @@ Foam::VLE<ThermoMixture>::clone() const
 template <class ThermoMixture>
 inline Foam::autoPtr<Foam::VLE<ThermoMixture>>
 Foam::VLE<ThermoMixture>::New(
-    const dictionary &dict)
+    const dictionary& dict)
 {
     return autoPtr<VLE<ThermoMixture>>(
         new VLE<ThermoMixture>(dict));
@@ -55,10 +55,10 @@ Foam::VLE<ThermoMixture>::New(
 
 template <class ThermoMixture>
 inline Foam::VLE<ThermoMixture>::VLE(
-    const word &name,
-    PtrList<SingleThermoType> &speciesData,
-    const speciesTable &specieNames,
-    const dictionary &thermoDict)
+    const word& name,
+    PtrList<SingleThermoType>& speciesData,
+    const speciesTable& specieNames,
+    const dictionary& thermoDict)
     : ThermoMixture(name, speciesData, specieNames, thermoDict)
 {
 }
@@ -126,7 +126,7 @@ inline autoPtr<scalarList> Foam::VLE<ThermoMixture>::myinitial(
 }
 
 template <class ThermoMixture>
-inline label Foam::VLE<ThermoMixture>::noramlize(scalarList &X_in) const //noramlize, error return 1
+inline label Foam::VLE<ThermoMixture>::noramlize(scalarList& X_in) const //noramlize, error return 1
 {
     scalar sum = 0.0;
     forAll(X_in, i)
@@ -148,7 +148,7 @@ template <class ThermoMixture>
 inline label Foam::VLE<ThermoMixture>::solve_vaporf( //solve vaporf return error message,requir solution.equalconstant
     scalar p,
     scalar T,
-    solution &sol) const
+    solution& sol) const
 {
     int miter = 1;
 
@@ -325,17 +325,17 @@ inline label Foam::VLE<ThermoMixture>::solve_vaporf( //solve vaporf return error
 
 template <class ThermoMixture>
 inline autoPtr<typename Foam::VLE<ThermoMixture>::solution> Foam::VLE<ThermoMixture>::TPn_flash // PY:with a course initialization
-    (
-        scalar p, //input
-        scalar T  //input
-    ) const
+(
+    scalar p, //input
+    scalar T  //input
+) const
 {
     //Info<<"VLE!\n";
     //autoPtr<solution> pS(&temp_sol);
     autoPtr<solution> pS(new solution());
     //if(this->changed==0&&temp_p==p&&temp_T==T)
     //return pS;
-    solution &Sol = *pS;
+    solution& Sol = *pS;
     const int maxiter = 1000;
     const int igas = 1, iliquid = 0;
     int ierr = 0;
@@ -381,15 +381,15 @@ inline autoPtr<typename Foam::VLE<ThermoMixture>::solution> Foam::VLE<ThermoMixt
     Sol.equalconstant.reset(this->wilsoneq(p, T).ptr()); //1.4037894924124943,0.008729616583312786
     //Sol.equalconstant.reset(this->myinitial(p, T).ptr());
     //Info << "equalconstant= " << Sol.equalconstant() << endl;
-    
+
     //Sol.equalconstant()[0] = 300.98332688687367;
     //Sol.equalconstant()[1] = 0.012591909335566309;
     //Sol.equalconstant()[2] = 3302.6955988917484;
 
-        
+
     Sol.equalconstant()[0] = 40.006;
     Sol.equalconstant()[1] = 0.240333;
-    
+
     if (newN == 1)
     {
         //Info << "gas:" << fugcoef_gas()[0] << " liq:" << fugcoef_liq()[0] << endl;
@@ -417,8 +417,8 @@ inline autoPtr<typename Foam::VLE<ThermoMixture>::solution> Foam::VLE<ThermoMixt
 
         if (ierr == 4 || ierr == 3)
         {
-            WarningInFunction << "VLE "
-                              << "p=" << p << " T=" << T << " X=" << this->X_ << endl;
+            //WarningInFunction << "VLE "
+            //                  << "p=" << p << " T=" << T << " X=" << this->X_ << endl;
             forAll(this->X_, i)
             {
                 Sol.X_liq()[i] = X_liq0[i];
@@ -461,7 +461,7 @@ inline autoPtr<typename Foam::VLE<ThermoMixture>::solution> Foam::VLE<ThermoMixt
         if ((ierr == 10) && iter > 2)
         {
             FatalErrorInFunction << "VLE!! "
-                                 << "p=" << p << " T=" << T << " X=" << this->X_ << exit(FatalError);
+                << "p=" << p << " T=" << T << " X=" << this->X_ << exit(FatalError);
             //this->TPD(p, T, comp, comp_liq, comp_gas, tpdvalue);
 
             fugcoef_liq.reset(this->fugacityCoefficient(p, T, &iliquid, &(Sol.X_liq())).ptr());
@@ -607,7 +607,7 @@ inline autoPtr<typename Foam::VLE<ThermoMixture>::solution> Foam::VLE<ThermoMixt
                 }
             }
         }
-        
+
         scalar gibbsenergyl = 0.0, gibbsenergyg = 0.0;
         this->gibbs_phase(iliquid, p, T, comp_liq, gibbsenergyl);
         this->gibbs_phase(igas, p, T, comp_gas, gibbsenergyg);
@@ -670,7 +670,7 @@ template <class ThermoMixture>
 inline Foam::scalar Foam::VLE<ThermoMixture>::alpha(
     scalar p,
     scalar T,
-    solution &sol) const
+    solution& sol) const
 {
     label pfg = 1, pfl = 0;
     scalar sv_gas = this->V(p, T, &pfg, &sol.X_gas()); //gas phase specific volume
@@ -830,18 +830,18 @@ inline Foam::scalar Foam::VLE<ThermoMixture>::limit(
 
 template <class ThermoMixture>
 inline Foam::scalar Foam::VLE<ThermoMixture>::dGdT //todo
-    (
-        const scalar p,
-        const scalar T) const
+(
+    const scalar p,
+    const scalar T) const
 {
     return 0;
 }
 
 template <class ThermoMixture>
 inline Foam::scalar Foam::VLE<ThermoMixture>::dCpdT //todo
-    (
-        const scalar p,
-        const scalar T) const
+(
+    const scalar p,
+    const scalar T) const
 {
     return 0;
 }
@@ -852,8 +852,8 @@ inline Foam::scalar Foam::VLE<ThermoMixture>::dCpdT //todo
 
 template <class ThermoMixture>
 Foam::VLE<ThermoMixture> Foam::operator==(
-    const VLE<ThermoMixture> &a,
-    const VLE<ThermoMixture> &b)
+    const VLE<ThermoMixture>& a,
+    const VLE<ThermoMixture>& b)
 {
     return VLE<ThermoMixture>(a);
 }
@@ -861,7 +861,7 @@ Foam::VLE<ThermoMixture> Foam::operator==(
 template <class ThermoMixture>
 Foam::VLE<ThermoMixture> Foam::operator*(
     const scalar s,
-    const VLE<ThermoMixture> &b)
+    const VLE<ThermoMixture>& b)
 {
     return VLE<ThermoMixture>(b);
 }

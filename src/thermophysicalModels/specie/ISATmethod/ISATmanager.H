@@ -186,6 +186,7 @@ namespace Foam
 
     */
     public:
+        label notCall=0;
 
         //- Runtime type information
         //TypeName("ISAT");

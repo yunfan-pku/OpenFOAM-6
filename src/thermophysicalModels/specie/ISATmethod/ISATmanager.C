@@ -85,9 +85,9 @@ void Foam::ISATmanager<FuncType>::call
             add(value);
     }
     nCall_++;
-    if (nCall_ % 1000 == 0)
+    if (nCall_ % 100000 == 0)
     {
-        Info << "ISAT performance: nCall=" << nCall_ << ", nRetrieved=" << nRetrieved_ << ", nGrowth=" << nGrowth_ << ", nAdd=" << nAdd_ << endl;
+        Info << "ISAT performance: nCall=" << nCall_ << ", notCall=" << notCall << ", nRetrieved=" << nRetrieved_ << ", nGrowth=" << nGrowth_ << ", nAdd=" << nAdd_ << endl;
     }
 }
 
@@ -218,9 +218,9 @@ bool Foam::ISATmanager<FuncType>::grow
     // the chemPoint returns false
     scalarList ret(data.size());//, ret2(data.size());
     //plf->eval(value2, ret2);
-    //plf->eval(value, ret);
+    plf->eval(value, ret);
     //Info << distance(ret, data) << endl;
-    if ((distance(ret, data) <= epsilon_ || distance(ret, data) <= epsilon_ * norm(data)) )
+    if ((distance(ret, data) <= epsilon_ || distance(ret, data) <= epsilon_ * norm(data)))
     {
         plf->grow(value);
         nGrowth_++;

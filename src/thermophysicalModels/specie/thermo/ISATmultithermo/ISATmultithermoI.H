@@ -52,7 +52,7 @@ inline Foam::species::ISATmultithermo<ThermoMixture, Type>::ISATmultithermo(
     Ttree.relepsilon() = 2e-3;
     mutree.relepsilon() = 2e-3;
     alphahtree.relepsilon() = 2e-3;
-    vaporfratree.epsilon() =1e-3;
+    vaporfratree.epsilon() = 1e-3;
 }
 
 template <class ThermoMixture, template <class> class Type>
@@ -524,6 +524,8 @@ inline Foam::scalar Foam::species::ISATmultithermo<ThermoMixture, Type>::THs(
     in[this->X().size() + 1] = T0;
 
     if (1 - sum < 1e-5)
+    {
+        Ttree.notCall++;
         return T(
             hs,
             p,
@@ -531,6 +533,7 @@ inline Foam::scalar Foam::species::ISATmultithermo<ThermoMixture, Type>::THs(
             &ISATmultithermo<ThermoMixture, Type>::Hs,
             &ISATmultithermo<ThermoMixture, Type>::Cp,
             &ISATmultithermo<ThermoMixture, Type>::limit);
+    }
 
     //Hnfun.value(in, out);
     Ttree.call(in, out);
@@ -624,8 +627,10 @@ Foam::species::ISATmultithermo<ThermoMixture, Type>::psi(const scalar p, const s
     in[this->X().size()] = T;
 
     if (1 - sum < 1e-5)
-
+    {
+        psitree.notCall++;
         return this->ThermoMixture::psi(p, T);
+    }
     // Info<<"psihaha"<<endl;
 
     psitree.call(in, out);
@@ -648,7 +653,10 @@ Foam::species::ISATmultithermo<ThermoMixture, Type>::mu(const scalar p, const sc
     in[this->X().size()] = T;
 
     if (1 - sum < 1e-5)
+    {
+        mutree.notCall++;
         return this->ThermoMixture::mu(p, T);
+    }
     // Info<<"psihaha"<<endl;
 
     mutree.call(in, out);
@@ -670,7 +678,10 @@ Foam::species::ISATmultithermo<ThermoMixture, Type>::alphah(const scalar p, cons
     in[this->X().size()] = T;
 
     if (1 - sum < 1e-5)
+    {
+        alphahtree.notCall++;
         return this->ThermoMixture::alphah(p, T);
+    }
     // Info<<"psihaha"<<endl;
 
     alphahtree.call(in, out);
@@ -698,7 +709,8 @@ Foam::species::ISATmultithermo<ThermoMixture, Type>::vaporfra(const scalar p, co
     // Info<<"psihaha"<<endl;
     /*
     vaporfratree.call(in, out);
-    return out[0];*/
+    return out[0];
+    */
 }
 
 
