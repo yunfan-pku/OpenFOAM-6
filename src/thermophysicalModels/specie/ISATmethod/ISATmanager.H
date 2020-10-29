@@ -253,7 +253,7 @@ namespace Foam
             return tableTree_.size_;
         }
 
-        inline const scalarField& scaleFactor() const
+        inline const scalarRectangularMatrix& scaleFactor() const
         {
             return scaleFactor_;
         }
