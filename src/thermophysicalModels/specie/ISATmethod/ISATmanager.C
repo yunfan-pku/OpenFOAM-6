@@ -77,6 +77,10 @@ void Foam::ISATmanager<FuncType>::call
         pfunc->value(value, out);
         //Info<<out<<endl;
         pleaf = search(value);
+        //scalarList out2, value2;
+        //value2 = 2 * pleaf->value_ - value;
+        //value2[0] = value[0];
+        //pfunc->value(value2, out2);
         if (!grow(pleaf, value, out))
             add(value);
     }
@@ -212,10 +216,11 @@ bool Foam::ISATmanager<FuncType>::grow
     // If the solution RphiQ is still within the tolerance we try to grow it
     // in some cases this might result in a failure and the grow function of
     // the chemPoint returns false
-    scalarList ret(data.size());
-    plf->eval(value, ret);
+    scalarList ret(data.size());//, ret2(data.size());
+    //plf->eval(value2, ret2);
+    //plf->eval(value, ret);
     //Info << distance(ret, data) << endl;
-    if (distance(ret, data) <= epsilon_ || distance(ret, data) <= epsilon_ * norm(data))
+    if ((distance(ret, data) <= epsilon_ || distance(ret, data) <= epsilon_ * norm(data)) )
     {
         plf->grow(value);
         nGrowth_++;

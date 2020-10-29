@@ -50,18 +50,18 @@ namespace Foam
 
     template <class ThermoMixture>
     inline chungTransportMixture<ThermoMixture> operator+(
-        const chungTransportMixture<ThermoMixture> &,
-        const chungTransportMixture<ThermoMixture> &);
+        const chungTransportMixture<ThermoMixture>&,
+        const chungTransportMixture<ThermoMixture>&);
 
     template <class ThermoMixture>
     inline chungTransportMixture<ThermoMixture> operator*(
         const scalar,
-        const chungTransportMixture<ThermoMixture> &);
+        const chungTransportMixture<ThermoMixture>&);
 
     template <class ThermoMixture>
-    Ostream &operator<<(
-        Ostream &,
-        const chungTransportMixture<ThermoMixture> &);
+    Ostream& operator<<(
+        Ostream&,
+        const chungTransportMixture<ThermoMixture>&);
 
     /*---------------------------------------------------------------------------*\
                            Class chungTransportMixture Declaration
@@ -77,25 +77,25 @@ namespace Foam
 
         //- Construct from components
         inline chungTransportMixture(
-            const ThermoMixture &t);
+            const ThermoMixture& t);
 
     public:
         typedef typename ThermoMixture::SingleThermoType SingleThermoType;
         // Constructors
 
         //- Construct as named copy
-        inline chungTransportMixture(const word &, const chungTransportMixture &);
+        inline chungTransportMixture(const word&, const chungTransportMixture&);
 
         //- Construct from dictionary
-        chungTransportMixture(const dictionary &dict, PtrList<SingleThermoType> &speciesData);
+        chungTransportMixture(const dictionary& dict, PtrList<SingleThermoType>& speciesData);
 
-        inline chungTransportMixture(const word &name, PtrList<SingleThermoType> &, const speciesTable &, const dictionary &);
+        inline chungTransportMixture(const word& name, PtrList<SingleThermoType>&, const speciesTable&, const dictionary&);
 
         //- Construct and return a clone
         inline autoPtr<chungTransportMixture> clone() const;
 
         // Selector from dictionary
-        inline static autoPtr<chungTransportMixture> New(const dictionary &dict);
+        inline static autoPtr<chungTransportMixture> New(const dictionary& dict);
 
         // Member functions
 
@@ -106,10 +106,15 @@ namespace Foam
         }
 
         //- Dynamic viscosity [kg/ms]
-        inline scalar mu(const scalar p, const scalar T, const scalarList *Xinp = NULL) const;
+        inline scalar mu(const scalar p, const scalar T, const scalarList* Xinp) const;
+
+        inline scalar mu(const scalar p, const scalar T) const
+        {
+            return mu(p, T, NULL);
+        }
 
         //- Thermal conductivity [W/mK]
-        inline scalar kappa(const scalar p, const scalar T, const label *pf = NULL, const scalarList *Xinp = NULL) const;
+        inline scalar kappa(const scalar p, const scalar T, const label* pf = NULL, const scalarList* Xinp = NULL) const;
 
         //- Thermal diffusivity of enthalpy [kg/ms]
         inline scalar alphah(const scalar p, const scalar T) const;
@@ -118,31 +123,31 @@ namespace Foam
         // inline scalar D(const scalar p, const scalar T) const;
 
         //- Write to Ostream
-        void write(Ostream &os) const;
+        void write(Ostream& os) const;
 
         // Member operators
 
         // inline void operator=(const chungTransportMixture&);
 
-        inline void operator+=(const chungTransportMixture &);
+        inline void operator+=(const chungTransportMixture&);
 
         inline void operator*=(const scalar);
 
         // Friend operators
 
         friend chungTransportMixture operator+<ThermoMixture>(
-            const chungTransportMixture &,
-            const chungTransportMixture &);
+            const chungTransportMixture&,
+            const chungTransportMixture&);
 
         friend chungTransportMixture operator*<ThermoMixture>(
             const scalar,
-            const chungTransportMixture &);
+            const chungTransportMixture&);
 
         // Ostream Operator
 
-        friend Ostream &operator<<<ThermoMixture>(
-            Ostream &,
-            const chungTransportMixture &);
+        friend Ostream& operator<<<ThermoMixture>(
+            Ostream&,
+            const chungTransportMixture&);
     };
 
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

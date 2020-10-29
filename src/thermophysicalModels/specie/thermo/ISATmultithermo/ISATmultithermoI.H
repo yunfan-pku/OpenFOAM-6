@@ -40,8 +40,19 @@ inline Foam::species::ISATmultithermo<ThermoMixture, Type>::ISATmultithermo(
     PtrList<SingleThermoType>& speciesData,
     const speciesTable& specieNames,
     const dictionary& thermoDict)
-    : ThermoMixture(name, speciesData, specieNames, thermoDict), Hnfun(this), Ttree(speciesData.size() + 1, 1, Hnfun)//,Ttree(specieNames.size()+1,1),psimualphahtree(specieNames.size()+1,3)
+    : ThermoMixture(name, speciesData, specieNames, thermoDict),
+    Hnfun(this), psifun(this, &ThermoMixture::psi), mufun(this, &ThermoMixture::mu),
+    alphahfun(this, &ThermoMixture::alphah), vaporfrafun(this, &ThermoMixture::vaporfra),
+    Ttree(speciesData.size() + 1, 1, Hnfun), psitree(speciesData.size() + 1, 1, psifun),//,Ttree(specieNames.size()+1,1),psimualphahtree(specieNames.size()+1,3)
+    mutree(speciesData.size() + 1, 1, mufun), alphahtree(speciesData.size() + 1, 1, alphahfun),
+    vaporfratree(speciesData.size() + 1, 1, vaporfrafun)
 {
+    psitree.epsilon() = 1e-8;
+    psitree.relepsilon() = 5e-2;
+    Ttree.relepsilon() = 2e-3;
+    mutree.relepsilon() = 2e-3;
+    alphahtree.relepsilon() = 2e-3;
+    vaporfratree.epsilon() =1e-3;
 }
 
 template <class ThermoMixture, template <class> class Type>
@@ -522,7 +533,7 @@ inline Foam::scalar Foam::species::ISATmultithermo<ThermoMixture, Type>::THs(
             &ISATmultithermo<ThermoMixture, Type>::limit);
 
     //Hnfun.value(in, out);
-    Ttree.call(in,out);
+    Ttree.call(in, out);
 
     return out[0];
 }
@@ -595,8 +606,101 @@ inline Foam::scalar
 Foam::species::ISATmultithermo<ThermoMixture, Type>::dcpdT(const scalar p, const scalar T) const
 {
     return this->dCpdT(p, T) * this->W();
-    ;
 }
+
+template <class ThermoMixture, template <class> class Type>
+inline Foam::scalar
+Foam::species::ISATmultithermo<ThermoMixture, Type>::psi(const scalar p, const scalar T) const
+{
+
+    double sum = 0;
+    scalarList in(this->X().size() + 1), out(1);
+    for (int i = 0;i < this->X().size() - 1;i++)
+    {
+        in[i] = this->X_[i];
+        sum += this->X_[i];
+    }
+    in[this->X().size() - 1] = p;
+    in[this->X().size()] = T;
+
+    if (1 - sum < 1e-5)
+
+        return this->ThermoMixture::psi(p, T);
+    // Info<<"psihaha"<<endl;
+
+    psitree.call(in, out);
+    return out[0];
+
+}
+template <class ThermoMixture, template <class> class Type>
+inline Foam::scalar
+Foam::species::ISATmultithermo<ThermoMixture, Type>::mu(const scalar p, const scalar T) const
+{
+
+    double sum = 0;
+    scalarList in(this->X().size() + 1), out(1);
+    for (int i = 0;i < this->X().size() - 1;i++)
+    {
+        in[i] = this->X_[i];
+        sum += this->X_[i];
+    }
+    in[this->X().size() - 1] = p;
+    in[this->X().size()] = T;
+
+    if (1 - sum < 1e-5)
+        return this->ThermoMixture::mu(p, T);
+    // Info<<"psihaha"<<endl;
+
+    mutree.call(in, out);
+    return out[0];
+}
+template <class ThermoMixture, template <class> class Type>
+inline Foam::scalar
+Foam::species::ISATmultithermo<ThermoMixture, Type>::alphah(const scalar p, const scalar T) const
+{
+
+    double sum = 0;
+    scalarList in(this->X().size() + 1), out(1);
+    for (int i = 0;i < this->X().size() - 1;i++)
+    {
+        in[i] = this->X_[i];
+        sum += this->X_[i];
+    }
+    in[this->X().size() - 1] = p;
+    in[this->X().size()] = T;
+
+    if (1 - sum < 1e-5)
+        return this->ThermoMixture::alphah(p, T);
+    // Info<<"psihaha"<<endl;
+
+    alphahtree.call(in, out);
+    return out[0];
+
+}
+
+template <class ThermoMixture, template <class> class Type>
+inline Foam::scalar
+Foam::species::ISATmultithermo<ThermoMixture, Type>::vaporfra(const scalar p, const scalar T) const
+{
+    /*
+    double sum = 0;
+    scalarList in(this->X().size() + 1), out(1);
+    for (int i = 0;i < this->X().size() - 1;i++)
+    {
+        in[i] = this->X_[i];
+        sum += this->X_[i];
+    }
+    in[this->X().size() - 1] = p;
+    in[this->X().size()] = T;
+
+    if (1 - sum < 1e-5)*/
+    return this->ThermoMixture::vaporfra(p, T);
+    // Info<<"psihaha"<<endl;
+    /*
+    vaporfratree.call(in, out);
+    return out[0];*/
+}
+
 
 // * * * * * * * * * * * * * * * Member Operators  * * * * * * * * * * * * * //
 
