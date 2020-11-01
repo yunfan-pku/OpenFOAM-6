@@ -43,7 +43,9 @@ Foam::ISATmanager<FuncType>::ISATmanager(label in_n, label out_n, FuncType& func
 
 template<class FuncType>
 Foam::ISATmanager<FuncType>::~ISATmanager()
-{}
+{
+    showPreformance();
+}
 template<class FuncType>
 void Foam::ISATmanager<FuncType>::add(const scalarList& value)
 {
@@ -87,7 +89,7 @@ void Foam::ISATmanager<FuncType>::call
     nCall_++;
     if (nCall_ % 100000 == 0)
     {
-        Info << "ISAT performance: nCall=" << nCall_ << ", notCall=" << notCall << ", nRetrieved=" << nRetrieved_ << ", nGrowth=" << nGrowth_ << ", nAdd=" << nAdd_ << endl;
+        showPreformance();
     }
 }
 
@@ -248,7 +250,11 @@ double Foam::ISATmanager<FuncType>::norm(const scalarList& l)
         sum += sqr(l[i] * scaleFactor_[i][i]);
     return sqrt(sum);
 }
-
+template<class FuncType>
+void Foam::ISATmanager<FuncType>::showPreformance() const
+{
+    Info << "ISAT performance: nCall=" << nCall_ << ", notCall=" << notCall << ", nRetrieved=" << nRetrieved_ << ", nGrowth=" << nGrowth_ << ", nAdd=" << nAdd_ << endl;
+}
 
 /*
 template<class CompType, class ThermoType>

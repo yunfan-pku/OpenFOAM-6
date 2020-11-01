@@ -358,7 +358,8 @@
         "ISATmanager.C": "cpp",
         "atmBoundaryLayer.C": "cpp",
         "meshReader.C": "cpp",
-        "ISATVLEhePsiThermo.C": "cpp"
+        "ISATVLEhePsiThermo.C": "cpp",
+        "radiationModel.C": "cpp"
     },
     "python.pythonPath": "/home/zhy/anaconda3/envs/cantera/bin/python"
 }

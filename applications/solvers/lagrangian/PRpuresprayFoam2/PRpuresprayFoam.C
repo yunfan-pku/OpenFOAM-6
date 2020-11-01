@@ -47,7 +47,7 @@ Description
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
 #include "postProcess.H"
 
@@ -62,13 +62,13 @@ int main(int argc, char *argv[])
 #include "setInitialDeltaT.H"
 #include "initContinuityErrs.H"
 
-   
+
     turbulence->validate();
     int timei = 0;
     int loop1 = 0;
     int loop2 = 0;
     //Time clockTime_vle(runTime);
-    double thermotime=0;
+    double thermotime = 0;
     forAll(xcoord, i)
     {
         xcoord[i] = mesh.C()[i].x();
@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
     Info << "\nStarting time loop\n"
-         << endl;
+        << endl;
 
     while (runTime.run())
     {
@@ -131,32 +131,32 @@ int main(int argc, char *argv[])
 
                     loop2++;
                     std::stringstream sstream1;
-                    sstream1 << "_"<< timei << "_" << loop1 << "_" << loop2 << "_";
+                    sstream1 << "_" << timei << "_" << loop1 << "_" << loop2 << "_";
                     std::string s;
                     sstream1 >> s;
 
-                    
-                    
-/*
-                    std::ofstream fout(s);
 
-                    forAll(p,i)
-                    {
-                    fout<<p[i]<<",";
-                    } 
-                    fout<<std::endl;
-                    */
-                    #include "pEqn.H"
 
-                    
                     /*
-                    forAll(p,i)
-                    {
-                    fout<<p[i]<<",";
-                    } 
-                    fout<<std::endl;
-                    fout.close();
-                    */
+                                        std::ofstream fout(s);
+
+                                        forAll(p,i)
+                                        {
+                                        fout<<p[i]<<",";
+                                        }
+                                        fout<<std::endl;
+                                        */
+#include "pEqn.H"
+
+
+                                        /*
+                                        forAll(p,i)
+                                        {
+                                        fout<<p[i]<<",";
+                                        }
+                                        fout<<std::endl;
+                                        fout.close();
+                                        */
                 }
 
                 if (pimple.turbCorr())
@@ -179,14 +179,14 @@ int main(int argc, char *argv[])
                 parcels.write();
             }
         }
-        Info <<"VLE time ="<<thermotime<<endl;
+        Info << "VLE time =" << thermotime << endl;
         Info << "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
-             << "  ClockTime = " << runTime.elapsedClockTime() << " s"
-             << nl << endl;
+            << "  ClockTime = " << runTime.elapsedClockTime() << " s"
+            << nl << endl;
     }
 
     Info << "End\n"
-         << endl;
+        << endl;
 
     return 0;
 }

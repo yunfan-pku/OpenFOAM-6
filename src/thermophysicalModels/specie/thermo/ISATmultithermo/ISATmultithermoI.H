@@ -693,7 +693,7 @@ template <class ThermoMixture, template <class> class Type>
 inline Foam::scalar
 Foam::species::ISATmultithermo<ThermoMixture, Type>::vaporfra(const scalar p, const scalar T) const
 {
-    /*
+    
     double sum = 0;
     scalarList in(this->X().size() + 1), out(1);
     for (int i = 0;i < this->X().size() - 1;i++)
@@ -704,13 +704,13 @@ Foam::species::ISATmultithermo<ThermoMixture, Type>::vaporfra(const scalar p, co
     in[this->X().size() - 1] = p;
     in[this->X().size()] = T;
 
-    if (1 - sum < 1e-5)*/
+    if (1 - sum < 1e-5)
     return this->ThermoMixture::vaporfra(p, T);
     // Info<<"psihaha"<<endl;
-    /*
+    
     vaporfratree.call(in, out);
     return out[0];
-    */
+    
 }
 
 

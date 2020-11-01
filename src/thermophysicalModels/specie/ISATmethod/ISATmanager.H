@@ -258,6 +258,8 @@ namespace Foam
         {
             return scaleFactor_;
         }
+
+        void showPreformance() const;
         /*
                         //- Return the size of the binary tree
                         virtual inline label size()
