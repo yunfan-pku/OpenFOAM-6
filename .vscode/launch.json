@@ -158,7 +158,7 @@
             "program": "/home/zhy/Documents/git/OpenFOAM-6/platforms/linux64GccDPInt32DebugVLE/bin/PRpuresprayFoam2",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "/home/zhy/newsolvertest/ST_highp_vle_ISAT_paper",
+            "cwd": "/home/zhy/spray3D/v6_I_new_3",
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",

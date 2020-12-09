@@ -81,7 +81,7 @@ void Foam::ISATleaf::eval(const scalarList& value, scalarList& ret)
         dx[0][i] = value[i] - value_[i];
     retm = dx * A_;
     for (int i = 0;i < data_.size();i++)
-        ret[i] += retm[i][0];
+        ret[i] += retm[0][i];
 }
 
 void Foam::ISATleaf::grow(const scalarList& point)

@@ -66,11 +66,14 @@ namespace Foam
         double epsilon_;
         double relepsilon_;
         scalarRectangularMatrix scaleFactor_;
+        scalarRectangularMatrix init_elp_;
+
 
         label nRetrieved_;
         label nGrowth_;
         label nAdd_;
         label nCall_;
+        word treename_;
 
         /*
                 //- List of scale factors for species, temperature and pressure
@@ -186,7 +189,7 @@ namespace Foam
 
     */
     public:
-        label notCall=0;
+        label notCall = 0;
 
         //- Runtime type information
         //TypeName("ISAT");
@@ -195,12 +198,7 @@ namespace Foam
         // Constructors
 
             //- Construct from dictionary
-        ISATmanager
-        (
-            label in_n,
-            label out_n,
-            FuncType& func
-        );
+        ISATmanager(label in_n, label out_n, FuncType& func, const word& name_in);
 
 
         // Destructor
@@ -243,7 +241,7 @@ namespace Foam
 
         bool retrieve(const Foam::scalarList& value, scalarList& out);
 
-        bool grow(ISATleaf* plf, const scalarList& value, const scalarList& data);
+        bool grow(ISATleaf* plf, const scalarList& dvalue, const scalarList& data1, const scalarList& data2);
 
         double distance(const scalarList& l, const scalarList& r);
 
@@ -259,7 +257,25 @@ namespace Foam
             return scaleFactor_;
         }
 
+        inline  scalarRectangularMatrix& scaleFactor()
+        {
+            return scaleFactor_;
+        }
+
         void showPreformance() const;
+        const word& treename() const
+        {
+            return treename_;
+        }
+        inline const scalarRectangularMatrix& init_elp() const
+        {
+            return init_elp_;
+        }
+        inline  scalarRectangularMatrix& init_elp()
+        {
+            return init_elp_;
+        }
+
         /*
                         //- Return the size of the binary tree
                         virtual inline label size()

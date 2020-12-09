@@ -27,8 +27,8 @@ License
 
 // * * * * * * * * * * * * * Private Member Functions  * * * * * * * * * * * //
 
-template<class ThermoType,template<class> class ThermoMixtureType>
-const ThermoType& Foam::nonlinearMixture<ThermoType,ThermoMixtureType>::constructSpeciesData
+template<class ThermoType, template<class> class ThermoMixtureType>
+const ThermoType& Foam::nonlinearMixture<ThermoType, ThermoMixtureType>::constructSpeciesData
 (
     const dictionary& thermoDict
 )
@@ -46,13 +46,13 @@ const ThermoType& Foam::nonlinearMixture<ThermoType,ThermoMixtureType>::construc
 }
 
 
-template<class ThermoType,template<class> class ThermoMixtureType>
-void Foam::nonlinearMixture<ThermoType,ThermoMixtureType>::correctMassFractions()
+template<class ThermoType, template<class> class ThermoMixtureType>
+void Foam::nonlinearMixture<ThermoType, ThermoMixtureType>::correctMassFractions()
 {
     // Multiplication by 1.0 changes Yt patches to "calculated"
-    volScalarField Yt("Yt", 1.0*Y_[0]);
+    volScalarField Yt("Yt", 1.0 * Y_[0]);
 
-    for (label n=1; n<Y_.size(); n++)
+    for (label n = 1; n < Y_.size(); n++)
     {
         Yt += Y_[n];
     }
@@ -73,8 +73,8 @@ void Foam::nonlinearMixture<ThermoType,ThermoMixtureType>::correctMassFractions(
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-template<class ThermoType,template<class> class ThermoMixtureType>
-Foam::nonlinearMixture<ThermoType,ThermoMixtureType>::nonlinearMixture
+template<class ThermoType, template<class> class ThermoMixtureType>
+Foam::nonlinearMixture<ThermoType, ThermoMixtureType>::nonlinearMixture
 (
     const dictionary& thermoDict,
     const speciesTable& specieNames,
@@ -82,11 +82,11 @@ Foam::nonlinearMixture<ThermoType,ThermoMixtureType>::nonlinearMixture
     const fvMesh& mesh,
     const word& phaseName
 )
-:
+    :
     basicSpecieMixture(thermoDict, specieNames, mesh, phaseName),
     speciesData_(species_.size()),
-    mixture_("mixture", speciesData_,specieNames,thermoDict),
-    mixtureVol_("volMixture", speciesData_,specieNames,thermoDict)
+    mixture_("mixture", speciesData_, specieNames, thermoDict)//,
+    //mixtureVol_("volMixture", speciesData_,specieNames,thermoDict)
 {
     forAll(species_, i)
     {
@@ -101,14 +101,14 @@ Foam::nonlinearMixture<ThermoType,ThermoMixtureType>::nonlinearMixture
 }
 
 
-template<class ThermoType,template<class> class ThermoMixtureType>
-Foam::nonlinearMixture<ThermoType,ThermoMixtureType>::nonlinearMixture
+template<class ThermoType, template<class> class ThermoMixtureType>
+Foam::nonlinearMixture<ThermoType, ThermoMixtureType>::nonlinearMixture
 (
     const dictionary& thermoDict,
     const fvMesh& mesh,
     const word& phaseName
 )
-:
+    :
     basicSpecieMixture
     (
         thermoDict,
@@ -117,8 +117,8 @@ Foam::nonlinearMixture<ThermoType,ThermoMixtureType>::nonlinearMixture
         phaseName
     ),
     speciesData_(species_.size()),
-    mixture_("mixture", constructSpeciesData(thermoDict)),
-    mixtureVol_("volMixture", speciesData_[0])
+    mixture_("mixture", constructSpeciesData(thermoDict))//,
+    //mixtureVol_("volMixture", speciesData_[0])
 {
     correctMassFractions();
 }
@@ -170,25 +170,25 @@ Foam::nonlinearMixture<ThermoType>::nonlinearMixture
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-template<class ThermoType,template<class> class ThermoMixtureType>
-const ThermoMixtureType<ThermoType>& Foam::nonlinearMixture<ThermoType,ThermoMixtureType>::cellMixture
+template<class ThermoType, template<class> class ThermoMixtureType>
+const ThermoMixtureType<ThermoType>& Foam::nonlinearMixture<ThermoType, ThermoMixtureType>::cellMixture
 (
     const label celli
 ) const
 {
     scalarList Y(Y_.size());
-    for (label n=0; n<Y_.size(); n++)
+    for (label n = 0; n < Y_.size(); n++)
     {
-       Y[n] = Y_[n][celli];
+        Y[n] = Y_[n][celli];
     }
-    mixture_ .setY(Y);
+    mixture_.setY(Y);
 
     return mixture_;
 }
 
 
-template<class ThermoType,template<class> class ThermoMixtureType>
-const ThermoMixtureType<ThermoType>& Foam::nonlinearMixture<ThermoType,ThermoMixtureType>::patchFaceMixture
+template<class ThermoType, template<class> class ThermoMixtureType>
+const ThermoMixtureType<ThermoType>& Foam::nonlinearMixture<ThermoType, ThermoMixtureType>::patchFaceMixture
 (
     const label patchi,
     const label facei
@@ -196,38 +196,38 @@ const ThermoMixtureType<ThermoType>& Foam::nonlinearMixture<ThermoType,ThermoMix
 {
 
     scalarList Y(Y_.size());
-    for (label n=0; n<Y_.size(); n++)
+    for (label n = 0; n < Y_.size(); n++)
     {
-       Y[n] = Y_[n].boundaryField()[patchi][facei];
+        Y[n] = Y_[n].boundaryField()[patchi][facei];
     }
-    mixture_ .setY(Y);
+    mixture_.setY(Y);
 
 
     return mixture_;
 }
 
 
-template<class ThermoType,template<class> class ThermoMixtureType>
-const ThermoMixtureType<ThermoType>& Foam::nonlinearMixture<ThermoType,ThermoMixtureType>::cellVolMixture
+template<class ThermoType, template<class> class ThermoMixtureType>
+const ThermoMixtureType<ThermoType>& Foam::nonlinearMixture<ThermoType, ThermoMixtureType>::cellVolMixture
 (
     const scalar p,
     const scalar T,
     const label celli
 ) const
 {
-        scalarList Y(Y_.size());
-    for (label n=0; n<Y_.size(); n++)
+    scalarList Y(Y_.size());
+    for (label n = 0; n < Y_.size(); n++)
     {
-       Y[n] = Y_[n][celli];
+        Y[n] = Y_[n][celli];
     }
-    mixture_ .setY(Y);
+    mixture_.setY(Y);
 
     return mixture_;
 }
 
 
-template<class ThermoType,template<class> class ThermoMixtureType>
-const ThermoMixtureType<ThermoType>& Foam::nonlinearMixture<ThermoType,ThermoMixtureType>::
+template<class ThermoType, template<class> class ThermoMixtureType>
+const ThermoMixtureType<ThermoType>& Foam::nonlinearMixture<ThermoType, ThermoMixtureType>::
 patchFaceVolMixture
 (
     const scalar p,
@@ -237,19 +237,19 @@ patchFaceVolMixture
 ) const
 {
     scalarList Y(Y_.size());
-    for (label n=0; n<Y_.size(); n++)
+    for (label n = 0; n < Y_.size(); n++)
     {
-       Y[n] = Y_[n].boundaryField()[patchi][facei];
+        Y[n] = Y_[n].boundaryField()[patchi][facei];
     }
-    mixture_ .setY(Y);
+    mixture_.setY(Y);
 
 
     return mixture_;
 }
 
 
-template<class ThermoType,template<class> class ThermoMixtureType>
-void Foam::nonlinearMixture<ThermoType,ThermoMixtureType>::read
+template<class ThermoType, template<class> class ThermoMixtureType>
+void Foam::nonlinearMixture<ThermoType, ThermoMixtureType>::read
 (
     const dictionary& thermoDict
 )

@@ -50,18 +50,18 @@ namespace Foam
 
     template <class ThermoMixture>
     inline VLE<ThermoMixture> operator==(
-        const VLE<ThermoMixture> &,
-        const VLE<ThermoMixture> &);
+        const VLE<ThermoMixture>&,
+        const VLE<ThermoMixture>&);
 
     template <class ThermoMixture>
     inline VLE<ThermoMixture> operator*(
         const scalar s,
-        const VLE<ThermoMixture> &);
+        const VLE<ThermoMixture>&);
 
     template <class ThermoMixture>
-    Ostream &operator<<(
-        Ostream &,
-        const VLE<ThermoMixture> &);
+    Ostream& operator<<(
+        Ostream&,
+        const VLE<ThermoMixture>&);
 
     /*---------------------------------------------------------------------------*\
                            Class VLE Declaration
@@ -78,25 +78,25 @@ namespace Foam
 
         //- Construct from components
         inline VLE(
-            const ThermoMixture &sp,
-            const scalar &Tc,
-            const scalar &Vc,
-            const scalar &Pc,
-            const scalar &omega);
+            const ThermoMixture& sp,
+            const scalar& Tc,
+            const scalar& Vc,
+            const scalar& Pc,
+            const scalar& omega);
 
         //- Construct from dictionary
-        VLE(const dictionary &dict, PtrList<ThermoMixture> &speciesData);
+        VLE(const dictionary& dict, PtrList<ThermoMixture>& speciesData);
 
         //- Construct as named copy
-        inline VLE(const word &name, const VLE &);
+        inline VLE(const word& name, const VLE&);
 
-        inline VLE(const word &name, PtrList<SingleThermoType> &, const speciesTable &, const dictionary &);
+        inline VLE(const word& name, PtrList<SingleThermoType>&, const speciesTable&, const dictionary&);
         //- Construct and return a clone
         inline autoPtr<VLE> clone() const;
 
         // Selector from dictionary
         inline static autoPtr<VLE> New(
-            const dictionary &dict);
+            const dictionary& dict);
 
         // Member functions
 
@@ -105,7 +105,13 @@ namespace Foam
         {
             return "VLE" + word(ThermoMixture::typeName());
         }
-
+        struct solution
+        {
+            autoPtr<scalarList> X_liq, X_gas, equalconstant;
+            scalar vaporfra;
+            solution() : X_liq(), X_gas(), equalconstant(), vaporfra(0) {};
+            solution(const solution& ref) : X_liq(ref.X_liq), X_gas(ref.X_gas), equalconstant(ref.equalconstant), vaporfra(ref.vaporfra) {};
+        };
         // Fundamental properties
 
         //- Is the equation of state is incompressible i.e. rho != f(p)
@@ -116,7 +122,7 @@ namespace Foam
 
         //- Return density [kg/m^3]
         inline scalar rho(scalar p, scalar T) const;
-
+        inline scalar rho(scalar p, scalar T, autoPtr<solution>& sol) const;
         //- Return enthalpy departure [J/kg]
         inline scalar H(const scalar p, const scalar T) const;
 
@@ -128,6 +134,7 @@ namespace Foam
 
         //- Return compressibility rho/p [s^2/m^2]
         inline scalar psi(scalar p, scalar T) const;
+        inline scalar psi(scalar p, scalar T, autoPtr<solution>& sol) const;
 
         //- Return compression factor []
         inline scalar Z(scalar p, scalar T) const;
@@ -146,43 +153,39 @@ namespace Foam
         //solve cubic equatoin
         static inline scalar cubicSolve(scalar a0, scalar a1, scalar a2, label flag); //flag 0 smallest>0 ,flag 1 largest
 
-        struct solution
-        {
-            autoPtr<scalarList> X_liq, X_gas, equalconstant;
-            scalar vaporfra;
-            solution() : X_liq(), X_gas(), equalconstant(), vaporfra(0){};
-            solution(const solution &ref) : X_liq(ref.X_liq), X_gas(ref.X_gas), equalconstant(ref.equalconstant), vaporfra(ref.vaporfra){};
-        };
+
         inline scalar vaporfra(scalar p, scalar T) const;
-        inline scalar alpha(scalar p, scalar T, solution &sol) const;
-        inline label solve_vaporf(scalar p, scalar T, solution &sol) const;
-        inline label noramlize(scalarList &X_in) const;
+        inline scalar vaporfra(scalar p, scalar T, autoPtr<solution>& sol) const;
+
+        inline scalar alpha(scalar p, scalar T, solution& sol) const;
+        inline label solve_vaporf(scalar p, scalar T, solution& sol) const;
+        inline label noramlize(scalarList& X_in) const;
         inline autoPtr<scalarList> wilsoneq(scalar p, scalar T) const;
         inline autoPtr<scalarList> myinitial(scalar p, scalar T) const;
         autoPtr<solution> TPn_flash(scalar p, scalar T) const;
         void  TPn_validation(scalar p, scalar T) const;
-        
 
-         //mutable solution temp_sol;
-         //mutable scalar temp_p,temp_T;
-        /* friend VLE operator==<ThermoMixture>(
-            const VLE &,
-            const VLE &);
 
-        friend VLE operator*<ThermoMixture>(
-            const scalar &,
-            const VLE &);
-            */
-        // IO
+        //mutable solution temp_sol;
+        //mutable scalar temp_p,temp_T;
+       /* friend VLE operator==<ThermoMixture>(
+           const VLE &,
+           const VLE &);
 
-        //- Write to Ostream
-        void write(Ostream &os) const;
+       friend VLE operator*<ThermoMixture>(
+           const scalar &,
+           const VLE &);
+           */
+           // IO
+
+           //- Write to Ostream
+        void write(Ostream& os) const;
 
         // Ostream Operator
 
-        friend Ostream &operator<<<ThermoMixture>(
-            Ostream &,
-            const VLE &);
+        friend Ostream& operator<<<ThermoMixture>(
+            Ostream&,
+            const VLE&);
     };
 
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

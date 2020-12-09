@@ -63,7 +63,7 @@ class nonlinearMixture
 
         //- Temporary storage for the volume weighted
         //  cell/face mixture thermo data
-        mutable ThermoMixtureType<ThermoType> mixtureVol_;
+        //mutable ThermoMixtureType<ThermoType> mixtureVol_;
 
 
     // Private Member Functions

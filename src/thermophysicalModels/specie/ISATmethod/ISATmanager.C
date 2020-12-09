@@ -28,36 +28,91 @@ License
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 template<class FuncType>
-Foam::ISATmanager<FuncType>::ISATmanager(label in_n, label out_n, FuncType& func)
-    :tableTree_(in_n, out_n), pfunc(&func), epsilon_(1e-3), relepsilon_(0.0), scaleFactor_(out_n, out_n), nRetrieved_(0), nGrowth_(0), nAdd_(0), nCall_(0)
+Foam::ISATmanager<FuncType>::ISATmanager(label in_n, label out_n, FuncType& func, const word& name_in)
+    :tableTree_(in_n, out_n), pfunc(&func), epsilon_(1e-3), relepsilon_(0.0), scaleFactor_(out_n, out_n), init_elp_(in_n, in_n), nRetrieved_(0), nGrowth_(0), nAdd_(0), nCall_(0), treename_(name_in)
 {
     for (int i = 0;i < out_n;i++)
         for (int j = 0;j < out_n;j++)
+        {
             scaleFactor_[i][j] = 0;
+        }
+    for (int i = 0;i < in_n;i++)
+        for (int j = 0;j < in_n;j++)
+            init_elp_[i][j] = 0;
     for (int i = 0;i < out_n;i++)
         scaleFactor_[i][i] = 1.0;
-    //scaleFactor_[0][0] = 1/10000.0;
 
-    //Info << "haha" << endl;
+    /*
+word Tname = "vaporfratree";
+if (Tname == treename_)
+{
+    scaleFactor_[0][0] = 0;
+}
+*/
+//scaleFactor_[0][0] = 1/10000.0;
+
+//Info << "haha" << endl;
 }
 
 template<class FuncType>
 Foam::ISATmanager<FuncType>::~ISATmanager()
 {
     showPreformance();
+
+    word Tname = "vaporfratree";// "vaporfratree";
+
+    if (Tname == treename_)
+        //if (tableTree_.size_ > 0)
+    {
+        scalarList in(3), out(1);
+        in[0] = 0.699953;
+        in[1] = 14980100;
+        in[2] = 477.937;
+        Info << "Tname=" << treename_ << endl;
+        call(in, out);
+        ISATleaf* pleaf;
+        pleaf = search(in);
+        Info << out[0] << ", point=" << pleaf->value() << ", data=" << pleaf->data() << endl;
+        Info << "A= " << pleaf->A() << endl;
+        Info << "EOA= " << pleaf->EOA() << endl;
+        pfunc->value(in, out);
+        Info << out[0] << endl;
+    }
+
 }
 template<class FuncType>
 void Foam::ISATmanager<FuncType>::add(const scalarList& value)
 {
+    //word Tname = "vaporfratree";
+
     ISATbinaryTree& T = tableTree_;
     ISATleaf* pleaf;
     scalarList R(tableTree_.n_out());
     pfunc->value(value, R);
     pleaf = T.insertNewLeaf(value, R);
     pfunc->derive(value, pleaf->A());
-    //Info<<pleaf->A()<<endl;
-    pleaf->EOA() = (pleaf->A()) * scaleFactor_ * scaleFactor_ * (pleaf->A().T()) / (epsilon_ * epsilon_);
-    //Info<<pleaf->EOA()<<endl;
+    scalarRectangularMatrix At(tableTree_.n_in_, tableTree_.n_in_);
+    /*for (int i = 0;i < tableTree_.n_in_;i++)
+        for (int j = 0;j < tableTree_.n_in_;j++)
+        {
+            At[i][j] = 100;
+        }*/
+        //Info<<pleaf->A()<<endl;
+
+    pleaf->EOA() = ((pleaf->A()) * scaleFactor_ * scaleFactor_ * (pleaf->A().T())+init_elp_*init_elp_) / (epsilon_ * epsilon_);//+ init_elp_
+    /*
+    if (Tname == treename_)
+    {
+        Info << pleaf->EOA();
+        if (pleaf->EOA()[0][0] < 1e-6)
+        {
+            FatalErrorInFunction << "Test:" <<pleaf->EOA()<< exit(FatalError);
+        }
+        Info << "Done"<<endl;
+    }
+    */
+    // pleaf->EOA() = pleaf->EOA() + init_elp_ / (epsilon_ * epsilon_);
+     //Info<<pleaf->EOA()<<endl;
     nAdd_++;
 }
 template<class FuncType>
@@ -74,18 +129,68 @@ void Foam::ISATmanager<FuncType>::call
 )
 {
     ISATleaf* pleaf;
+    word Tname = "vaporfratree";
+    //int aaa;
+    //if (Tname == treename_ && value[1] < 1.4982e+07 && value[1]>1.4980e+07 && value[2] < 550.48 && value[2]>550.478)
+        //aaa = 5;
     if (!retrieve(value, out))
     {
-        pfunc->value(value, out);
-        //Info<<out<<endl;
         pleaf = search(value);
-        //scalarList out2, value2;
-        //value2 = 2 * pleaf->value_ - value;
-        //value2[0] = value[0];
-        //pfunc->value(value2, out2);
-        if (!grow(pleaf, value, out))
+
+        if (pleaf == nullptr)
+        {
+            pfunc->value(value, out);
             add(value);
-    }
+        }
+        else
+        {
+            //if (Tname == treename_ && pleaf->value()[1] < 1.4982e+07 && pleaf->value()[1]>1.4980e+07 && pleaf->value()[2] < 550.48 && pleaf->value()[2]>550.478)
+            //    aaa = 5;
+            scalarList dvalue(value.size(), Zero);
+            scalarList leafvalue(value.size(), Zero);
+            for (int i = 0;i < tableTree_.n_in_;i++)
+            {
+                leafvalue[i] = pleaf->value()[i];
+                dvalue[i] = value[i] - leafvalue[i];
+            }
+            for (int i = tableTree_.n_in_;i < value.size();i++)
+            {
+                leafvalue[i] = value[i];
+            }
+            pfunc->value(leafvalue + dvalue, out);
+            scalarList out2(out.size());
+            scalarList others=leafvalue - dvalue;
+            bool flag_others=true;
+            for(int i=0;i<others.size();i++)
+            {
+                flag_others=flag_others&&others[i]>=0;
+            }
+            flag_others=flag_others&&others[0]+others[1]<=1;
+            if(!flag_others)
+            {
+                add(value);
+                return;
+            }
+            pfunc->value(leafvalue - dvalue, out2);
+            //Info<<out<<endl;
+
+            //scalarList out2, value2;
+            //value2 = 2 * pleaf->value_ - value;
+            //value2[0] = value[0];
+            //pfunc->value(value2, out2);
+            if (!grow(pleaf, dvalue, out, out2))
+                add(value);
+        }
+    }/*
+    else {
+        scalarList out2;
+        pfunc->value(value, out2);
+        if (fabs(out2[0] - out[0]) > 0.1)
+        {
+            pleaf = search(value);
+            Info << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! I'm " << treename_ << ". The error is " << out[0] - out2[0] << endl;
+        }
+    }*/
     nCall_++;
     if (nCall_ % 100000 == 0)
     {
@@ -194,8 +299,9 @@ template<class FuncType>
 bool Foam::ISATmanager<FuncType>::grow
 (
     ISATleaf* plf,
-    const scalarList& value,
-    const scalarList& data
+    const scalarList& dvalue,
+    const scalarList& data1,
+    const scalarList& data2
 )
 {
     // If the pointer to the chemPoint is nullptr, the function stops
@@ -218,13 +324,27 @@ bool Foam::ISATmanager<FuncType>::grow
     // If the solution RphiQ is still within the tolerance we try to grow it
     // in some cases this might result in a failure and the grow function of
     // the chemPoint returns false
-    scalarList ret(data.size());//, ret2(data.size());
-    //plf->eval(value2, ret2);
-    plf->eval(value, ret);
-    //Info << distance(ret, data) << endl;
-    if ((distance(ret, data) <= epsilon_ || distance(ret, data) <= epsilon_ * norm(data)))
+    scalarList ret1(data1.size()), ret2(data2.size());//, ret2(data.size());
+    scalarList dvalue_m(plf->value().size());
+    for (int i = 0;i < dvalue_m.size();i++)
     {
-        plf->grow(value);
+        dvalue_m[i] = dvalue[i];
+    }
+    //plf->eval(value2, ret2);
+    plf->eval(plf->value() + dvalue_m, ret1);
+    plf->eval(plf->value() - dvalue_m, ret2);
+    //Info << distance(ret, data) << endl;
+    /*
+    bool rel_flag = true;
+    for (int i = 0;i < tableTree_.n_out_;i++)
+    {
+        rel_flag = rel_flag && (fabs(ret[i] - data[i]) <= data[i] * relepsilon_);
+    }
+    */
+    //if ((distance(ret, data) <= epsilon_ || distance(ret, data) <= relepsilon_ * norm(data)))
+    if (distance(ret1, data1) <= epsilon_ && distance(ret2, data2) <= epsilon_)
+    {
+        plf->grow(plf->value() + dvalue_m);
         nGrowth_++;
         return true;
     }
@@ -253,7 +373,7 @@ double Foam::ISATmanager<FuncType>::norm(const scalarList& l)
 template<class FuncType>
 void Foam::ISATmanager<FuncType>::showPreformance() const
 {
-    Info << "ISAT performance: nCall=" << nCall_ << ", notCall=" << notCall << ", nRetrieved=" << nRetrieved_ << ", nGrowth=" << nGrowth_ << ", nAdd=" << nAdd_ << endl;
+    Info << treename_ << ", ISAT performance: nCall=" << nCall_ << ", notCall=" << notCall << ", nRetrieved=" << nRetrieved_ << ", nGrowth=" << nGrowth_ << ", nAdd=" << nAdd_ << endl;
 }
 
 /*
@@ -823,13 +943,13 @@ Foam::label Foam::chemistryTabulationMethods::ISAT<CompType, ThermoType>::add
             {
                 tableTree().insertNewLeaf
                 (
-                     tempList[i]->phi(),
-                     tempList[i]->Rphi(),
-                     tempList[i]->A(),
-                     scaleFactor(),
-                     this->tolerance(),
-                     scaleFactor_.size(),
-                     nulPhi
+                    tempList[i]->phi(),
+                    tempList[i]->Rphi(),
+                    tempList[i]->A(),
+                    scaleFactor(),
+                    this->tolerance(),
+                    scaleFactor_.size(),
+                    nulPhi
                 );
                 deleteDemandDrivenData(tempList[i]);
             }
