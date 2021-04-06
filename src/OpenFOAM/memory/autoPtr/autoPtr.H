@@ -43,27 +43,27 @@ SourceFiles
 namespace Foam
 {
 
-/*---------------------------------------------------------------------------*\
-                           Class autoPtr Declaration
-\*---------------------------------------------------------------------------*/
+    /*---------------------------------------------------------------------------*\
+                               Class autoPtr Declaration
+    \*---------------------------------------------------------------------------*/
 
-template<class T>
-class autoPtr
-{
-    // Public data
+    template<class T>
+    class autoPtr
+    {
+        // Public data
 
-        //- Pointer to object
+            //- Pointer to object
         mutable T* ptr_;
 
 
-public:
+    public:
 
-    typedef T Type;
+        typedef T Type;
 
 
-    // Constructors
+        // Constructors
 
-        //- Store object pointer
+            //- Store object pointer
         inline explicit autoPtr(T* = nullptr);
 
         //- Construct as copy by transferring pointer to this autoPtr and
@@ -75,71 +75,73 @@ public:
         inline autoPtr(const autoPtr<T>&, const bool reuse);
 
 
-    //- Destructor, delete object if pointer is not nullptr
-    inline ~autoPtr();
+        //- Destructor, delete object if pointer is not nullptr
+        inline ~autoPtr();
 
 
-    // Member Functions
+        // Member Functions
 
-        // Check
+            // Check
 
-            //- Return true if the autoPtr is empty (ie, no pointer set)
-            inline bool empty() const;
+                //- Return true if the autoPtr is empty (ie, no pointer set)
+        inline bool empty() const;
 
-            //- Return true if the autoPtr valid (ie, the pointer is set)
-            inline bool valid() const;
+        //- Return true if the autoPtr valid (ie, the pointer is set)
+        inline bool valid() const;
 
 
         // Edit
 
             //- Return object pointer for reuse
-            inline T* ptr();
+        inline T* ptr();
 
-            //- Set pointer to that given.
-            //  If object pointer already set issue a FatalError
-            inline void set(T*);
+        //- Set pointer to that given.
+        //  If object pointer already set issue a FatalError
+        inline void set(T*);
 
-            //- If object pointer already set, delete object and set to given
-            //  pointer
-            inline void reset(T* = nullptr);
+        //- If object pointer already set, delete object and set to given
+        //  pointer
+        inline void reset(T* = nullptr);
 
-            //- Delete object (if the pointer is valid) and set pointer to
-            //  nullptr
-            inline void clear();
+        inline void reset(const autoPtr<T>&);
+
+        //- Delete object (if the pointer is valid) and set pointer to
+        //  nullptr
+        inline void clear();
 
 
         // Member operators
 
             //- Return reference to the object data
-            inline T& operator()();
+        inline T& operator()();
 
-            //- Return const reference to the object data
-            inline const T& operator()() const;
+        //- Return const reference to the object data
+        inline const T& operator()() const;
 
-            //- Return reference to the object data
-            inline T& operator*();
+        //- Return reference to the object data
+        inline T& operator*();
 
-            //- Return const reference to the object data
-            inline const T& operator*() const;
+        //- Return const reference to the object data
+        inline const T& operator*() const;
 
-            //- Const cast to the underlying type reference
-            inline operator const T&() const;
+        //- Const cast to the underlying type reference
+        inline operator const T& () const;
 
-            //- Return object pointer
-            inline T* operator->();
+        //- Return object pointer
+        inline T* operator->();
 
-            //- Return const object pointer
-            inline const T* operator->() const;
+        //- Return const object pointer
+        inline const T* operator->() const;
 
-            //- Take over the object pointer from parameter
-            inline void operator=(T*);
+        //- Take over the object pointer from parameter
+        inline void operator=(T*);
 
-            //- Take over the object pointer from parameter
-            inline void operator=(const autoPtr<T>&);
-};
+        //- Take over the object pointer from parameter
+        inline void operator=(const autoPtr<T>&);
+    };
 
 
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 } // End namespace Foam
 

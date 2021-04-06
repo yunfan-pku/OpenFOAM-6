@@ -90,6 +90,8 @@ log.make
 
 /tutorials
 
+/testcase
+
 *.csv
 *.exe
 *.txt

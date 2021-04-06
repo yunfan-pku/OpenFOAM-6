@@ -30,14 +30,14 @@ License
 
 template<class T>
 inline Foam::autoPtr<T>::autoPtr(T* p)
-:
+    :
     ptr_(p)
 {}
 
 
 template<class T>
 inline Foam::autoPtr<T>::autoPtr(const autoPtr<T>& ap)
-:
+    :
     ptr_(ap.ptr_)
 {
     ap.ptr_ = nullptr;
@@ -121,6 +121,18 @@ inline void Foam::autoPtr<T>::reset(T* p)
     ptr_ = p;
 }
 
+template<class T>
+inline void Foam::autoPtr<T>::reset(const autoPtr<T>& ap)
+{
+    if (ptr_)
+    {
+        delete ptr_;
+    }
+
+    ptr_ = ap.ptr_;
+    ap.ptr_ = nullptr;
+}
+
 
 template<class T>
 inline void Foam::autoPtr<T>::clear()
@@ -192,7 +204,7 @@ inline const T& Foam::autoPtr<T>::operator*() const
 
 
 template<class T>
-inline Foam::autoPtr<T>::operator const T&() const
+inline Foam::autoPtr<T>::operator const T& () const
 {
     return operator()();
 }
