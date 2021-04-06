@@ -130,6 +130,8 @@ public:
             const label celli
         ) const;
 
+        inline void newTimeStep();
+
         const ThermoMixtureType<ThermoType>& patchFaceVolMixture
         (
             const scalar p,

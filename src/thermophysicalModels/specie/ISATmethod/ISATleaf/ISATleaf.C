@@ -42,7 +42,10 @@ void Foam::ISATleaf::print(Foam::Ostream& OFout, int a)
 
 Foam::ISATleaf::ISATleaf(int n_in, int n_out,
     const scalarList& v,
-    ISATNode* node) : node_(node), value_(n_in), data_(n_out), A_(n_in, n_out), EOA_(n_in, n_in)
+    ISATNode* node) :
+    node_(node), value_(n_in),
+    data_(n_out), A_(n_in, n_out),
+    EOA_(n_in, n_in), numRetrieve_(0),pTimeTagList_(nullptr)
 {
     forAll(value_, i)
     {
@@ -50,7 +53,7 @@ Foam::ISATleaf::ISATleaf(int n_in, int n_out,
     }
 }
 Foam::ISATleaf::ISATleaf(int n_in, int n_out, const scalarList& v, ISATNode* node, const scalarList& data_in
-) : node_(node), value_(n_in), data_(n_out), A_(n_in, n_out), EOA_(n_in, n_in)
+) : node_(node), value_(n_in), data_(n_out), A_(n_in, n_out), EOA_(n_in, n_in),numRetrieve_(0),pTimeTagList_(nullptr)
 {
     forAll(value_, i)
     {
@@ -92,6 +95,19 @@ void Foam::ISATleaf::grow(const scalarList& point)
         dx[i][0] = point[i] - value_[i];
     pbp = (dx.T() * EOA_ * dx)[0][0];
     EOA_ = EOA_ + EOA_ * dx * (dx.T()) * EOA_ * (1 - pbp) / sqr(pbp);
+}
+
+
+void Foam::ISATleaf::increaseNumRetrieve()
+{
+    this->numRetrieve_++;
+}
+
+
+
+void Foam::ISATleaf::resetNumRetrieve()
+{
+    this->numRetrieve_ = 0;
 }
 /*
 template<class CompType, class ThermoType>

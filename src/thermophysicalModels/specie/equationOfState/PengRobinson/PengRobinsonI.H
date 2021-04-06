@@ -41,17 +41,17 @@ License
 
 template <class Specie>
 inline Foam::PengRobinson<Specie>::PengRobinson(
-    const Specie &sp,
-    const scalar &Tc,
-    const scalar &Vc,
-    const scalar &Pc,
-    const scalar &omega)
+    const Specie& sp,
+    const scalar& Tc,
+    const scalar& Vc,
+    const scalar& Pc,
+    const scalar& omega)
     : Specie(sp),
-      Tc_(Tc),
-      Vc_(Vc),
-      Pc_(Pc),
-      omega_(omega),
-      phaseFlag(1)
+    Tc_(Tc),
+    Vc_(Vc),
+    Pc_(Pc),
+    omega_(omega),
+    phaseFlag(1)
 {
     Zc_ = Pc_ * Vc_ / (RR * Tc_);
 }
@@ -60,14 +60,14 @@ inline Foam::PengRobinson<Specie>::PengRobinson(
 
 template <class Specie>
 inline Foam::PengRobinson<Specie>::PengRobinson(
-    const word &name,
-    const PengRobinson &pg)
+    const word& name,
+    const PengRobinson& pg)
     : Specie(name, pg),
-      Tc_(pg.Tc_),
-      Vc_(pg.Vc_),
-      Zc_(pg.Zc_),
-      Pc_(pg.Pc_),
-      omega_(pg.omega_)
+    Tc_(pg.Tc_),
+    Vc_(pg.Vc_),
+    Zc_(pg.Zc_),
+    Pc_(pg.Pc_),
+    omega_(pg.omega_)
 {
 }
 
@@ -82,7 +82,7 @@ Foam::PengRobinson<Specie>::clone() const
 template <class Specie>
 inline Foam::autoPtr<Foam::PengRobinson<Specie>>
 Foam::PengRobinson<Specie>::New(
-    const dictionary &dict)
+    const dictionary& dict)
 {
     return autoPtr<PengRobinson<Specie>>(
         new PengRobinson<Specie>(dict));
@@ -117,11 +117,66 @@ inline Foam::scalar Foam::PengRobinson<Specie>::A(
 }
 
 template <class Specie>
+inline Foam::scalar Foam::PengRobinson<Specie>::dAdT(
+    scalar P,
+    scalar T) const
+{
+    scalar kappa;
+    scalar alpha;
+    if (omega_ > 0.49)
+    {
+        kappa = omega_ * (omega_ * (omega_ * (0.016666) - 0.164423) + 1.48503) + 0.379642;
+    }
+    else
+    {
+        kappa = omega_ * (omega_ * (-0.26992) + 1.54226) + 0.37464;
+    }
+    alpha = sqr(1.0 + kappa * (1.0 - sqrt(T / Tc_)));
+    scalar dalphadT = -kappa * (1.0 + kappa * (1.0 - sqrt(T / Tc_))) / sqrt(T * Tc_);
+    return 0.45724 * dalphadT * P / Pc_ / sqr(T / Tc_) - 2 * 0.45724 * alpha * P / Pc_ / sqr(T / Tc_) / T;
+}
+
+template <class Specie>
+inline Foam::scalar Foam::PengRobinson<Specie>::dAdP(
+    scalar P,
+    scalar T) const
+{
+    scalar kappa;
+    scalar alpha;
+    if (omega_ > 0.49)
+    {
+        kappa = omega_ * (omega_ * (omega_ * (0.016666) - 0.164423) + 1.48503) + 0.379642;
+    }
+    else
+    {
+        kappa = omega_ * (omega_ * (-0.26992) + 1.54226) + 0.37464;
+    }
+    alpha = sqr(1.0 + kappa * (1.0 - sqrt(T / Tc_)));
+    return 0.45724 * alpha / Pc_ / sqr(T / Tc_);
+}
+
+template <class Specie>
 inline Foam::scalar Foam::PengRobinson<Specie>::B(
     scalar P,
     scalar T) const
 {
     return 0.07780 * P / Pc_ * Tc_ / T;
+}
+
+template <class Specie>
+inline Foam::scalar Foam::PengRobinson<Specie>::dBdT(
+    scalar P,
+    scalar T) const
+{
+    return -0.07780 * P / Pc_ * Tc_ / (T * T);
+}
+
+template <class Specie>
+inline Foam::scalar Foam::PengRobinson<Specie>::dBdP(
+    scalar P,
+    scalar T) const
+{
+    return 0.07780 / Pc_ * Tc_ / T;
 }
 
 template <class Specie>
@@ -164,6 +219,13 @@ inline Foam::scalar Foam::PengRobinson<Specie>::dadt(
     return 0.45724 * (1.0 + kappa * (1.0 - sqrt(T / Tc_))) * sqr(RR * 1.0e-03 * Tc_) / Pc_ * (-kappa / sqrt(Tc_ * T));
 }
 template <class Specie>
+inline Foam::scalar Foam::PengRobinson<Specie>::dadp(
+    scalar P,
+    scalar T) const
+{
+    return 0.0;
+}
+template <class Specie>
 inline Foam::scalar Foam::PengRobinson<Specie>::d2adt2(
     scalar P,
     scalar T) const
@@ -177,7 +239,7 @@ inline Foam::scalar Foam::PengRobinson<Specie>::d2adt2(
     {
         kappa = omega_ * (omega_ * (-0.26992) + 1.54226) + 0.37464;
     }
-    return 0.45724 * ((1.0 + kappa * (1.0 - sqrt(T / Tc_))) * (kappa / (2 * T * sqrt(Tc_ * T))) + kappa * kappa / (Tc_ * T)) * sqr(RR * 1.0e-03 * Tc_) / Pc_;
+    return 0.45724 * ((1.0 + kappa * (1.0 - sqrt(T / Tc_))) * (kappa / (2 * T * sqrt(Tc_ * T))) + kappa * kappa / (2 * Tc_ * T)) * sqr(RR * 1.0e-03 * Tc_) / Pc_;
 }
 template <class Specie>
 inline Foam::scalar Foam::PengRobinson<Specie>::b(
@@ -185,6 +247,20 @@ inline Foam::scalar Foam::PengRobinson<Specie>::b(
     scalar T) const
 {
     return 0.07780 * RR * 1.0e-03 * Tc_ / Pc_;
+}
+template <class Specie>
+inline Foam::scalar Foam::PengRobinson<Specie>::dbdT(
+    scalar P,
+    scalar T) const
+{
+    return 0;
+}
+template <class Specie>
+inline Foam::scalar Foam::PengRobinson<Specie>::dbdP(
+    scalar P,
+    scalar T) const
+{
+    return 0;
 }
 /*
 inline Foam::scalar Foam::PengRobinson<Specie>::c(
@@ -290,21 +366,21 @@ inline Foam::scalar Foam::PengRobinson<Specie>::Z(
 }
 
 template <class Specie>
-inline Foam::scalar Foam::PengRobinson<Specie>::H(scalar p, scalar T) const //Todo
+inline Foam::scalar Foam::PengRobinson<Specie>::H(scalar p, scalar T) const // ideal gas  //TODO impreve code structure
 {
     return 0;
 }
 
 template <class Specie>
-inline Foam::scalar Foam::PengRobinson<Specie>::Cp(scalar p, scalar T) const //Todo
+inline Foam::scalar Foam::PengRobinson<Specie>::Cp(scalar p, scalar T) const // ideal gas
 {
     return 0;
 }
 
 template <class Specie>
-inline Foam::scalar Foam::PengRobinson<Specie>::S(scalar p, scalar T) const //Todo
+inline Foam::scalar Foam::PengRobinson<Specie>::S(scalar p, scalar T) const // ideal gas
 {
-    return 0;
+    return -this->R()*log(p/Pstd);
 }
 
 template <class Specie>
@@ -319,9 +395,9 @@ inline Foam::scalar Foam::PengRobinson<Specie>::psi(
 
 template <class Specie>
 inline Foam::scalar Foam::PengRobinson<Specie>::CpMCv //Todo
-    (
-        scalar p,
-        scalar T) const
+(
+    scalar p,
+    scalar T) const
 {
     const scalar Tr = T / Tc_;
     const scalar a = 0.45724 * sqr(RR * Tc_) / Pc_;
@@ -345,7 +421,7 @@ inline Foam::scalar Foam::PengRobinson<Specie>::CpMCv //Todo
 
 template <class Specie>
 inline void Foam::PengRobinson<Specie>::operator+=(
-    const PengRobinson<Specie> &pg)
+    const PengRobinson<Specie>& pg)
 {
     scalar Y1 = this->Y();  //YP: Y() is mole number of component in mixture
     Specie::operator+=(pg); //YP: is it mean that sum all Y?  pg means all species Y, so after this, Y() means sumY
@@ -373,11 +449,11 @@ inline void Foam::PengRobinson<Specie>::operator*=(const scalar s)
 
 template <class Specie>
 Foam::PengRobinson<Specie> Foam::operator+(
-    const PengRobinson<Specie> &pg1,
-    const PengRobinson<Specie> &pg2)
+    const PengRobinson<Specie>& pg1,
+    const PengRobinson<Specie>& pg2)
 {
     Specie sp(
-        static_cast<const Specie &>(pg1) + static_cast<const Specie &>(pg2));
+        static_cast<const Specie&>(pg1) + static_cast<const Specie&>(pg2));
 
     if (mag(sp.Y()) < small)
     {
@@ -389,7 +465,7 @@ Foam::PengRobinson<Specie> Foam::operator+(
             pg1.Pc_,
             pg1.omega_
 
-        );
+            );
     }
     else
     {
@@ -413,10 +489,10 @@ Foam::PengRobinson<Specie> Foam::operator+(
 template <class Specie>
 Foam::PengRobinson<Specie> Foam::operator*(
     const scalar s,
-    const PengRobinson<Specie> &pg)
+    const PengRobinson<Specie>& pg)
 {
     return PengRobinson<Specie>(
-        s * static_cast<const Specie &>(pg),
+        s * static_cast<const Specie&>(pg),
         pg.Tc_,
         pg.Vc_,
         pg.Zc_,
@@ -426,11 +502,11 @@ Foam::PengRobinson<Specie> Foam::operator*(
 
 template <class Specie>
 Foam::PengRobinson<Specie> Foam::operator==(
-    const PengRobinson<Specie> &pg1,
-    const PengRobinson<Specie> &pg2)
+    const PengRobinson<Specie>& pg1,
+    const PengRobinson<Specie>& pg2)
 {
     Specie sp(
-        static_cast<const Specie &>(pg1) == static_cast<const Specie &>(pg2));
+        static_cast<const Specie&>(pg1) == static_cast<const Specie&>(pg2));
 
     const scalar Y1 = pg1.Y() / sp.Y();
     const scalar Y2 = pg2.Y() / sp.Y();
@@ -460,7 +536,7 @@ inline Foam::scalar Foam::PengRobinson<Specie>::Hig2_phase(
     scalar T) const
 {
     //return   Hig2_phase_[0]*T +Hig2_phase_[1]*Hig2_phase_[2]*(2.0/(exp(2.0*Hig2_phase_[2]/T)-1.0))+ 2.0*Hig2_phase_[3]*Hig2_phase_[4]*(1.0/(exp(2.0*Hig2_phase_[4]/T)+1.0));
-    return Hig2_phase_[0]+Hig2_phase_[1] * T + Hig2_phase_[2] * Hig2_phase_[3] * ( (exp(2.0 * Hig2_phase_[3] / T)+1)/ (exp(2.0 * Hig2_phase_[3] / T) - 1.0)) +  Hig2_phase_[4] * Hig2_phase_[5] * ((exp(2.0 * Hig2_phase_[5] / T) - 1.0) / (exp(2.0 * Hig2_phase_[5] / T) + 1.0));
+    return Hig2_phase_[0] + Hig2_phase_[1] * T + Hig2_phase_[2] * Hig2_phase_[3] * ((exp(2.0 * Hig2_phase_[3] / T) + 1) / (exp(2.0 * Hig2_phase_[3] / T) - 1.0)) + Hig2_phase_[4] * Hig2_phase_[5] * ((exp(2.0 * Hig2_phase_[5] / T) - 1.0) / (exp(2.0 * Hig2_phase_[5] / T) + 1.0));
 }
 
 // ************************************************************************* //

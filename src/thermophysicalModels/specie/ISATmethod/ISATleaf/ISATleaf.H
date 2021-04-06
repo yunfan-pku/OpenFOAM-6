@@ -123,7 +123,7 @@ Description
 #include "scalarList.H"
 #include "scalarMatrices.H"
 #include "messageStream.H"
-
+#include "List2D.H"
 namespace Foam
 {
 
@@ -196,8 +196,8 @@ namespace Foam
 
         //- Variable to store the number of retrieves the chemPoint
         //  will generate at each time step
-        //label numRetrieve_;
-
+        label numRetrieve_;
+        typename List2D<ISATleaf>::Node* pTimeTagList_;
         //- Variable to store the number of time steps the chempoint is allowed
         //   to still live according to the maxChPLifeTime_ parameter
         //label nLifeTime_;
@@ -276,7 +276,11 @@ namespace Foam
         {
             return EOA_;
         };
-
+        
+        inline typename List2D<ISATleaf>::Node*& pTimeTagList()
+        {
+            return pTimeTagList_;
+        };
         bool inEOA(const scalarList& point);
 
         void eval(const scalarList& value, scalarList& ret);
@@ -348,6 +352,17 @@ namespace Foam
             return node_;
         }
 
+        //- Increases the number of retrieves the chempoint has generated
+        void increaseNumRetrieve();
+
+        //- Resets the number of retrieves at each time step
+        void resetNumRetrieve();
+
+        inline const label& numRetrieve()
+        {
+            return numRetrieve_;
+        }
+
         //void print(Ostream& OFout, int a = 0);
         /*
 
@@ -386,11 +401,7 @@ namespace Foam
             return simplifiedToCompleteIndex_;
         }
 
-        //- Increases the number of retrieves the chempoint has generated
-        void increaseNumRetrieve();
 
-        //- Resets the number of retrieves at each time step
-        void resetNumRetrieve();
 
         //- Increases the "counter" of the chP life
         void increaseNLifeTime();
@@ -417,10 +428,7 @@ namespace Foam
             return maxNumNewDim_;
         }
 
-        inline const label& numRetrieve()
-        {
-            return numRetrieve_;
-        }
+
 
         inline const label& nLifeTime()
         {
@@ -476,6 +484,8 @@ namespace Foam
             */
         template <typename T>
         friend class ISATmanager;
+
+        friend class ISATbinaryTree;
     };
     /*
         Ostream& operator<<(Ostream& OFout, const Foam::ISATleaf& leaf)

@@ -31,26 +31,26 @@ namespace Foam
 {
     template <class Thermo>
     Foam::multispecie<Thermo>::multispecie(
-        const word &name,
-        PtrList<Thermo> &speciesData,
-        const speciesTable &specieNames,
-        const dictionary &thermoDict)
+        const word& name,
+        PtrList<Thermo>& speciesData,
+        const speciesTable& specieNames,
+        const dictionary& thermoDict)
         : N_(specieNames.size()),
-          Y_(specieNames.size()),
-          X_(specieNames.size()),
-          speciesData_(speciesData),
-          species_(specieNames) //,
-                                //changed(1)
+        Y_(specieNames.size()),
+        X_(specieNames.size()),
+        speciesData_(speciesData),
+        species_(specieNames) //,
+                              //changed(1)
     {
     }
 
     template <class Thermo>
-    Foam::multispecie<Thermo>::multispecie(const dictionary &thermoDict, PtrList<Thermo> &speciesData)
+    Foam::multispecie<Thermo>::multispecie(const dictionary& thermoDict, PtrList<Thermo>& speciesData)
         : Y_(0),
-          X_(0),
-          speciesData_(0),
-          species_(speciesData) //,
-                                //changed(1)
+        X_(0),
+        speciesData_(0),
+        species_(speciesData) //,
+                              //changed(1)
 
     {
         wordList s(thermoDict.lookup("species"));
@@ -67,7 +67,7 @@ namespace Foam
         }
     }
     template <class Thermo>
-    inline void Foam::multispecie<Thermo>::setY(scalarList &Y)
+    inline void Foam::multispecie<Thermo>::setY(const scalarList& Y)
     {
         //changed=1;
         scalar sum = 0;
@@ -83,7 +83,7 @@ namespace Foam
     }
 
     template <class Thermo>
-    inline void Foam::multispecie<Thermo>::setX(scalarList &X)
+    inline void Foam::multispecie<Thermo>::setX(const scalarList& X)
     {
         //changed=1;
         scalar sum = 0, sn = 0;
@@ -141,32 +141,32 @@ template<class Thermo>
     {
     }
 */
-    // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
+// * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
     template <class Thermo>
-    inline const Thermo &Foam::multispecie<Thermo>::operator[](const label i) const
+    inline const Thermo& Foam::multispecie<Thermo>::operator[](const label i) const
     {
         return speciesData_[i];
     }
     template <class Thermo>
-    inline const PtrList<Thermo> &Foam::multispecie<Thermo>::speciesData() const
+    inline const PtrList<Thermo>& Foam::multispecie<Thermo>::speciesData() const
     {
         return speciesData_;
     }
 
     template <class Thermo>
-    inline const speciesTable &Foam::multispecie<Thermo>::species() const
+    inline const speciesTable& Foam::multispecie<Thermo>::species() const
     {
         return species_;
     }
 
     template <class Thermo>
-    inline const scalarList &Foam::multispecie<Thermo>::Y() const
+    inline const scalarList& Foam::multispecie<Thermo>::Y() const
     {
         return Y_;
     }
 
     template <class Thermo>
-    inline const scalarList &Foam::multispecie<Thermo>::X() const
+    inline const scalarList& Foam::multispecie<Thermo>::X() const
     {
         return X_;
     }
@@ -191,77 +191,77 @@ template<class Thermo>
         return RR / molWeight_;
     }
 */
-    // * * * * * * * * * * * * * * * Member Operators  * * * * * * * * * * * * * //
-    /*
-    inline void multispecie::operator=(const multispecie &st)
+// * * * * * * * * * * * * * * * Member Operators  * * * * * * * * * * * * * //
+/*
+inline void multispecie::operator=(const multispecie &st)
+{
+    // name_ = st.name_;
+    Y_ = st.Y_;
+    molWeight_ = st.molWeight_;
+}
+
+inline void multispecie::operator+=(const multispecie &st)
+{
+    const scalar sumY = Y_ + st.Y_;
+    if (mag(sumY) > small)
     {
-        // name_ = st.name_;
-        Y_ = st.Y_;
-        molWeight_ = st.molWeight_;
+        molWeight_ = sumY / (Y_ / molWeight_ + st.Y_ / st.molWeight_);
     }
 
-    inline void multispecie::operator+=(const multispecie &st)
-    {
-        const scalar sumY = Y_ + st.Y_;
-        if (mag(sumY) > small)
-        {
-            molWeight_ = sumY / (Y_ / molWeight_ + st.Y_ / st.molWeight_);
-        }
+    Y_ = sumY;
+}
 
-        Y_ = sumY;
-    }
-
-    inline void multispecie::operator*=(const scalar s)
-    {
-        Y_ *= s;
-    }
+inline void multispecie::operator*=(const scalar s)
+{
+    Y_ *= s;
+}
 */
-    // * * * * * * * * * * * * * * * Friend Operators  * * * * * * * * * * * * * //
-    /*
-    inline multispecie operator+(const multispecie &st1, const multispecie &st2)
-    {
-        const scalar sumY = max(st1.Y_ + st2.Y_, small);
+// * * * * * * * * * * * * * * * Friend Operators  * * * * * * * * * * * * * //
+/*
+inline multispecie operator+(const multispecie &st1, const multispecie &st2)
+{
+    const scalar sumY = max(st1.Y_ + st2.Y_, small);
 
-        if (mag(sumY) > small)
-        {
-            return multispecie(
-                sumY,
-                sumY / (st1.Y_ / st1.molWeight_ + st2.Y_ / st2.molWeight_));
-        }
-        else
-        {
-            return st1;
-        }
-    }
-
-    inline multispecie operator*(const scalar s, const multispecie &st)
+    if (mag(sumY) > small)
     {
         return multispecie(
-            s * st.Y_,
-            st.molWeight_);
+            sumY,
+            sumY / (st1.Y_ / st1.molWeight_ + st2.Y_ / st2.molWeight_));
     }
-
-    inline multispecie operator==(const multispecie &st1, const multispecie &st2)
+    else
     {
-        scalar diffY = st2.Y_ - st1.Y_;
-        if (mag(diffY) < small)
-        {
-            diffY = small;
-        }
-
-        const scalar diffRW =
-            st2.Y_ / st2.molWeight_ - st1.Y_ / st1.molWeight_;
-
-        scalar molWeight = great;
-        if (mag(diffRW) > small)
-        {
-            molWeight = diffY / diffRW;
-        }
-
-        return multispecie(diffY, molWeight);
+        return st1;
     }
+}
+
+inline multispecie operator*(const scalar s, const multispecie &st)
+{
+    return multispecie(
+        s * st.Y_,
+        st.molWeight_);
+}
+
+inline multispecie operator==(const multispecie &st1, const multispecie &st2)
+{
+    scalar diffY = st2.Y_ - st1.Y_;
+    if (mag(diffY) < small)
+    {
+        diffY = small;
+    }
+
+    const scalar diffRW =
+        st2.Y_ / st2.molWeight_ - st1.Y_ / st1.molWeight_;
+
+    scalar molWeight = great;
+    if (mag(diffRW) > small)
+    {
+        molWeight = diffY / diffRW;
+    }
+
+    return multispecie(diffY, molWeight);
+}
 */
-    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 } // End namespace Foam
 

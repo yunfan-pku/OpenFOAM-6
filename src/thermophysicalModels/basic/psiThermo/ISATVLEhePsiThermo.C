@@ -30,6 +30,7 @@ License
 template<class BasicPsiThermo, class MixtureType>
 void Foam::ISATVLEhePsiThermo<BasicPsiThermo, MixtureType>::calculate()
 {
+    //static scalar maxvlll = 0;
     const scalarField& hCells = this->he_;
     const scalarField& pCells = this->p_;
 
@@ -38,24 +39,45 @@ void Foam::ISATVLEhePsiThermo<BasicPsiThermo, MixtureType>::calculate()
     scalarField& muCells = this->mu_.primitiveFieldRef();
     scalarField& alphaCells = this->alpha_.primitiveFieldRef();
     scalarField& vaporfracCells = this->vaporfrac_.primitiveFieldRef();
-
+    //const typename MixtureType::thermoType& mixture_ = this->cellMixture(celli);
+    this->newTimeStep();
     forAll(TCells, celli)
     {
         const typename MixtureType::thermoType& mixture_ =
             this->cellMixture(celli);
 
-        TCells[celli] = mixture_.THE
-        (
-            hCells[celli],
-            pCells[celli],
-            TCells[celli]
-        );
+        //TCells[celli] = mixture_.THE(hCells[celli], pCells[celli], TCells[celli]);
+        //psiCells[celli] = mixture_.psi(pCells[celli], TCells[celli]);
+        // psiCells[celli] = mixture_.psi_a(hCells[celli], pCells[celli], TCells[celli]);
+        //psiCells[celli] = mixture_.psi_HP(hCells[celli], pCells[celli], TCells[celli]);
+        //psiCells[celli] = mixture_.psi_a(hCells[celli], pCells[celli], TCells[celli]);
+        // scalar psi_temp = mixture_.psi_HP(hCells[celli], pCells[celli], TCells[celli]);
+       //  scalar Ttemp, psitemp;
 
+        //std::tie(TCells[celli], psiCells[celli]) = mixture_.Tpsi_HP(hCells[celli], pCells[celli], TCells[celli]);
+        std::tie(TCells[celli], psiCells[celli], vaporfracCells[celli]) = mixture_.Tpsivf_HP(hCells[celli], pCells[celli], TCells[celli]);
+
+        /*
+        if (hCells[celli] > 226106.08 && hCells[celli] < 226106.09 && pCells[celli]>10079795.33 && pCells[celli] < 10079795.34)
+            maxvlll = maxvlll;
+        psiCells[celli] = mixture_.psi_a(hCells[celli], pCells[celli], TCells[celli]);
+        scalar psi_temp = mixture_.psi_HP(hCells[celli], pCells[celli], TCells[celli]);
+        scalar psi_temp2 = mixture_.psi(pCells[celli], TCells[celli]);
+        //psiCells[celli] = mixture_.psi(pCells[celli], TCells[celli]);
+
+        scalar psi_temp = mixture_.psi_HP(hCells[celli], pCells[celli], TCells[celli]);
+        scalar psi_temp2 = mixture_.psi_a(pCells[celli], TCells[celli]);
         psiCells[celli] = mixture_.psi(pCells[celli], TCells[celli]);
+ */
+ // if (fabs((Ttemp - TCells[celli]) / TCells[celli]) > maxvlll)
+ //      maxvlll = fabs((Ttemp - TCells[celli]) / TCells[celli]);
+ //   Info << maxvlll << endl;
+
+
 
         muCells[celli] = mixture_.mu(pCells[celli], TCells[celli]);
         alphaCells[celli] = mixture_.alphah(pCells[celli], TCells[celli]);
-        vaporfracCells[celli]=mixture_.vaporfra(pCells[celli], TCells[celli]);
+        //vaporfracCells[celli] = mixture_.vaporfra(pCells[celli], TCells[celli]);
     }
 
     volScalarField::Boundary& pBf =
@@ -111,12 +133,16 @@ void Foam::ISATVLEhePsiThermo<BasicPsiThermo, MixtureType>::calculate()
                 const typename MixtureType::thermoType& mixture_ =
                     this->patchFaceMixture(patchi, facei);
 
-                pT[facei] = mixture_.THE(phe[facei], pp[facei], pT[facei]);
+                //pT[facei] = mixture_.THE(phe[facei], pp[facei], pT[facei]);
 
-                ppsi[facei] = mixture_.psi(pp[facei], pT[facei]);
+                //ppsi[facei] = mixture_.psi(pp[facei], pT[facei]);
+                //ppsi[facei] = mixture_.psi_HP(phe[facei], pp[facei], pT[facei]);
+                //std::tie(pT[facei], ppsi[facei]) = mixture_.Tpsi_HP(phe[facei], pp[facei], pT[facei]);
+                std::tie(pT[facei], ppsi[facei], pvaporfrac[facei]) = mixture_.Tpsivf_HP(phe[facei], pp[facei], pT[facei]);
+
                 pmu[facei] = mixture_.mu(pp[facei], pT[facei]);
                 palpha[facei] = mixture_.alphah(pp[facei], pT[facei]);
-                pvaporfrac[facei] = mixture_.vaporfra(pp[facei], pT[facei]);
+                //pvaporfrac[facei] = mixture_.vaporfra(pp[facei], pT[facei]);
             }
         }
     }
@@ -131,7 +157,7 @@ Foam::ISATVLEhePsiThermo<BasicPsiThermo, MixtureType>::ISATVLEhePsiThermo
     const fvMesh& mesh,
     const word& phaseName
 )
-:
+    :
     heThermo<BasicPsiThermo, MixtureType>(mesh, phaseName),
     vaporfrac_
     (
@@ -178,7 +204,7 @@ void Foam::ISATVLEhePsiThermo<BasicPsiThermo, MixtureType>::correct()
 
     if (debug)
     {
-        Info<< "    Finished" << endl;
+        Info << "    Finished" << endl;
     }
 }
 

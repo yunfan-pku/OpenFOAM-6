@@ -210,8 +210,8 @@ namespace Foam
         {
             return tableTree_;
         }
-
-        void add(const scalarList& value);
+        template <class ...Args>
+        void add(const scalarList& value, Args... arg);
 
         inline scalar& epsilon()
         {
@@ -234,8 +234,8 @@ namespace Foam
         }
 
         ISATleaf* search(const scalarList& value);
-
-        void call(const Foam::scalarList& value, scalarList& out);
+        template <class ...Args>
+        void call(const Foam::scalarList& value, scalarList& out, Args... arg);
 
         void tablevalue(const Foam::scalarList& value, scalarList& out);
 
@@ -246,6 +246,11 @@ namespace Foam
         double distance(const scalarList& l, const scalarList& r);
 
         double norm(const scalarList& l);
+
+        void newTimeStep()
+        {
+            tableTree_.timeTagList().newTimeStep();
+        }
 
         label treesize()
         {

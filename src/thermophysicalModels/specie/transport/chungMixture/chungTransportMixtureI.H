@@ -165,7 +165,7 @@ template <class Specie>
 inline Foam::scalar Foam::chungTransportMixture<Specie>::kappa(
     scalar p,
     scalar T,
-    const label *pf,
+    const label pf,
     const scalarList *Xinp) const
 {
 

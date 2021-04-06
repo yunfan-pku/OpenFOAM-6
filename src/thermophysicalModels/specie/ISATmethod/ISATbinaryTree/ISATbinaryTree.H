@@ -45,9 +45,11 @@ Description
 #ifndef ISATbinaryTree_H
 #define ISATbinaryTree_H
 
+
 #include "dictionary.H"
 //#include "ISATleaf.H"
 #include "ISATNode.H"
+#include "List2D.H"
 //#include "binaryNode.H"
 //#include "chemPointISAT.H"
 
@@ -62,7 +64,40 @@ namespace Foam
 
     class ISATNode;
 
-    //template<class CompType, class ThermoType>
+    
+    /*
+        class Heap
+        {
+        private:
+            List<ISATleaf*> heap_;
+            label size_;
+            label maxsize_;
+        public:
+            Heap(label n) :heap_(n), size_(0), maxsize_(n) {}
+            void reset(label n) { heap_.resize(n);size_ = 0;maxsize_ = n; }
+            void insert(ISATleaf* pin) { if (size_ >= maxsize_)FatalErrorInFunction << "size_ >=maxsize_" << exit(FatalError);heap_[size_++] = pin;shiftUp(size_ - 1); }
+            void shiftUp(int start) {
+                int j = start, i = (j - 1) / 2; ISATleaf* temp = heap_[j];
+                while (j > 0) {
+                    if (heap_[i]->numRetrieve() >= temp->numRetrieve()) break;
+                    else { heap_[j] = heap_[i];  j = i; i = (j - 1) / 2; }
+                }
+                heap_[j] = temp;
+            }
+
+            void ShiftDown(int start) {
+                int i = start, j = 2 * i + 1; ISATleaf* temp = heap_[i];
+                while (j < size_) {
+                    if (j + 1 < size_ && heap_[j]->numRetrieve() < heap_[j + 1]->numRetrieve()) j++;
+                    if (temp->numRetrieve() >= heap_[j]->numRetrieve())  break;
+                    else { heap_[i] = heap_[j]; i = j; j = 2 * j + 1; }
+                }
+                heap_[i] = temp;
+            }
+            ISATleaf* pop() { if (size_ <= 0)FatalErrorInFunction << "size_<=0" << exit(FatalError);ISATleaf* temp = heap_[0];heap_[0] = heap_[--size_];ShiftDown(0);return temp; }
+        };*/
+
+        //template<class CompType, class ThermoType>
 
     class ISATbinaryTree
     {
@@ -82,10 +117,12 @@ namespace Foam
         ISATNode* root_;
 
         //- Maximum number of elements in the binary tree
-        //label maxNLeafs_;
+        label maxNLeafs_;
 
         //- Size of the BST (= number of chemPoint stored)
         label size_;
+
+        List2D<ISATleaf> timeTagList_;
 
         //- Secondary retrieve search variables
         //label n2ndSearch_;
@@ -101,6 +138,10 @@ namespace Foam
             ISATNode*& newNode
         );
 
+        ISATleaf* Sibling(ISATleaf* x);
+        ISATNode* nodeSibling(ISATleaf* x);
+        //- Replace the binaryNode u with v
+        void transplant(ISATNode* u, ISATNode* v);
         //- Perform a search in the subtree starting from the subtree node y
         //  This search continue to use the hyperplan to walk the tree
         //  If covering EOA is found return true and x points to the chemPoint
@@ -116,14 +157,13 @@ namespace Foam
 
 
 
-        //- Replace the binaryNode u with v
-        void transplant(bn* u, bn* v);
+
+
 
         chP* chemPSibling(bn* y);
-        chP* chemPSibling(chP* x);
+
 
         bn* nodeSibling(bn* y);
-        bn* nodeSibling(chP* x);
 
         void deleteAllNode(bn* subTreeRoot);
 
@@ -139,7 +179,7 @@ namespace Foam
             //dictionary coeffsDict
             label in_n,
             label out_n
-        ) :n_in_(in_n), n_out_(out_n),root_(nullptr), size_(0) {};
+        ) :n_in_(in_n), n_out_(out_n), root_(nullptr), maxNLeafs_(10000), size_(0), timeTagList_(10) {};
 
         inline ISATNode* root()
         {
@@ -161,6 +201,10 @@ namespace Foam
             return n_out_;
         }
 
+        inline  List2D<ISATleaf>& timeTagList()
+        {
+            return timeTagList_;
+        }
         void deleteSubTree(ISATNode* subTreeRoot);
 
         inline void deleteSubTree()
@@ -179,35 +223,39 @@ namespace Foam
         {
             return depth(root_);
         }
-
+        void deleteLeaf(ISATleaf* pleaf);
 
 
         //- Member functions
-        /*
 
 
-            inline label maxNLeafs()
-            {
-                return maxNLeafs_;
-            }
-            */
 
-            // Insert a new leaf starting from the parent node of phi0
-            // Parameters: phi0 the leaf to replace by a node
-            // phiq the new composition to store
-            // Rphiq the mapping of the new composition point
-            // A the mapping gradient matrix
-            // B the matrix used to initialize the EOA
-            // nCols the size of the matrix
-            // Returns: void
-            // Description :
-            //1) Create a new leaf with the data to initialize the EOA and to
-            // retrieve the mapping by linear interpolation (the EOA is
-            // initialize in the chemPoint constructor)
-            //2) Get the parent node of phi0 and connect a new node in place of the
-            // leaf of phi0. This new node is constructed with phi0 on the left
-            // and phiq on the right (the hyperplane is computed inside the
-            // binaryNode constructor)
+        inline label maxNLeafs()
+        {
+            return maxNLeafs_;
+        }
+        inline void setmaxNLeafs(label n)
+        {
+            maxNLeafs_ = n;
+        }
+
+
+        // Insert a new leaf starting from the parent node of phi0
+        // Parameters: phi0 the leaf to replace by a node
+        // phiq the new composition to store
+        // Rphiq the mapping of the new composition point
+        // A the mapping gradient matrix
+        // B the matrix used to initialize the EOA
+        // nCols the size of the matrix
+        // Returns: void
+        // Description :
+        //1) Create a new leaf with the data to initialize the EOA and to
+        // retrieve the mapping by linear interpolation (the EOA is
+        // initialize in the chemPoint constructor)
+        //2) Get the parent node of phi0 and connect a new node in place of the
+        // leaf of phi0. This new node is constructed with phi0 on the left
+        // and phiq on the right (the hyperplane is computed inside the
+        // binaryNode constructor)
         ISATleaf* insertNewLeaf
         (
             const scalarList& value,
@@ -275,11 +323,15 @@ namespace Foam
 
 
 
-        //- ListFull
-        bool isFull();
+
 
         void resetNumRetrieve();
         */
+
+        //- ListFull
+        bool isFull();
+
+
         template <typename T>
         friend class ISATmanager;
     };

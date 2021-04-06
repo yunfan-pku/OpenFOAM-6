@@ -169,6 +169,11 @@ Foam::nonlinearMixture<ThermoType>::nonlinearMixture
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
+template<class ThermoType, template<class> class ThermoMixtureType>
+inline void Foam::nonlinearMixture<ThermoType, ThermoMixtureType>::newTimeStep()
+{
+    mixture_.newTimeStep();
+}
 
 template<class ThermoType, template<class> class ThermoMixtureType>
 const ThermoMixtureType<ThermoType>& Foam::nonlinearMixture<ThermoType, ThermoMixtureType>::cellMixture

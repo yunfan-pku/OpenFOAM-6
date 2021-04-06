@@ -60,7 +60,7 @@ Foam::ISATmanager<FuncType>::~ISATmanager()
     showPreformance();
 
     word Tname = "vaporfratree";// "vaporfratree";
-
+/*
     if (Tname == treename_)
         //if (tableTree_.size_ > 0)
     {
@@ -75,22 +75,30 @@ Foam::ISATmanager<FuncType>::~ISATmanager()
         Info << out[0] << ", point=" << pleaf->value() << ", data=" << pleaf->data() << endl;
         Info << "A= " << pleaf->A() << endl;
         Info << "EOA= " << pleaf->EOA() << endl;
-        pfunc->value(in, out);
-        Info << out[0] << endl;
+        //pfunc->value(in, out);
+        //Info << out[0] << endl;
+
     }
+    */
 
 }
 template<class FuncType>
-void Foam::ISATmanager<FuncType>::add(const scalarList& value)
+template <class ...Args>
+void Foam::ISATmanager<FuncType>::add(const scalarList& value, Args... arg)
 {
     //word Tname = "vaporfratree";
 
     ISATbinaryTree& T = tableTree_;
     ISATleaf* pleaf;
+    if(T.size()==T.maxNLeafs())
+    {
+//        Info<<"Deleting"<<endl;
+        T.deleteLeaf(T.timeTagList().pop());
+    }
     scalarList R(tableTree_.n_out());
-    pfunc->value(value, R);
+    pfunc->value(value, R, arg...);
     pleaf = T.insertNewLeaf(value, R);
-    pfunc->derive(value, pleaf->A());
+    pfunc->derive(value, pleaf->A(), arg...);
     scalarRectangularMatrix At(tableTree_.n_in_, tableTree_.n_in_);
     /*for (int i = 0;i < tableTree_.n_in_;i++)
         for (int j = 0;j < tableTree_.n_in_;j++)
@@ -99,7 +107,7 @@ void Foam::ISATmanager<FuncType>::add(const scalarList& value)
         }*/
         //Info<<pleaf->A()<<endl;
 
-    pleaf->EOA() = ((pleaf->A()) * scaleFactor_ * scaleFactor_ * (pleaf->A().T())+init_elp_*init_elp_) / (epsilon_ * epsilon_);//+ init_elp_
+    pleaf->EOA() = ((pleaf->A()) * scaleFactor_ * scaleFactor_ * (pleaf->A().T()) + init_elp_ * init_elp_) / (epsilon_ * epsilon_);//+ init_elp_
     /*
     if (Tname == treename_)
     {
@@ -123,24 +131,25 @@ Foam::ISATleaf* Foam::ISATmanager<FuncType>::search(const scalarList& value)
     return p;
 }
 template<class FuncType>
+template <class ...Args>
 void Foam::ISATmanager<FuncType>::call
 (
-    const Foam::scalarList& value, scalarList& out
+    const Foam::scalarList& value, scalarList& out, Args... arg
 )
 {
     ISATleaf* pleaf;
-    word Tname = "vaporfratree";
+    //word Tname = "psitree";
     //int aaa;
-    //if (Tname == treename_ && value[1] < 1.4982e+07 && value[1]>1.4980e+07 && value[2] < 550.48 && value[2]>550.478)
-        //aaa = 5;
+    //if (Tname == treename_)
+    //    aaa = 5;
     if (!retrieve(value, out))
     {
         pleaf = search(value);
 
         if (pleaf == nullptr)
         {
-            pfunc->value(value, out);
-            add(value);
+            pfunc->value(value, out, arg...);
+            add(value, arg...);
         }
         else
         {
@@ -157,29 +166,36 @@ void Foam::ISATmanager<FuncType>::call
             {
                 leafvalue[i] = value[i];
             }
-            pfunc->value(leafvalue + dvalue, out);
+            pfunc->value(leafvalue + dvalue, out, arg...);
             scalarList out2(out.size());
-            scalarList others=leafvalue - dvalue;
-            bool flag_others=true;
-            for(int i=0;i<others.size();i++)
+            scalarList others = leafvalue - dvalue;
+            bool flag_others = true;
+            for (int i = 0;i < others.size();i++)
             {
-                flag_others=flag_others&&others[i]>=0;
+                flag_others = flag_others && others[i] >= 0;
             }
-            flag_others=flag_others&&others[0]+others[1]<=1;
-            if(!flag_others)
+            scalar sumother = 0;
+            for (int i = 0;i < others.size() - 2;i++)
             {
-                add(value);
-                return;
+                sumother += others[i];
             }
-            pfunc->value(leafvalue - dvalue, out2);
-            //Info<<out<<endl;
+            flag_others = flag_others && sumother <= 1;
+            if (!flag_others)
+            {
+                add(value, arg...);
+            }
+            else
+            {
+                pfunc->value(leafvalue - dvalue, out2, arg...);
+                //Info<<out<<endl;
 
-            //scalarList out2, value2;
-            //value2 = 2 * pleaf->value_ - value;
-            //value2[0] = value[0];
-            //pfunc->value(value2, out2);
-            if (!grow(pleaf, dvalue, out, out2))
-                add(value);
+                //scalarList out2, value2;
+                //value2 = 2 * pleaf->value_ - value;
+                //value2[0] = value[0];
+                //pfunc->value(value2, out2);
+                if (!grow(pleaf, dvalue, out, out2))
+                    add(value, arg...);
+            }
         }
     }/*
     else {
@@ -192,7 +208,7 @@ void Foam::ISATmanager<FuncType>::call
         }
     }*/
     nCall_++;
-    if (nCall_ % 100000 == 0)
+    if (nCall_ % 1000 == 0)
     {
         showPreformance();
     }
@@ -285,6 +301,8 @@ bool Foam::ISATmanager<FuncType>::retrieve
         */
         nRetrieved_++;
         tableTree_.eval(value, out);
+        plf->increaseNumRetrieve();
+        tableTree_.timeTagList().renew(plf->pTimeTagList());
         return true;
     }
     else
@@ -345,6 +363,7 @@ bool Foam::ISATmanager<FuncType>::grow
     if (distance(ret1, data1) <= epsilon_ && distance(ret2, data2) <= epsilon_)
     {
         plf->grow(plf->value() + dvalue_m);
+        tableTree_.timeTagList().renew(plf->pTimeTagList());
         nGrowth_++;
         return true;
     }

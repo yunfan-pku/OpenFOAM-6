@@ -50,23 +50,23 @@ namespace Foam
 
     template <class Specie>
     inline PengRobinson<Specie> operator+(
-        const PengRobinson<Specie> &,
-        const PengRobinson<Specie> &);
+        const PengRobinson<Specie>&,
+        const PengRobinson<Specie>&);
 
     template <class Specie>
     inline PengRobinson<Specie> operator*(
         const scalar,
-        const PengRobinson<Specie> &);
+        const PengRobinson<Specie>&);
 
     template <class Specie>
     inline PengRobinson<Specie> operator==(
-        const PengRobinson<Specie> &,
-        const PengRobinson<Specie> &);
+        const PengRobinson<Specie>&,
+        const PengRobinson<Specie>&);
 
     template <class Specie>
-    Ostream &operator<<(
-        Ostream &,
-        const PengRobinson<Specie> &);
+    Ostream& operator<<(
+        Ostream&,
+        const PengRobinson<Specie>&);
 
     /*---------------------------------------------------------------------------*\
                            Class PengRobinson Declaration
@@ -100,24 +100,24 @@ namespace Foam
         typedef PengRobinson<Specie> EOS;
         //- Construct from components
         inline PengRobinson(
-            const Specie &sp,
-            const scalar &Tc,
-            const scalar &Vc,
-            const scalar &Pc,
-            const scalar &omega);
+            const Specie& sp,
+            const scalar& Tc,
+            const scalar& Vc,
+            const scalar& Pc,
+            const scalar& omega);
 
         //- Construct from dictionary
-        PengRobinson(const dictionary &dict);
+        PengRobinson(const dictionary& dict);
 
         //- Construct as named copy
-        inline PengRobinson(const word &name, const PengRobinson &);
+        inline PengRobinson(const word& name, const PengRobinson&);
 
         //- Construct and return a clone
         inline autoPtr<PengRobinson> clone() const;
 
         // Selector from dictionary
         inline static autoPtr<PengRobinson> New(
-            const dictionary &dict);
+            const dictionary& dict);
 
         // Member functions
 
@@ -157,10 +157,17 @@ namespace Foam
         inline scalar CpMCv(scalar p, scalar T) const;
 
         inline scalar A(scalar p, scalar T) const;
+        inline scalar dAdT(scalar p, scalar T) const;
+        inline scalar dAdP(scalar p, scalar T) const;
         inline scalar B(scalar p, scalar T) const;
+        inline scalar dBdT(scalar p, scalar T) const;
+        inline scalar dBdP(scalar p, scalar T) const;
         inline scalar a(scalar p, scalar T) const;
         inline scalar b(scalar p, scalar T) const;
         inline scalar dadt(scalar p, scalar T) const;
+        inline scalar dadp(scalar p, scalar T) const;
+        inline scalar dbdT(scalar p, scalar T) const;
+        inline scalar dbdP(scalar p, scalar T) const;
         inline scalar d2adt2(scalar p, scalar T) const;
         inline scalar EOSalpha(scalar P, scalar T) const;
 
@@ -172,32 +179,32 @@ namespace Foam
         // IO
 
         //- Write to Ostream
-        void write(Ostream &os) const;
+        void write(Ostream& os) const;
 
         // Member operators
 
-        inline void operator+=(const PengRobinson &);
+        inline void operator+=(const PengRobinson&);
         inline void operator*=(const scalar);
 
         // Friend operators
 
         friend PengRobinson operator+<Specie>(
-            const PengRobinson &,
-            const PengRobinson &);
+            const PengRobinson&,
+            const PengRobinson&);
 
         friend PengRobinson operator*<Specie>(
             const scalar s,
-            const PengRobinson &);
+            const PengRobinson&);
 
         friend PengRobinson operator==<Specie>(
-            const PengRobinson &,
-            const PengRobinson &);
+            const PengRobinson&,
+            const PengRobinson&);
 
         // Ostream Operator
 
-        friend Ostream &operator<<<Specie>(
-            Ostream &,
-            const PengRobinson &);
+        friend Ostream& operator<<<Specie>(
+            Ostream&,
+            const PengRobinson&);
     };
 
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

@@ -36,6 +36,7 @@ SourceFiles
 #ifndef PengRobinsonMixture_H
 #define PengRobinsonMixture_H
 #include "autoPtr.H"
+#include <tuple>
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -49,23 +50,23 @@ namespace Foam
 
     template <class ThermoMixture>
     inline PengRobinsonMixture<ThermoMixture> operator+(
-        const PengRobinsonMixture<ThermoMixture> &,
-        const PengRobinsonMixture<ThermoMixture> &);
+        const PengRobinsonMixture<ThermoMixture>&,
+        const PengRobinsonMixture<ThermoMixture>&);
 
     template <class ThermoMixture>
     inline PengRobinsonMixture<ThermoMixture> operator*(
         const scalar,
-        const PengRobinsonMixture<ThermoMixture> &);
+        const PengRobinsonMixture<ThermoMixture>&);
 
     template <class ThermoMixture>
     inline PengRobinsonMixture<ThermoMixture> operator==(
-        const PengRobinsonMixture<ThermoMixture> &,
-        const PengRobinsonMixture<ThermoMixture> &);
+        const PengRobinsonMixture<ThermoMixture>&,
+        const PengRobinsonMixture<ThermoMixture>&);
 
     template <class ThermoMixture>
-    Ostream &operator<<(
-        Ostream &,
-        const PengRobinsonMixture<ThermoMixture> &);
+    Ostream& operator<<(
+        Ostream&,
+        const PengRobinsonMixture<ThermoMixture>&);
 
     /*---------------------------------------------------------------------------*\
                            Class PengRobinsonMixture Declaration
@@ -87,19 +88,19 @@ namespace Foam
         //- Construct from components
 
         //- Construct from dictionary
-        PengRobinsonMixture(const dictionary &dict, PtrList<SingleThermoType> &);
+        PengRobinsonMixture(const dictionary& dict, PtrList<SingleThermoType>&);
 
         //- Construct as named copy
-        inline PengRobinsonMixture(const word &name, const PengRobinsonMixture &);
+        inline PengRobinsonMixture(const word& name, const PengRobinsonMixture&);
 
-        inline PengRobinsonMixture(const word &name, PtrList<SingleThermoType> &, const speciesTable &, const dictionary &);
+        inline PengRobinsonMixture(const word& name, PtrList<SingleThermoType>&, const speciesTable&, const dictionary&);
 
         //- Construct and return a clone
         inline autoPtr<PengRobinsonMixture> clone() const;
 
         // Selector from dictionary
         inline static autoPtr<PengRobinsonMixture> New(
-            const dictionary &dict);
+            const dictionary& dict);
 
         // Member functions
 
@@ -110,28 +111,66 @@ namespace Foam
         }
 
         // Fundamental properties
-        inline scalar A(scalar p, scalar T, const scalarList *Xinp = NULL) const;
-        inline scalar B(scalar p, scalar T, const scalarList *Xinp = NULL) const;
-        inline scalar a(scalar p, scalar T, const scalarList *Xinp = NULL) const;
-        inline scalar b(scalar p, scalar T, const scalarList *Xinp = NULL) const;
-        inline scalar dadt(scalar p, scalar T, const scalarList *Xinp = NULL) const;
-        inline scalar d2adt2(scalar p, scalar T, const scalarList *Xinp = NULL) const;
-        inline autoPtr<scalarList> A2(scalar p, scalar T, const scalarList *Xinp = NULL) const;
-        inline static scalar cubicSolve(scalar a2, scalar a1, scalar a0, label flag);
+        inline scalar A(scalar p, scalar T, const scalarList* Xinp = NULL) const;
+        inline scalar dAdT(scalar p, scalar T, const scalarList* Xinp = NULL) const;
+        inline scalar dAdP(scalar p, scalar T, const scalarList* Xinp = NULL) const;
+        inline scalar dAdxi(scalar p, scalar T, label di, const scalarList* Xinp = NULL) const;
+        inline scalar B(scalar p, scalar T, const scalarList* Xinp = NULL) const;
+        inline scalar dBdT(scalar p, scalar T, const scalarList* Xinp = NULL) const;
+        inline scalar dBdP(scalar p, scalar T, const scalarList* Xinp = NULL) const;
+        inline scalar dBdxi(scalar p, scalar T, label di, const scalarList* Xinp = NULL) const;
+        inline scalar a(scalar p, scalar T, const scalarList* Xinp = NULL) const;
+        inline scalar b(scalar p, scalar T, const scalarList* Xinp = NULL) const;
+        inline scalar dadt(scalar p, scalar T, const scalarList* Xinp = NULL) const;
+        inline scalar dadp(scalar p, scalar T, const scalarList* Xinp = NULL) const;
+        inline scalar d2adtdxi(scalar p, scalar T, label di, const scalarList* Xinp = NULL) const;
+        inline scalar dadxi(scalar p, scalar T, label di, const scalarList* Xinp = NULL) const;
+        inline scalar ddT_dadt(scalar p, scalar T, const scalarList* Xinp = NULL) const;
+        inline scalar d2adt2(scalar p, scalar T, const scalarList* Xinp = NULL) const;
+        inline autoPtr<scalarList> A2(scalar p, scalar T, const scalarList* Xinp = NULL) const;
+        inline autoPtr<scalarList> dA2dT(scalar p, scalar T, const scalarList* Xinp = NULL) const;
+        inline autoPtr<scalarList> dA2dP(scalar p, scalar T, const scalarList* Xinp = NULL) const;
+        inline autoPtr<scalarList> dA2dxi(scalar p, scalar T, label di, const scalarList* Xinp = NULL) const;
 
+        inline static scalar cubicSolve(scalar a2, scalar a1, scalar a0, label flag);
+        inline static std::tuple<int, double, double, double> cubicSolve(scalar a2, scalar a1, scalar a0);
         //- Return density [kg/m^3]
-        inline scalar rho(scalar p, scalar T, const label *pf = NULL, const scalarList *Xinp = NULL) const;
+        inline scalar rho(scalar p, scalar T, const label pf = 2, const scalarList* Xinp = NULL) const;
+        inline scalar drhodT(scalar p, scalar T, const label pf = 2, const scalarList* Xinp = NULL) const;
+        inline scalar drhodP(scalar p, scalar T, const label pf = 2, const scalarList* Xinp = NULL) const;
         //inline scalar V(scalar p, scalar T, const label *pf = NULL, const scalarList *Xinp = NULL) const;
-        inline scalar Ha(scalar p, scalar T, const label *pf = NULL, const scalarList *Xinp = NULL) const;
-        inline scalar Hc(const scalarList *Xinp = NULL) const;
-        inline scalar Hideal(scalar p, scalar T, const scalarList *Xinp = NULL) const;
-        inline scalar Hig_phase(scalar T, const scalarList *Xinp = NULL) const;
-        inline scalar Hig2_phase(scalar T, const scalarList *Xinp = NULL) const;
-        inline scalar V(scalar p, scalar T, const label *pf = NULL, const scalarList *Xinp = NULL) const;
-        inline scalar CpMCv(scalar p, scalar T, const label *pf = NULL, const scalarList *Xinp = NULL) const;
-        inline scalar Cp(scalar p, scalar T, const label *pf = NULL, const scalarList *Xinp = NULL) const;
-        inline scalar S(scalar p, scalar T, const label *pf = NULL, const scalarList *Xinp = NULL) const;
-        inline scalar Sideal(scalar p, scalar T, const scalarList *Xinp = NULL) const;
+        inline scalar Ha(scalar p, scalar T, const label pf = 2, const scalarList* Xinp = NULL) const;
+        inline scalar Hs(scalar p, scalar T, const label pf = 2, const scalarList* Xinp = NULL) const;
+        inline scalar dHadT(scalar p, scalar T, const label pf = 2, const scalarList* Xinp = NULL) const;
+        inline scalar dHadP(scalar p, scalar T, const label pf = 2, const scalarList* Xinp = NULL) const;
+        inline scalar dHadxi(scalar p, scalar T, label di, const label pf = 2, const scalarList* Xinp = NULL) const;
+        inline scalar dHsdT(scalar p, scalar T, const label pf = 2, const scalarList* Xinp = NULL) const;
+        inline scalar dHsdP(scalar p, scalar T, const label pf = 2, const scalarList* Xinp = NULL) const;
+        inline scalar dHsdxi(scalar p, scalar T, label di, const label pf = 2, const scalarList* Xinp = NULL) const;
+        inline scalar Hc(const scalarList* Xinp = NULL) const;
+        inline scalar Hideal(scalar p, scalar T, const scalarList* Xinp = NULL) const;
+        inline scalar Hideal_Mole(scalar p, scalar T, const scalarList* Xinp = NULL) const;
+        inline scalar dHidealdT(scalar p, scalar T, const scalarList* Xinp = NULL) const;
+        inline scalar dHidealdxi(scalar p, scalar T, label di, const scalarList* Xinp = NULL) const;
+        inline scalar dHidealdP(scalar p, scalar T, const scalarList* Xinp = NULL) const;
+        inline scalar Hig_phase(scalar T, const scalarList* Xinp = NULL) const;
+        inline scalar Hig2_phase(scalar T, const scalarList* Xinp = NULL) const;
+        inline scalar V(scalar p, scalar T, const label pf = 2, const scalarList* Xinp = NULL) const;
+        inline scalar CpMCv(scalar p, scalar T, const label pf = 2, const scalarList* Xinp = NULL) const;
+        inline scalar Cp(scalar p, scalar T, const label pf = 2, const scalarList* Xinp = NULL) const;
+        inline scalar S(scalar p, scalar T, const label pf = 2, const scalarList* Xinp = NULL) const;
+        inline scalar Sideal_Mole(scalar p, scalar T, const scalarList* Xinp = NULL) const;
+        inline scalar Sideal(scalar p, scalar T, const scalarList* Xinp = NULL) const;
+        inline scalar Gideal_Mole(scalar p, scalar T, const scalarList* Xinp = NULL) const;
+        inline scalar Gideal(scalar p, scalar T, const scalarList* Xinp = NULL) const;
+        inline scalar muideal_Mole(scalar p, scalar T, label di,const scalarList* Xinp = NULL) const;
+        inline scalar Aideal(scalar p, scalar T, const scalarList* Xinp = NULL) const;
+        inline scalar Aideal_Mole(scalar p, scalar T, const scalarList* Xinp = NULL) const;
+        inline scalar G(scalar p, scalar T, const label pf = 2, const scalarList* Xinp = NULL) const;
+        inline scalar G_Mole(scalar p, scalar T, const scalarList* Xinp = NULL) const;
+        inline scalar G_departure_Mole(scalar p, scalar T, const scalarList* Xinp = NULL) const;
+        inline scalar G_TPD(scalar p, scalar T, const scalarList* Xinp = NULL) const;
+        inline scalar A_TPD(scalar p, scalar T, const scalarList* Xinp = NULL) const;
         //- Return enthalpy departure [J/kg]
         inline scalar H(const scalar p, const scalar T) const;
 
@@ -145,15 +184,33 @@ namespace Foam
         inline scalar psi(scalar p, scalar T) const;
 
         //- Return compression factor []
-        inline scalar Z(scalar p, scalar T, const label *pf = NULL, const scalarList *Xinp = NULL) const;
+        inline scalar Z(scalar p, scalar T, const label pf = 2, const scalarList* Xinp = NULL) const;
+        inline std::tuple<int, double, double, double> Z_full(scalar p, scalar T, const scalarList* Xinp) const;
+        inline scalar Z_gibbs(scalar p, scalar T, const scalarList* Xinp) const;
+        inline scalar vol_gibbs(scalar p, scalar T, const scalarList* Xinp) const;
+
+        inline scalar dZdT(scalar p, scalar T, const label pf = 2, const scalarList* Xinp = NULL) const;
+
+        inline scalar dZdP(scalar p, scalar T, const label pf = 2, const scalarList* Xinp = NULL) const;
+
+        inline scalar dZdxi(scalar p, scalar T, label di, const label pf = 2, const scalarList* Xinp = NULL) const;
 
         //- Return molecular weight [kg/mol]
-        inline scalar W(const scalarList *Xinp = NULL) const;
+        inline scalar W(const scalarList* Xinp = NULL) const;
 
-        inline autoPtr<scalarList> fugacityCoefficient(scalar p, scalar T, const label *pf = NULL, const scalarList *Xinp = NULL) const;
+        inline autoPtr<scalarList> fugacityCoefficient(scalar p, scalar T, const label pf = 2, const scalarList* Xinp = NULL) const;
+        inline autoPtr<scalarList>ln_fugacityCoefficient(scalar p, scalar T, scalar z, const scalarList* Xinp = NULL) const;
+
+        inline autoPtr<scalarList> ddT_Ln_fugacityCoefficient(scalar p, scalar T, const label pf = 2, const scalarList* Xinp = NULL) const;
+
+        inline autoPtr<scalarList> ddP_Ln_fugacityCoefficient(scalar p, scalar T, const label pf = 2, const scalarList* Xinp = NULL) const;
+
+        inline autoPtr<scalarList> ddxi_Ln_fugacityCoefficient(scalar p, scalar T, label di, const label pf = 2, const scalarList* Xinp = NULL) const;
 
         //- Return species compressibility coefficient in each phase []
-        inline void fugcoef_phase(int phasei, scalar p, scalar T, scalar *comp_inp, scalar *fugcoef) const;
+        inline void fugcoef_phase(int phasei, scalar p, scalar T, scalar* comp_inp, scalar* fugcoef) const;
+
+
 
         /*
         //- Return mass fraction of 0 species, temporary
@@ -204,7 +261,7 @@ namespace Foam
         //- Return phase compostions [kg/mol]
         inline scalar yTox_phase(scalar yGasInp, scalar *comp_gas, scalar *comp_liq) const;
 */
-        //- Is the equation of state is incompressible i.e. rho != f(p)
+//- Is the equation of state is incompressible i.e. rho != f(p)
         static const bool incompressible = false;
 
         //- Is the equation of state is isochoric i.e. rho = const
@@ -225,7 +282,7 @@ namespace Foam
         //- Return compressibility rho/p [s^2/m^2]
         inline scalar psi_phase(int phasei, scalar p, scalar T, scalar *comp) const;
 */
-        //- Return (Cp - Cv) [J/(kg K]
+//- Return (Cp - Cv) [J/(kg K]
         inline scalar CpMCv(scalar p, scalar T) const;
         /*
         //- Return ABZmix: Amixz, Bmixz, Amix2, Bz []
@@ -343,16 +400,16 @@ namespace Foam
         //- Thermal conductivity
         inline void from_sie_ro_to_PT(scalar sie_inp, scalar ro_inp, scalar *comp_inp, scalar &pres, scalar &temp) const;
 */
-        // IO
+// IO
 
-        //- Write to Ostream
-        void write(Ostream &os) const;
+//- Write to Ostream
+        void write(Ostream& os) const;
 
         // Ostream Operator
 
-        friend Ostream &operator<<<ThermoMixture>(
-            Ostream &,
-            const PengRobinsonMixture &);
+        friend Ostream& operator<<<ThermoMixture>(
+            Ostream&,
+            const PengRobinsonMixture&);
     };
     // * * * * * * * * * * * * * * * * Global data  * * * * * * * * * * * * * * //
 

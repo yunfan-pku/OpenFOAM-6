@@ -466,6 +466,278 @@ class solver(_object):
 solver_swigregister = _VLE.solver_swigregister
 solver_swigregister(solver)
 
+class solver_new(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, solver_new, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, solver_new, name)
+    __repr__ = _swig_repr
+    __swig_setmethods__["path"] = _VLE.solver_new_path_set
+    __swig_getmethods__["path"] = _VLE.solver_new_path_get
+    if _newclass:
+        path = _swig_property(_VLE.solver_new_path_get, _VLE.solver_new_path_set)
+    __swig_setmethods__["dict"] = _VLE.solver_new_dict_set
+    __swig_getmethods__["dict"] = _VLE.solver_new_dict_get
+    if _newclass:
+        dict = _swig_property(_VLE.solver_new_dict_get, _VLE.solver_new_dict_set)
+    __swig_setmethods__["species"] = _VLE.solver_new_species_set
+    __swig_getmethods__["species"] = _VLE.solver_new_species_get
+    if _newclass:
+        species = _swig_property(_VLE.solver_new_species_get, _VLE.solver_new_species_set)
+    __swig_setmethods__["thermoDict"] = _VLE.solver_new_thermoDict_set
+    __swig_getmethods__["thermoDict"] = _VLE.solver_new_thermoDict_get
+    if _newclass:
+        thermoDict = _swig_property(_VLE.solver_new_thermoDict_get, _VLE.solver_new_thermoDict_set)
+    __swig_setmethods__["thermoDictM"] = _VLE.solver_new_thermoDictM_set
+    __swig_getmethods__["thermoDictM"] = _VLE.solver_new_thermoDictM_get
+    if _newclass:
+        thermoDictM = _swig_property(_VLE.solver_new_thermoDictM_get, _VLE.solver_new_thermoDictM_set)
+    __swig_setmethods__["thermo"] = _VLE.solver_new_thermo_set
+    __swig_getmethods__["thermo"] = _VLE.solver_new_thermo_get
+    if _newclass:
+        thermo = _swig_property(_VLE.solver_new_thermo_get, _VLE.solver_new_thermo_set)
+    __swig_setmethods__["speciesData"] = _VLE.solver_new_speciesData_set
+    __swig_getmethods__["speciesData"] = _VLE.solver_new_speciesData_get
+    if _newclass:
+        speciesData = _swig_property(_VLE.solver_new_speciesData_get, _VLE.solver_new_speciesData_set)
+    __swig_setmethods__["P"] = _VLE.solver_new_P_set
+    __swig_getmethods__["P"] = _VLE.solver_new_P_get
+    if _newclass:
+        P = _swig_property(_VLE.solver_new_P_get, _VLE.solver_new_P_set)
+    __swig_setmethods__["T"] = _VLE.solver_new_T_set
+    __swig_getmethods__["T"] = _VLE.solver_new_T_get
+    if _newclass:
+        T = _swig_property(_VLE.solver_new_T_get, _VLE.solver_new_T_set)
+    __swig_setmethods__["m_specie"] = _VLE.solver_new_m_specie_set
+    __swig_getmethods__["m_specie"] = _VLE.solver_new_m_specie_get
+    if _newclass:
+        m_specie = _swig_property(_VLE.solver_new_m_specie_get, _VLE.solver_new_m_specie_set)
+
+    def __init__(self, arg2):
+        this = _VLE.new_solver_new(arg2)
+        try:
+            self.this.append(this)
+        except __builtin__.Exception:
+            self.this = this
+
+    def reset(self):
+        return _VLE.solver_new_reset(self)
+    __swig_destroy__ = _VLE.delete_solver_new
+    __del__ = lambda self: None
+    __swig_setmethods__["vaporfra"] = _VLE.solver_new_vaporfra_set
+    __swig_getmethods__["vaporfra"] = _VLE.solver_new_vaporfra_get
+    if _newclass:
+        vaporfra = _swig_property(_VLE.solver_new_vaporfra_get, _VLE.solver_new_vaporfra_set)
+
+    def rho(self):
+        return _VLE.solver_new_rho(self)
+
+    def drhodT(self):
+        return _VLE.solver_new_drhodT(self)
+
+    def drhodP(self):
+        return _VLE.solver_new_drhodP(self)
+
+    def drhodXi(self, arg2):
+        return _VLE.solver_new_drhodXi(self, arg2)
+
+    def dZdXi(self, arg2):
+        return _VLE.solver_new_dZdXi(self, arg2)
+
+    def drhodP_HP(self):
+        return _VLE.solver_new_drhodP_HP(self)
+
+    def drhoPdH_HP(self):
+        return _VLE.solver_new_drhoPdH_HP(self)
+
+    def drhoPdP_HP(self):
+        return _VLE.solver_new_drhoPdP_HP(self)
+
+    def drhoPdXi_HP(self, arg2):
+        return _VLE.solver_new_drhoPdXi_HP(self, arg2)
+
+    def drhoPdH_HsP(self):
+        return _VLE.solver_new_drhoPdH_HsP(self)
+
+    def drhoPdP_HsP(self):
+        return _VLE.solver_new_drhoPdP_HsP(self)
+
+    def drhoPdXi_HsP(self, arg2):
+        return _VLE.solver_new_drhoPdXi_HsP(self, arg2)
+
+    def drhoPdXHP_HsP(self):
+        return _VLE.solver_new_drhoPdXHP_HsP(self)
+
+    def dTdXi_HsP(self, arg2):
+        return _VLE.solver_new_dTdXi_HsP(self, arg2)
+
+    def dvfdH_HP(self):
+        return _VLE.solver_new_dvfdH_HP(self)
+
+    def dvfdP_HP(self):
+        return _VLE.solver_new_dvfdP_HP(self)
+
+    def dvfdXi_HP(self, arg2):
+        return _VLE.solver_new_dvfdXi_HP(self, arg2)
+
+    def dvfdH_HsP(self):
+        return _VLE.solver_new_dvfdH_HsP(self)
+
+    def dvfdP_HsP(self):
+        return _VLE.solver_new_dvfdP_HsP(self)
+
+    def dvfdXi_HsP(self, arg2):
+        return _VLE.solver_new_dvfdXi_HsP(self, arg2)
+
+    def drhodXi_HP(self, arg2):
+        return _VLE.solver_new_drhodXi_HP(self, arg2)
+
+    def Gibbs_single(self):
+        return _VLE.solver_new_Gibbs_single(self)
+
+    def G_departure_Mole(self):
+        return _VLE.solver_new_G_departure_Mole(self)
+
+    def Gideal_Mole(self):
+        return _VLE.solver_new_Gideal_Mole(self)
+
+    def G_Mole(self):
+        return _VLE.solver_new_G_Mole(self)
+
+    def solveTPD_BFGS(self):
+        return _VLE.solver_new_solveTPD_BFGS(self)
+
+    def A_single(self):
+        return _VLE.solver_new_A_single(self)
+
+    def z_single(self):
+        return _VLE.solver_new_z_single(self)
+
+    def muideal_Mole(self, arg2):
+        return _VLE.solver_new_muideal_Mole(self, arg2)
+
+    def Gideal(self):
+        return _VLE.solver_new_Gideal(self)
+
+    def Z(self, *args):
+        return _VLE.solver_new_Z(self, *args)
+
+    def TPn_flash(self):
+        return _VLE.solver_new_TPn_flash(self)
+
+    def TPn_flash_New(self):
+        return _VLE.solver_new_TPn_flash_New(self)
+
+    def TPn_flash_New_TPD(self):
+        return _VLE.solver_new_TPn_flash_New_TPD(self)
+
+    def dZdT(self, *args):
+        return _VLE.solver_new_dZdT(self, *args)
+
+    def A(self):
+        return _VLE.solver_new_A(self)
+
+    def dAdT(self):
+        return _VLE.solver_new_dAdT(self)
+
+    def B(self):
+        return _VLE.solver_new_B(self)
+
+    def dBdT(self):
+        return _VLE.solver_new_dBdT(self)
+
+    def Ha(self):
+        return _VLE.solver_new_Ha(self)
+
+    def Hs(self):
+        return _VLE.solver_new_Hs(self)
+
+    def Ha_singlePhase(self, arg2, arg3):
+        return _VLE.solver_new_Ha_singlePhase(self, arg2, arg3)
+
+    def dHadT_singlePhase(self, arg2, arg3):
+        return _VLE.solver_new_dHadT_singlePhase(self, arg2, arg3)
+
+    def Hideal(self, arg2):
+        return _VLE.solver_new_Hideal(self, arg2)
+
+    def dHidealdT(self, arg2):
+        return _VLE.solver_new_dHidealdT(self, arg2)
+
+    def Cp(self):
+        return _VLE.solver_new_Cp(self)
+
+    def dHadP(self):
+        return _VLE.solver_new_dHadP(self)
+
+    def dHadXi(self, arg2):
+        return _VLE.solver_new_dHadXi(self, arg2)
+
+    def dHsdXi(self, arg2):
+        return _VLE.solver_new_dHsdXi(self, arg2)
+
+    def W(self, *args):
+        return _VLE.solver_new_W(self, *args)
+
+    def T_HsP(self, h, p, T0):
+        return _VLE.solver_new_T_HsP(self, h, p, T0)
+
+    def Ln_fugacityCoefficient(self, *args):
+        return _VLE.solver_new_Ln_fugacityCoefficient(self, *args)
+
+    def ddT_Ln_fugacityCoefficient(self, arg2):
+        return _VLE.solver_new_ddT_Ln_fugacityCoefficient(self, arg2)
+
+    def ddxi_Ln_fugacityCoefficient(self, arg2, arg3):
+        return _VLE.solver_new_ddxi_Ln_fugacityCoefficient(self, arg2, arg3)
+
+    def dvidT(self):
+        return _VLE.solver_new_dvidT(self)
+
+    def dvidP(self):
+        return _VLE.solver_new_dvidP(self)
+
+    def dvidXi(self, arg2):
+        return _VLE.solver_new_dvidXi(self, arg2)
+
+    def fugacityCoefficient(self, arg2, arg3):
+        return _VLE.solver_new_fugacityCoefficient(self, arg2, arg3)
+
+    def dTdP_HP(self):
+        return _VLE.solver_new_dTdP_HP(self)
+
+    def dTdH_HP(self):
+        return _VLE.solver_new_dTdH_HP(self)
+
+    def dTdXi_HP(self, arg2):
+        return _VLE.solver_new_dTdXi_HP(self, arg2)
+    __swig_setmethods__["equalconstant"] = _VLE.solver_new_equalconstant_set
+    __swig_getmethods__["equalconstant"] = _VLE.solver_new_equalconstant_get
+    if _newclass:
+        equalconstant = _swig_property(_VLE.solver_new_equalconstant_get, _VLE.solver_new_equalconstant_set)
+    __swig_setmethods__["comp_liq"] = _VLE.solver_new_comp_liq_set
+    __swig_getmethods__["comp_liq"] = _VLE.solver_new_comp_liq_get
+    if _newclass:
+        comp_liq = _swig_property(_VLE.solver_new_comp_liq_get, _VLE.solver_new_comp_liq_set)
+    __swig_setmethods__["comp_gas"] = _VLE.solver_new_comp_gas_set
+    __swig_getmethods__["comp_gas"] = _VLE.solver_new_comp_gas_get
+    if _newclass:
+        comp_gas = _swig_property(_VLE.solver_new_comp_gas_get, _VLE.solver_new_comp_gas_set)
+    __swig_setmethods__["comp"] = _VLE.solver_new_comp_set
+    __swig_getmethods__["comp"] = _VLE.solver_new_comp_get
+    if _newclass:
+        comp = _swig_property(_VLE.solver_new_comp_get, _VLE.solver_new_comp_set)
+    __swig_setmethods__["ret"] = _VLE.solver_new_ret_set
+    __swig_getmethods__["ret"] = _VLE.solver_new_ret_get
+    if _newclass:
+        ret = _swig_property(_VLE.solver_new_ret_get, _VLE.solver_new_ret_set)
+solver_new_swigregister = _VLE.solver_new_swigregister
+solver_new_swigregister(solver_new)
+
+
+def fun_my(n):
+    return _VLE.fun_my(n)
+fun_my = _VLE.fun_my
 # This file is compatible with both classic and new-style classes.
 
 

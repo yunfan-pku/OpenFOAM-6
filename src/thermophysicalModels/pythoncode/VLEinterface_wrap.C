@@ -3009,21 +3009,28 @@ SWIG_Python_NonDynamicSetAttr(PyObject *obj, PyObject *name, PyObject *value) {
 #define SWIGTYPE_p_Foam__PengRobinsonMT_Foam__specie_t swig_types[0]
 #define SWIGTYPE_p_Foam__dictionary swig_types[1]
 #define SWIGTYPE_p_Foam__speciesTable swig_types[2]
-#define SWIGTYPE_p_allocator_type swig_types[3]
-#define SWIGTYPE_p_char swig_types[4]
-#define SWIGTYPE_p_difference_type swig_types[5]
-#define SWIGTYPE_p_p_PyObject swig_types[6]
-#define SWIGTYPE_p_size_type swig_types[7]
-#define SWIGTYPE_p_solver swig_types[8]
-#define SWIGTYPE_p_std__allocatorT_double_t swig_types[9]
-#define SWIGTYPE_p_std__allocatorT_std__string_t swig_types[10]
-#define SWIGTYPE_p_std__invalid_argument swig_types[11]
-#define SWIGTYPE_p_std__vectorT_double_std__allocatorT_double_t_t swig_types[12]
-#define SWIGTYPE_p_std__vectorT_std__string_std__allocatorT_std__string_t_t swig_types[13]
-#define SWIGTYPE_p_swig__SwigPyIterator swig_types[14]
-#define SWIGTYPE_p_value_type swig_types[15]
-static swig_type_info *swig_types[17];
-static swig_module_info swig_module = {swig_types, 16, 0, 0, 0, 0};
+#define SWIGTYPE_p_Mtype swig_types[3]
+#define SWIGTYPE_p_PtrListT_chungTransportT_species__thermoT_janafThermoT_PengRobinsonT_specie_t_t_sensibleEnthalpy_t_t_t swig_types[4]
+#define SWIGTYPE_p_Stype swig_types[5]
+#define SWIGTYPE_p_allocator_type swig_types[6]
+#define SWIGTYPE_p_char swig_types[7]
+#define SWIGTYPE_p_dictionary swig_types[8]
+#define SWIGTYPE_p_difference_type swig_types[9]
+#define SWIGTYPE_p_p_PyObject swig_types[10]
+#define SWIGTYPE_p_size_type swig_types[11]
+#define SWIGTYPE_p_solver swig_types[12]
+#define SWIGTYPE_p_solver_new swig_types[13]
+#define SWIGTYPE_p_speciesTable swig_types[14]
+#define SWIGTYPE_p_species__multithermoT_VLET_chungTransportMixtureT_PengRobinsonMixtureT_multispecieT_solver_new__Stype_t_t_t_t_sensibleEnthalpy_t swig_types[15]
+#define SWIGTYPE_p_std__allocatorT_double_t swig_types[16]
+#define SWIGTYPE_p_std__allocatorT_std__string_t swig_types[17]
+#define SWIGTYPE_p_std__invalid_argument swig_types[18]
+#define SWIGTYPE_p_std__vectorT_double_std__allocatorT_double_t_t swig_types[19]
+#define SWIGTYPE_p_std__vectorT_std__string_std__allocatorT_std__string_t_t swig_types[20]
+#define SWIGTYPE_p_swig__SwigPyIterator swig_types[21]
+#define SWIGTYPE_p_value_type swig_types[22]
+static swig_type_info *swig_types[24];
+static swig_module_info swig_module = {swig_types, 23, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -5306,6 +5313,29 @@ SWIG_AsVal_bool (PyObject *obj, bool *val)
     return SWIG_ERROR;
   if (val) *val = r ? true : false;
   return SWIG_OK;
+}
+
+
+SWIGINTERN int
+SWIG_AsVal_int (PyObject * obj, int *val)
+{
+  long v;
+  int res = SWIG_AsVal_long (obj, &v);
+  if (SWIG_IsOK(res)) {
+    if ((v < INT_MIN || v > INT_MAX)) {
+      return SWIG_OverflowError;
+    } else {
+      if (val) *val = static_cast< int >(v);
+    }
+  }  
+  return res;
+}
+
+
+SWIGINTERNINLINE PyObject*
+  SWIG_From_int  (int value)
+{
+  return PyInt_FromLong((long) value);
 }
 
 #ifdef __cplusplus
@@ -10889,6 +10919,2923 @@ SWIGINTERN PyObject *solver_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObjec
   return SWIG_Py_Void();
 }
 
+SWIGINTERN PyObject *_wrap_solver_new_path_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:solver_new_path_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_path_set" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "solver_new_path_set" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "solver_new_path_set" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  if (arg1) (arg1)->path = *arg2;
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_path_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  std::string *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_path_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_path_get" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result = (std::string *) & ((arg1)->path);
+  resultobj = SWIG_From_std_string(static_cast< std::string >(*result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_dict_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  dictionary arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:solver_new_dict_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_dict_set" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  {
+    res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_dictionary,  0  | 0);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "solver_new_dict_set" "', argument " "2"" of type '" "dictionary""'"); 
+    }  
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "solver_new_dict_set" "', argument " "2"" of type '" "dictionary""'");
+    } else {
+      dictionary * temp = reinterpret_cast< dictionary * >(argp2);
+      arg2 = *temp;
+      if (SWIG_IsNewObj(res2)) delete temp;
+    }
+  }
+  if (arg1) (arg1)->dict = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_dict_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  dictionary result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_dict_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_dict_get" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result =  ((arg1)->dict);
+  resultobj = SWIG_NewPointerObj((new dictionary(static_cast< const dictionary& >(result))), SWIGTYPE_p_dictionary, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_species_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  speciesTable arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:solver_new_species_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_species_set" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  {
+    res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_speciesTable,  0  | 0);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "solver_new_species_set" "', argument " "2"" of type '" "speciesTable""'"); 
+    }  
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "solver_new_species_set" "', argument " "2"" of type '" "speciesTable""'");
+    } else {
+      speciesTable * temp = reinterpret_cast< speciesTable * >(argp2);
+      arg2 = *temp;
+      if (SWIG_IsNewObj(res2)) delete temp;
+    }
+  }
+  if (arg1) (arg1)->species = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_species_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  speciesTable result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_species_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_species_get" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result =  ((arg1)->species);
+  resultobj = SWIG_NewPointerObj((new speciesTable(static_cast< const speciesTable& >(result))), SWIGTYPE_p_speciesTable, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_thermoDict_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  dictionary arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:solver_new_thermoDict_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_thermoDict_set" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  {
+    res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_dictionary,  0  | 0);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "solver_new_thermoDict_set" "', argument " "2"" of type '" "dictionary""'"); 
+    }  
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "solver_new_thermoDict_set" "', argument " "2"" of type '" "dictionary""'");
+    } else {
+      dictionary * temp = reinterpret_cast< dictionary * >(argp2);
+      arg2 = *temp;
+      if (SWIG_IsNewObj(res2)) delete temp;
+    }
+  }
+  if (arg1) (arg1)->thermoDict = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_thermoDict_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  dictionary result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_thermoDict_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_thermoDict_get" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result =  ((arg1)->thermoDict);
+  resultobj = SWIG_NewPointerObj((new dictionary(static_cast< const dictionary& >(result))), SWIGTYPE_p_dictionary, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_thermoDictM_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  dictionary arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:solver_new_thermoDictM_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_thermoDictM_set" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  {
+    res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_dictionary,  0  | 0);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "solver_new_thermoDictM_set" "', argument " "2"" of type '" "dictionary""'"); 
+    }  
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "solver_new_thermoDictM_set" "', argument " "2"" of type '" "dictionary""'");
+    } else {
+      dictionary * temp = reinterpret_cast< dictionary * >(argp2);
+      arg2 = *temp;
+      if (SWIG_IsNewObj(res2)) delete temp;
+    }
+  }
+  if (arg1) (arg1)->thermoDictM = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_thermoDictM_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  dictionary result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_thermoDictM_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_thermoDictM_get" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result =  ((arg1)->thermoDictM);
+  resultobj = SWIG_NewPointerObj((new dictionary(static_cast< const dictionary& >(result))), SWIGTYPE_p_dictionary, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_thermo_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  solver_new::Mtype *arg2 = (solver_new::Mtype *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:solver_new_thermo_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_thermo_set" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2,SWIGTYPE_p_species__multithermoT_VLET_chungTransportMixtureT_PengRobinsonMixtureT_multispecieT_solver_new__Stype_t_t_t_t_sensibleEnthalpy_t, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "solver_new_thermo_set" "', argument " "2"" of type '" "solver_new::Mtype *""'"); 
+  }
+  arg2 = reinterpret_cast< solver_new::Mtype * >(argp2);
+  if (arg1) (arg1)->thermo = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_thermo_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  solver_new::Mtype *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_thermo_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_thermo_get" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result = (solver_new::Mtype *) ((arg1)->thermo);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_species__multithermoT_VLET_chungTransportMixtureT_PengRobinsonMixtureT_multispecieT_solver_new__Stype_t_t_t_t_sensibleEnthalpy_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_speciesData_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  PtrList< solver_new::Stype > arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:solver_new_speciesData_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_speciesData_set" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  {
+    res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_PtrListT_chungTransportT_species__thermoT_janafThermoT_PengRobinsonT_specie_t_t_sensibleEnthalpy_t_t_t,  0  | 0);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "solver_new_speciesData_set" "', argument " "2"" of type '" "PtrList< solver_new::Stype >""'"); 
+    }  
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "solver_new_speciesData_set" "', argument " "2"" of type '" "PtrList< solver_new::Stype >""'");
+    } else {
+      PtrList< solver_new::Stype > * temp = reinterpret_cast< PtrList< solver_new::Stype > * >(argp2);
+      arg2 = *temp;
+      if (SWIG_IsNewObj(res2)) delete temp;
+    }
+  }
+  if (arg1) (arg1)->speciesData = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_speciesData_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PtrList< solver_new::Stype > result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_speciesData_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_speciesData_get" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result =  ((arg1)->speciesData);
+  resultobj = SWIG_NewPointerObj((new PtrList< solver_new::Stype >(static_cast< const PtrList< solver_new::Stype >& >(result))), SWIGTYPE_p_PtrListT_chungTransportT_species__thermoT_janafThermoT_PengRobinsonT_specie_t_t_sensibleEnthalpy_t_t_t, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_P_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:solver_new_P_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_P_set" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "solver_new_P_set" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  if (arg1) (arg1)->P = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_P_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_P_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_P_get" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result = (double) ((arg1)->P);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_T_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:solver_new_T_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_T_set" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "solver_new_T_set" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  if (arg1) (arg1)->T = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_T_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_T_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_T_get" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result = (double) ((arg1)->T);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_m_specie_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:solver_new_m_specie_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_m_specie_set" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "solver_new_m_specie_set" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "solver_new_m_specie_set" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  if (arg1) (arg1)->m_specie = *arg2;
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_m_specie_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_m_specie_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_m_specie_get" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result = (std::vector< std::string,std::allocator< std::string > > *) & ((arg1)->m_specie);
+  resultobj = swig::from(static_cast< std::vector< std::string,std::allocator< std::string > > >(*result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_solver_new(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  std::string arg1 ;
+  PyObject * obj0 = 0 ;
+  solver_new *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:new_solver_new",&obj0)) SWIG_fail;
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj0, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "new_solver_new" "', argument " "1"" of type '" "std::string""'"); 
+    }
+    arg1 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  result = (solver_new *)new solver_new(arg1);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_solver_new, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_reset(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_reset",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_reset" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  (arg1)->reset();
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_solver_new(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_solver_new",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_solver_new" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_vaporfra_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:solver_new_vaporfra_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_vaporfra_set" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "solver_new_vaporfra_set" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  if (arg1) (arg1)->vaporfra = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_vaporfra_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_vaporfra_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_vaporfra_get" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result = (double) ((arg1)->vaporfra);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_rho(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_rho",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_rho" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result = (double)(arg1)->rho();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_drhodT(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_drhodT",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_drhodT" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result = (double)(arg1)->drhodT();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_drhodP(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_drhodP",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_drhodP" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result = (double)(arg1)->drhodP();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_drhodXi(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  int arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:solver_new_drhodXi",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_drhodXi" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "solver_new_drhodXi" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  result = (double)(arg1)->drhodXi(arg2);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_dZdT__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_dZdT",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_dZdT" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result = (double)(arg1)->dZdT();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_dZdXi(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  int arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:solver_new_dZdXi",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_dZdXi" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "solver_new_dZdXi" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  result = (double)(arg1)->dZdXi(arg2);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_drhodP_HP(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_drhodP_HP",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_drhodP_HP" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result = (double)(arg1)->drhodP_HP();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_drhoPdH_HP(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_drhoPdH_HP",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_drhoPdH_HP" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result = (double)(arg1)->drhoPdH_HP();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_drhoPdP_HP(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_drhoPdP_HP",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_drhoPdP_HP" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result = (double)(arg1)->drhoPdP_HP();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_drhoPdXi_HP(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  int arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:solver_new_drhoPdXi_HP",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_drhoPdXi_HP" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "solver_new_drhoPdXi_HP" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  result = (double)(arg1)->drhoPdXi_HP(arg2);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_drhoPdH_HsP(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_drhoPdH_HsP",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_drhoPdH_HsP" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result = (double)(arg1)->drhoPdH_HsP();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_drhoPdP_HsP(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_drhoPdP_HsP",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_drhoPdP_HsP" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result = (double)(arg1)->drhoPdP_HsP();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_drhoPdXi_HsP(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  int arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:solver_new_drhoPdXi_HsP",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_drhoPdXi_HsP" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "solver_new_drhoPdXi_HsP" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  result = (double)(arg1)->drhoPdXi_HsP(arg2);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_drhoPdXHP_HsP(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_drhoPdXHP_HsP",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_drhoPdXHP_HsP" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  (arg1)->drhoPdXHP_HsP();
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_dTdXi_HsP(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  int arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:solver_new_dTdXi_HsP",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_dTdXi_HsP" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "solver_new_dTdXi_HsP" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  result = (double)(arg1)->dTdXi_HsP(arg2);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_dvfdH_HP(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_dvfdH_HP",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_dvfdH_HP" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result = (double)(arg1)->dvfdH_HP();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_dvfdP_HP(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_dvfdP_HP",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_dvfdP_HP" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result = (double)(arg1)->dvfdP_HP();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_dvfdXi_HP(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  int arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:solver_new_dvfdXi_HP",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_dvfdXi_HP" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "solver_new_dvfdXi_HP" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  result = (double)(arg1)->dvfdXi_HP(arg2);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_dvfdH_HsP(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_dvfdH_HsP",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_dvfdH_HsP" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result = (double)(arg1)->dvfdH_HsP();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_dvfdP_HsP(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_dvfdP_HsP",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_dvfdP_HsP" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result = (double)(arg1)->dvfdP_HsP();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_dvfdXi_HsP(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  int arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:solver_new_dvfdXi_HsP",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_dvfdXi_HsP" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "solver_new_dvfdXi_HsP" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  result = (double)(arg1)->dvfdXi_HsP(arg2);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_drhodXi_HP(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  int arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:solver_new_drhodXi_HP",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_drhodXi_HP" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "solver_new_drhodXi_HP" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  result = (double)(arg1)->drhodXi_HP(arg2);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_Z__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_Z",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_Z" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result = (double)(arg1)->Z();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_Gibbs_single(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_Gibbs_single",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_Gibbs_single" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result = (double)(arg1)->Gibbs_single();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_G_departure_Mole(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_G_departure_Mole",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_G_departure_Mole" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result = (double)(arg1)->G_departure_Mole();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_Gideal_Mole(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_Gideal_Mole",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_Gideal_Mole" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result = (double)(arg1)->Gideal_Mole();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_G_Mole(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_G_Mole",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_G_Mole" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result = (double)(arg1)->G_Mole();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_solveTPD_BFGS(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_solveTPD_BFGS",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_solveTPD_BFGS" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result = (bool)(arg1)->solveTPD_BFGS();
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_A_single(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_A_single",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_A_single" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result = (double)(arg1)->A_single();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_z_single(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_z_single",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_z_single" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result = (double)(arg1)->z_single();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_muideal_Mole(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  int arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:solver_new_muideal_Mole",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_muideal_Mole" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "solver_new_muideal_Mole" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  result = (double)(arg1)->muideal_Mole(arg2);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_Gideal(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_Gideal",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_Gideal" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result = (double)(arg1)->Gideal();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_Z__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  int arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:solver_new_Z",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_Z" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "solver_new_Z" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  result = (double)(arg1)->Z(arg2);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_Z(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 1) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_solver_new, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_solver_new_Z__SWIG_0(self, args);
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_solver_new, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_solver_new_Z__SWIG_1(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'solver_new_Z'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    solver_new::Z()\n"
+    "    solver_new::Z(int)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_TPn_flash(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_TPn_flash",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_TPn_flash" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result = (double)(arg1)->TPn_flash();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_TPn_flash_New(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_TPn_flash_New",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_TPn_flash_New" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result = (double)(arg1)->TPn_flash_New();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_TPn_flash_New_TPD(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_TPn_flash_New_TPD",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_TPn_flash_New_TPD" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result = (double)(arg1)->TPn_flash_New_TPD();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_dZdT__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  int arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:solver_new_dZdT",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_dZdT" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "solver_new_dZdT" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  result = (double)(arg1)->dZdT(arg2);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_dZdT(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 1) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_solver_new, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_solver_new_dZdT__SWIG_0(self, args);
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_solver_new, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_solver_new_dZdT__SWIG_1(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'solver_new_dZdT'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    solver_new::dZdT()\n"
+    "    solver_new::dZdT(int)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_A(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_A",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_A" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result = (double)(arg1)->A();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_dAdT(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_dAdT",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_dAdT" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result = (double)(arg1)->dAdT();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_B(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_B",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_B" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result = (double)(arg1)->B();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_dBdT(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_dBdT",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_dBdT" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result = (double)(arg1)->dBdT();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_Ha(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_Ha",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_Ha" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result = (double)(arg1)->Ha();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_Hs(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_Hs",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_Hs" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result = (double)(arg1)->Hs();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_Ha_singlePhase(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  int arg2 ;
+  std::vector< double,std::allocator< double > > *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  void *argp3 = 0 ;
+  int res3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:solver_new_Ha_singlePhase",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_Ha_singlePhase" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "solver_new_Ha_singlePhase" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  res3 = SWIG_ConvertPtr(obj2, &argp3, SWIGTYPE_p_std__vectorT_double_std__allocatorT_double_t_t,  0 );
+  if (!SWIG_IsOK(res3)) {
+    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "solver_new_Ha_singlePhase" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > &""'"); 
+  }
+  if (!argp3) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "solver_new_Ha_singlePhase" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > &""'"); 
+  }
+  arg3 = reinterpret_cast< std::vector< double,std::allocator< double > > * >(argp3);
+  result = (double)(arg1)->Ha_singlePhase(arg2,*arg3);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_dHadT_singlePhase(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  int arg2 ;
+  std::vector< double,std::allocator< double > > *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  void *argp3 = 0 ;
+  int res3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:solver_new_dHadT_singlePhase",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_dHadT_singlePhase" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "solver_new_dHadT_singlePhase" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  res3 = SWIG_ConvertPtr(obj2, &argp3, SWIGTYPE_p_std__vectorT_double_std__allocatorT_double_t_t,  0 );
+  if (!SWIG_IsOK(res3)) {
+    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "solver_new_dHadT_singlePhase" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > &""'"); 
+  }
+  if (!argp3) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "solver_new_dHadT_singlePhase" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > &""'"); 
+  }
+  arg3 = reinterpret_cast< std::vector< double,std::allocator< double > > * >(argp3);
+  result = (double)(arg1)->dHadT_singlePhase(arg2,*arg3);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_Hideal(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  std::vector< double,std::allocator< double > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:solver_new_Hideal",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_Hideal" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_std__vectorT_double_std__allocatorT_double_t_t,  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "solver_new_Hideal" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "solver_new_Hideal" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > &""'"); 
+  }
+  arg2 = reinterpret_cast< std::vector< double,std::allocator< double > > * >(argp2);
+  result = (double)(arg1)->Hideal(*arg2);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_dHidealdT(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  std::vector< double,std::allocator< double > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:solver_new_dHidealdT",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_dHidealdT" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_std__vectorT_double_std__allocatorT_double_t_t,  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "solver_new_dHidealdT" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "solver_new_dHidealdT" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > &""'"); 
+  }
+  arg2 = reinterpret_cast< std::vector< double,std::allocator< double > > * >(argp2);
+  result = (double)(arg1)->dHidealdT(*arg2);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_Cp(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_Cp",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_Cp" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result = (double)(arg1)->Cp();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_dHadP(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_dHadP",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_dHadP" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result = (double)(arg1)->dHadP();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_dHadXi(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  int arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:solver_new_dHadXi",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_dHadXi" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "solver_new_dHadXi" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  result = (double)(arg1)->dHadXi(arg2);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_dHsdXi(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  int arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:solver_new_dHsdXi",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_dHsdXi" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "solver_new_dHsdXi" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  result = (double)(arg1)->dHsdXi(arg2);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_W__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_W",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_W" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result = (double)(arg1)->W();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_W__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  std::vector< double,std::allocator< double > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:solver_new_W",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_W" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_std__vectorT_double_std__allocatorT_double_t_t,  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "solver_new_W" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "solver_new_W" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > &""'"); 
+  }
+  arg2 = reinterpret_cast< std::vector< double,std::allocator< double > > * >(argp2);
+  result = (double)(arg1)->W(*arg2);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_W(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 1) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_solver_new, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_solver_new_W__SWIG_0(self, args);
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_solver_new, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      void *vptr = 0;
+      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_std__vectorT_double_std__allocatorT_double_t_t, 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_solver_new_W__SWIG_1(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'solver_new_W'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    solver_new::W()\n"
+    "    solver_new::W(std::vector< double,std::allocator< double > > &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_T_HsP(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  double arg2 ;
+  double arg3 ;
+  double arg4 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  PyObject * obj3 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOOO:solver_new_T_HsP",&obj0,&obj1,&obj2,&obj3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_T_HsP" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "solver_new_T_HsP" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  ecode3 = SWIG_AsVal_double(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "solver_new_T_HsP" "', argument " "3"" of type '" "double""'");
+  } 
+  arg3 = static_cast< double >(val3);
+  ecode4 = SWIG_AsVal_double(obj3, &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "solver_new_T_HsP" "', argument " "4"" of type '" "double""'");
+  } 
+  arg4 = static_cast< double >(val4);
+  result = (double)(arg1)->T_HsP(arg2,arg3,arg4);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_Ln_fugacityCoefficient__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_Ln_fugacityCoefficient",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_Ln_fugacityCoefficient" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  (arg1)->Ln_fugacityCoefficient();
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_Ln_fugacityCoefficient__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  int arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:solver_new_Ln_fugacityCoefficient",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_Ln_fugacityCoefficient" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "solver_new_Ln_fugacityCoefficient" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  (arg1)->Ln_fugacityCoefficient(arg2);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_Ln_fugacityCoefficient(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 1) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_solver_new, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_solver_new_Ln_fugacityCoefficient__SWIG_0(self, args);
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_solver_new, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_solver_new_Ln_fugacityCoefficient__SWIG_1(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'solver_new_Ln_fugacityCoefficient'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    solver_new::Ln_fugacityCoefficient()\n"
+    "    solver_new::Ln_fugacityCoefficient(int)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_ddT_Ln_fugacityCoefficient(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  int arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:solver_new_ddT_Ln_fugacityCoefficient",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_ddT_Ln_fugacityCoefficient" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "solver_new_ddT_Ln_fugacityCoefficient" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  (arg1)->ddT_Ln_fugacityCoefficient(arg2);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_ddxi_Ln_fugacityCoefficient(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  int arg2 ;
+  int arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  int val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:solver_new_ddxi_Ln_fugacityCoefficient",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_ddxi_Ln_fugacityCoefficient" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "solver_new_ddxi_Ln_fugacityCoefficient" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  ecode3 = SWIG_AsVal_int(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "solver_new_ddxi_Ln_fugacityCoefficient" "', argument " "3"" of type '" "int""'");
+  } 
+  arg3 = static_cast< int >(val3);
+  (arg1)->ddxi_Ln_fugacityCoefficient(arg2,arg3);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_dvidT(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_dvidT",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_dvidT" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  (arg1)->dvidT();
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_dvidP(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_dvidP",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_dvidP" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  (arg1)->dvidP();
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_dvidXi(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  int arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:solver_new_dvidXi",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_dvidXi" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "solver_new_dvidXi" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  (arg1)->dvidXi(arg2);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_fugacityCoefficient(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  int arg2 ;
+  std::vector< double,std::allocator< double > > *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  void *argp3 = 0 ;
+  int res3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:solver_new_fugacityCoefficient",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_fugacityCoefficient" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "solver_new_fugacityCoefficient" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  res3 = SWIG_ConvertPtr(obj2, &argp3, SWIGTYPE_p_std__vectorT_double_std__allocatorT_double_t_t,  0 );
+  if (!SWIG_IsOK(res3)) {
+    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "solver_new_fugacityCoefficient" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > &""'"); 
+  }
+  if (!argp3) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "solver_new_fugacityCoefficient" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > &""'"); 
+  }
+  arg3 = reinterpret_cast< std::vector< double,std::allocator< double > > * >(argp3);
+  (arg1)->fugacityCoefficient(arg2,*arg3);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_dTdP_HP(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_dTdP_HP",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_dTdP_HP" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result = (double)(arg1)->dTdP_HP();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_dTdH_HP(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_dTdH_HP",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_dTdH_HP" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result = (double)(arg1)->dTdH_HP();
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_dTdXi_HP(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  int arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:solver_new_dTdXi_HP",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_dTdXi_HP" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "solver_new_dTdXi_HP" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  result = (double)(arg1)->dTdXi_HP(arg2);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_equalconstant_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  std::vector< double,std::allocator< double > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:solver_new_equalconstant_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_equalconstant_set" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res2 = swig::asptr(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "solver_new_equalconstant_set" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "solver_new_equalconstant_set" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  if (arg1) (arg1)->equalconstant = *arg2;
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_equalconstant_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  std::vector< double,std::allocator< double > > *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_equalconstant_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_equalconstant_get" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result = (std::vector< double,std::allocator< double > > *) & ((arg1)->equalconstant);
+  resultobj = swig::from(static_cast< std::vector< double,std::allocator< double > > >(*result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_comp_liq_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  std::vector< double,std::allocator< double > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:solver_new_comp_liq_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_comp_liq_set" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res2 = swig::asptr(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "solver_new_comp_liq_set" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "solver_new_comp_liq_set" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  if (arg1) (arg1)->comp_liq = *arg2;
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_comp_liq_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  std::vector< double,std::allocator< double > > *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_comp_liq_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_comp_liq_get" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result = (std::vector< double,std::allocator< double > > *) & ((arg1)->comp_liq);
+  resultobj = swig::from(static_cast< std::vector< double,std::allocator< double > > >(*result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_comp_gas_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  std::vector< double,std::allocator< double > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:solver_new_comp_gas_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_comp_gas_set" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res2 = swig::asptr(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "solver_new_comp_gas_set" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "solver_new_comp_gas_set" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  if (arg1) (arg1)->comp_gas = *arg2;
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_comp_gas_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  std::vector< double,std::allocator< double > > *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_comp_gas_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_comp_gas_get" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result = (std::vector< double,std::allocator< double > > *) & ((arg1)->comp_gas);
+  resultobj = swig::from(static_cast< std::vector< double,std::allocator< double > > >(*result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_comp_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  std::vector< double,std::allocator< double > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:solver_new_comp_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_comp_set" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res2 = swig::asptr(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "solver_new_comp_set" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "solver_new_comp_set" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  if (arg1) (arg1)->comp = *arg2;
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_comp_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  std::vector< double,std::allocator< double > > *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_comp_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_comp_get" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result = (std::vector< double,std::allocator< double > > *) & ((arg1)->comp);
+  resultobj = swig::from(static_cast< std::vector< double,std::allocator< double > > >(*result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_ret_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  std::vector< double,std::allocator< double > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:solver_new_ret_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_ret_set" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res2 = swig::asptr(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "solver_new_ret_set" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "solver_new_ret_set" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  if (arg1) (arg1)->ret = *arg2;
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_solver_new_ret_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  solver_new *arg1 = (solver_new *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  std::vector< double,std::allocator< double > > *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:solver_new_ret_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_solver_new, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "solver_new_ret_get" "', argument " "1"" of type '" "solver_new *""'"); 
+  }
+  arg1 = reinterpret_cast< solver_new * >(argp1);
+  result = (std::vector< double,std::allocator< double > > *) & ((arg1)->ret);
+  resultobj = swig::from(static_cast< std::vector< double,std::allocator< double > > >(*result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *solver_new_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char *)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_solver_new, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *_wrap_fun_my(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  int arg1 ;
+  int val1 ;
+  int ecode1 = 0 ;
+  PyObject * obj0 = 0 ;
+  int result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:fun_my",&obj0)) SWIG_fail;
+  ecode1 = SWIG_AsVal_int(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "fun_my" "', argument " "1"" of type '" "int""'");
+  } 
+  arg1 = static_cast< int >(val1);
+  result = (int)fun_my(arg1);
+  resultobj = SWIG_From_int(static_cast< int >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 static PyMethodDef SwigMethods[] = {
 	 { (char *)"SWIG_PyInstanceMethod_New", (PyCFunction)SWIG_PyInstanceMethod_New, METH_O, NULL},
 	 { (char *)"delete_SwigPyIterator", _wrap_delete_SwigPyIterator, METH_VARARGS, NULL},
@@ -11009,6 +13956,104 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"solver_comp_gas_set", _wrap_solver_comp_gas_set, METH_VARARGS, NULL},
 	 { (char *)"solver_comp_gas_get", _wrap_solver_comp_gas_get, METH_VARARGS, NULL},
 	 { (char *)"solver_swigregister", solver_swigregister, METH_VARARGS, NULL},
+	 { (char *)"solver_new_path_set", _wrap_solver_new_path_set, METH_VARARGS, NULL},
+	 { (char *)"solver_new_path_get", _wrap_solver_new_path_get, METH_VARARGS, NULL},
+	 { (char *)"solver_new_dict_set", _wrap_solver_new_dict_set, METH_VARARGS, NULL},
+	 { (char *)"solver_new_dict_get", _wrap_solver_new_dict_get, METH_VARARGS, NULL},
+	 { (char *)"solver_new_species_set", _wrap_solver_new_species_set, METH_VARARGS, NULL},
+	 { (char *)"solver_new_species_get", _wrap_solver_new_species_get, METH_VARARGS, NULL},
+	 { (char *)"solver_new_thermoDict_set", _wrap_solver_new_thermoDict_set, METH_VARARGS, NULL},
+	 { (char *)"solver_new_thermoDict_get", _wrap_solver_new_thermoDict_get, METH_VARARGS, NULL},
+	 { (char *)"solver_new_thermoDictM_set", _wrap_solver_new_thermoDictM_set, METH_VARARGS, NULL},
+	 { (char *)"solver_new_thermoDictM_get", _wrap_solver_new_thermoDictM_get, METH_VARARGS, NULL},
+	 { (char *)"solver_new_thermo_set", _wrap_solver_new_thermo_set, METH_VARARGS, NULL},
+	 { (char *)"solver_new_thermo_get", _wrap_solver_new_thermo_get, METH_VARARGS, NULL},
+	 { (char *)"solver_new_speciesData_set", _wrap_solver_new_speciesData_set, METH_VARARGS, NULL},
+	 { (char *)"solver_new_speciesData_get", _wrap_solver_new_speciesData_get, METH_VARARGS, NULL},
+	 { (char *)"solver_new_P_set", _wrap_solver_new_P_set, METH_VARARGS, NULL},
+	 { (char *)"solver_new_P_get", _wrap_solver_new_P_get, METH_VARARGS, NULL},
+	 { (char *)"solver_new_T_set", _wrap_solver_new_T_set, METH_VARARGS, NULL},
+	 { (char *)"solver_new_T_get", _wrap_solver_new_T_get, METH_VARARGS, NULL},
+	 { (char *)"solver_new_m_specie_set", _wrap_solver_new_m_specie_set, METH_VARARGS, NULL},
+	 { (char *)"solver_new_m_specie_get", _wrap_solver_new_m_specie_get, METH_VARARGS, NULL},
+	 { (char *)"new_solver_new", _wrap_new_solver_new, METH_VARARGS, NULL},
+	 { (char *)"solver_new_reset", _wrap_solver_new_reset, METH_VARARGS, NULL},
+	 { (char *)"delete_solver_new", _wrap_delete_solver_new, METH_VARARGS, NULL},
+	 { (char *)"solver_new_vaporfra_set", _wrap_solver_new_vaporfra_set, METH_VARARGS, NULL},
+	 { (char *)"solver_new_vaporfra_get", _wrap_solver_new_vaporfra_get, METH_VARARGS, NULL},
+	 { (char *)"solver_new_rho", _wrap_solver_new_rho, METH_VARARGS, NULL},
+	 { (char *)"solver_new_drhodT", _wrap_solver_new_drhodT, METH_VARARGS, NULL},
+	 { (char *)"solver_new_drhodP", _wrap_solver_new_drhodP, METH_VARARGS, NULL},
+	 { (char *)"solver_new_drhodXi", _wrap_solver_new_drhodXi, METH_VARARGS, NULL},
+	 { (char *)"solver_new_dZdXi", _wrap_solver_new_dZdXi, METH_VARARGS, NULL},
+	 { (char *)"solver_new_drhodP_HP", _wrap_solver_new_drhodP_HP, METH_VARARGS, NULL},
+	 { (char *)"solver_new_drhoPdH_HP", _wrap_solver_new_drhoPdH_HP, METH_VARARGS, NULL},
+	 { (char *)"solver_new_drhoPdP_HP", _wrap_solver_new_drhoPdP_HP, METH_VARARGS, NULL},
+	 { (char *)"solver_new_drhoPdXi_HP", _wrap_solver_new_drhoPdXi_HP, METH_VARARGS, NULL},
+	 { (char *)"solver_new_drhoPdH_HsP", _wrap_solver_new_drhoPdH_HsP, METH_VARARGS, NULL},
+	 { (char *)"solver_new_drhoPdP_HsP", _wrap_solver_new_drhoPdP_HsP, METH_VARARGS, NULL},
+	 { (char *)"solver_new_drhoPdXi_HsP", _wrap_solver_new_drhoPdXi_HsP, METH_VARARGS, NULL},
+	 { (char *)"solver_new_drhoPdXHP_HsP", _wrap_solver_new_drhoPdXHP_HsP, METH_VARARGS, NULL},
+	 { (char *)"solver_new_dTdXi_HsP", _wrap_solver_new_dTdXi_HsP, METH_VARARGS, NULL},
+	 { (char *)"solver_new_dvfdH_HP", _wrap_solver_new_dvfdH_HP, METH_VARARGS, NULL},
+	 { (char *)"solver_new_dvfdP_HP", _wrap_solver_new_dvfdP_HP, METH_VARARGS, NULL},
+	 { (char *)"solver_new_dvfdXi_HP", _wrap_solver_new_dvfdXi_HP, METH_VARARGS, NULL},
+	 { (char *)"solver_new_dvfdH_HsP", _wrap_solver_new_dvfdH_HsP, METH_VARARGS, NULL},
+	 { (char *)"solver_new_dvfdP_HsP", _wrap_solver_new_dvfdP_HsP, METH_VARARGS, NULL},
+	 { (char *)"solver_new_dvfdXi_HsP", _wrap_solver_new_dvfdXi_HsP, METH_VARARGS, NULL},
+	 { (char *)"solver_new_drhodXi_HP", _wrap_solver_new_drhodXi_HP, METH_VARARGS, NULL},
+	 { (char *)"solver_new_Gibbs_single", _wrap_solver_new_Gibbs_single, METH_VARARGS, NULL},
+	 { (char *)"solver_new_G_departure_Mole", _wrap_solver_new_G_departure_Mole, METH_VARARGS, NULL},
+	 { (char *)"solver_new_Gideal_Mole", _wrap_solver_new_Gideal_Mole, METH_VARARGS, NULL},
+	 { (char *)"solver_new_G_Mole", _wrap_solver_new_G_Mole, METH_VARARGS, NULL},
+	 { (char *)"solver_new_solveTPD_BFGS", _wrap_solver_new_solveTPD_BFGS, METH_VARARGS, NULL},
+	 { (char *)"solver_new_A_single", _wrap_solver_new_A_single, METH_VARARGS, NULL},
+	 { (char *)"solver_new_z_single", _wrap_solver_new_z_single, METH_VARARGS, NULL},
+	 { (char *)"solver_new_muideal_Mole", _wrap_solver_new_muideal_Mole, METH_VARARGS, NULL},
+	 { (char *)"solver_new_Gideal", _wrap_solver_new_Gideal, METH_VARARGS, NULL},
+	 { (char *)"solver_new_Z", _wrap_solver_new_Z, METH_VARARGS, NULL},
+	 { (char *)"solver_new_TPn_flash", _wrap_solver_new_TPn_flash, METH_VARARGS, NULL},
+	 { (char *)"solver_new_TPn_flash_New", _wrap_solver_new_TPn_flash_New, METH_VARARGS, NULL},
+	 { (char *)"solver_new_TPn_flash_New_TPD", _wrap_solver_new_TPn_flash_New_TPD, METH_VARARGS, NULL},
+	 { (char *)"solver_new_dZdT", _wrap_solver_new_dZdT, METH_VARARGS, NULL},
+	 { (char *)"solver_new_A", _wrap_solver_new_A, METH_VARARGS, NULL},
+	 { (char *)"solver_new_dAdT", _wrap_solver_new_dAdT, METH_VARARGS, NULL},
+	 { (char *)"solver_new_B", _wrap_solver_new_B, METH_VARARGS, NULL},
+	 { (char *)"solver_new_dBdT", _wrap_solver_new_dBdT, METH_VARARGS, NULL},
+	 { (char *)"solver_new_Ha", _wrap_solver_new_Ha, METH_VARARGS, NULL},
+	 { (char *)"solver_new_Hs", _wrap_solver_new_Hs, METH_VARARGS, NULL},
+	 { (char *)"solver_new_Ha_singlePhase", _wrap_solver_new_Ha_singlePhase, METH_VARARGS, NULL},
+	 { (char *)"solver_new_dHadT_singlePhase", _wrap_solver_new_dHadT_singlePhase, METH_VARARGS, NULL},
+	 { (char *)"solver_new_Hideal", _wrap_solver_new_Hideal, METH_VARARGS, NULL},
+	 { (char *)"solver_new_dHidealdT", _wrap_solver_new_dHidealdT, METH_VARARGS, NULL},
+	 { (char *)"solver_new_Cp", _wrap_solver_new_Cp, METH_VARARGS, NULL},
+	 { (char *)"solver_new_dHadP", _wrap_solver_new_dHadP, METH_VARARGS, NULL},
+	 { (char *)"solver_new_dHadXi", _wrap_solver_new_dHadXi, METH_VARARGS, NULL},
+	 { (char *)"solver_new_dHsdXi", _wrap_solver_new_dHsdXi, METH_VARARGS, NULL},
+	 { (char *)"solver_new_W", _wrap_solver_new_W, METH_VARARGS, NULL},
+	 { (char *)"solver_new_T_HsP", _wrap_solver_new_T_HsP, METH_VARARGS, NULL},
+	 { (char *)"solver_new_Ln_fugacityCoefficient", _wrap_solver_new_Ln_fugacityCoefficient, METH_VARARGS, NULL},
+	 { (char *)"solver_new_ddT_Ln_fugacityCoefficient", _wrap_solver_new_ddT_Ln_fugacityCoefficient, METH_VARARGS, NULL},
+	 { (char *)"solver_new_ddxi_Ln_fugacityCoefficient", _wrap_solver_new_ddxi_Ln_fugacityCoefficient, METH_VARARGS, NULL},
+	 { (char *)"solver_new_dvidT", _wrap_solver_new_dvidT, METH_VARARGS, NULL},
+	 { (char *)"solver_new_dvidP", _wrap_solver_new_dvidP, METH_VARARGS, NULL},
+	 { (char *)"solver_new_dvidXi", _wrap_solver_new_dvidXi, METH_VARARGS, NULL},
+	 { (char *)"solver_new_fugacityCoefficient", _wrap_solver_new_fugacityCoefficient, METH_VARARGS, NULL},
+	 { (char *)"solver_new_dTdP_HP", _wrap_solver_new_dTdP_HP, METH_VARARGS, NULL},
+	 { (char *)"solver_new_dTdH_HP", _wrap_solver_new_dTdH_HP, METH_VARARGS, NULL},
+	 { (char *)"solver_new_dTdXi_HP", _wrap_solver_new_dTdXi_HP, METH_VARARGS, NULL},
+	 { (char *)"solver_new_equalconstant_set", _wrap_solver_new_equalconstant_set, METH_VARARGS, NULL},
+	 { (char *)"solver_new_equalconstant_get", _wrap_solver_new_equalconstant_get, METH_VARARGS, NULL},
+	 { (char *)"solver_new_comp_liq_set", _wrap_solver_new_comp_liq_set, METH_VARARGS, NULL},
+	 { (char *)"solver_new_comp_liq_get", _wrap_solver_new_comp_liq_get, METH_VARARGS, NULL},
+	 { (char *)"solver_new_comp_gas_set", _wrap_solver_new_comp_gas_set, METH_VARARGS, NULL},
+	 { (char *)"solver_new_comp_gas_get", _wrap_solver_new_comp_gas_get, METH_VARARGS, NULL},
+	 { (char *)"solver_new_comp_set", _wrap_solver_new_comp_set, METH_VARARGS, NULL},
+	 { (char *)"solver_new_comp_get", _wrap_solver_new_comp_get, METH_VARARGS, NULL},
+	 { (char *)"solver_new_ret_set", _wrap_solver_new_ret_set, METH_VARARGS, NULL},
+	 { (char *)"solver_new_ret_get", _wrap_solver_new_ret_get, METH_VARARGS, NULL},
+	 { (char *)"solver_new_swigregister", solver_new_swigregister, METH_VARARGS, NULL},
+	 { (char *)"fun_my", _wrap_fun_my, METH_VARARGS, NULL},
 	 { NULL, NULL, 0, NULL }
 };
 
@@ -11018,12 +14063,19 @@ static PyMethodDef SwigMethods[] = {
 static swig_type_info _swigt__p_Foam__PengRobinsonMT_Foam__specie_t = {"_p_Foam__PengRobinsonMT_Foam__specie_t", "Foam::PengRobinsonM< Foam::specie > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_Foam__dictionary = {"_p_Foam__dictionary", "Foam::dictionary *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_Foam__speciesTable = {"_p_Foam__speciesTable", "Foam::speciesTable *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_Mtype = {"_p_Mtype", "Mtype *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_PtrListT_chungTransportT_species__thermoT_janafThermoT_PengRobinsonT_specie_t_t_sensibleEnthalpy_t_t_t = {"_p_PtrListT_chungTransportT_species__thermoT_janafThermoT_PengRobinsonT_specie_t_t_sensibleEnthalpy_t_t_t", "PtrList< chungTransport< species::thermo< janafThermo< PengRobinson< specie > >,sensibleEnthalpy > > > *|PtrList< solver_new::Stype > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_Stype = {"_p_Stype", "Stype *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_allocator_type = {"_p_allocator_type", "allocator_type *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_char = {"_p_char", "char *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_dictionary = {"_p_dictionary", "dictionary *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_difference_type = {"_p_difference_type", "difference_type *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_p_PyObject = {"_p_p_PyObject", "PyObject **", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_size_type = {"_p_size_type", "size_type *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_solver = {"_p_solver", "solver *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_solver_new = {"_p_solver_new", "solver_new *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_speciesTable = {"_p_speciesTable", "speciesTable *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_species__multithermoT_VLET_chungTransportMixtureT_PengRobinsonMixtureT_multispecieT_solver_new__Stype_t_t_t_t_sensibleEnthalpy_t = {"_p_species__multithermoT_VLET_chungTransportMixtureT_PengRobinsonMixtureT_multispecieT_solver_new__Stype_t_t_t_t_sensibleEnthalpy_t", "solver_new::Mtype *|species::multithermo< VLE< chungTransportMixture< PengRobinsonMixture< multispecie< solver_new::Stype > > > >,sensibleEnthalpy > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__allocatorT_double_t = {"_p_std__allocatorT_double_t", "std::vector< double >::allocator_type *|std::allocator< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__allocatorT_std__string_t = {"_p_std__allocatorT_std__string_t", "std::vector< std::string >::allocator_type *|std::allocator< std::string > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__invalid_argument = {"_p_std__invalid_argument", "std::invalid_argument *", 0, 0, (void*)0, 0};
@@ -11036,12 +14088,19 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_Foam__PengRobinsonMT_Foam__specie_t,
   &_swigt__p_Foam__dictionary,
   &_swigt__p_Foam__speciesTable,
+  &_swigt__p_Mtype,
+  &_swigt__p_PtrListT_chungTransportT_species__thermoT_janafThermoT_PengRobinsonT_specie_t_t_sensibleEnthalpy_t_t_t,
+  &_swigt__p_Stype,
   &_swigt__p_allocator_type,
   &_swigt__p_char,
+  &_swigt__p_dictionary,
   &_swigt__p_difference_type,
   &_swigt__p_p_PyObject,
   &_swigt__p_size_type,
   &_swigt__p_solver,
+  &_swigt__p_solver_new,
+  &_swigt__p_speciesTable,
+  &_swigt__p_species__multithermoT_VLET_chungTransportMixtureT_PengRobinsonMixtureT_multispecieT_solver_new__Stype_t_t_t_t_sensibleEnthalpy_t,
   &_swigt__p_std__allocatorT_double_t,
   &_swigt__p_std__allocatorT_std__string_t,
   &_swigt__p_std__invalid_argument,
@@ -11054,12 +14113,19 @@ static swig_type_info *swig_type_initial[] = {
 static swig_cast_info _swigc__p_Foam__PengRobinsonMT_Foam__specie_t[] = {  {&_swigt__p_Foam__PengRobinsonMT_Foam__specie_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_Foam__dictionary[] = {  {&_swigt__p_Foam__dictionary, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_Foam__speciesTable[] = {  {&_swigt__p_Foam__speciesTable, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_Mtype[] = {  {&_swigt__p_Mtype, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_PtrListT_chungTransportT_species__thermoT_janafThermoT_PengRobinsonT_specie_t_t_sensibleEnthalpy_t_t_t[] = {  {&_swigt__p_PtrListT_chungTransportT_species__thermoT_janafThermoT_PengRobinsonT_specie_t_t_sensibleEnthalpy_t_t_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_Stype[] = {  {&_swigt__p_Stype, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_allocator_type[] = {  {&_swigt__p_allocator_type, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_char[] = {  {&_swigt__p_char, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_dictionary[] = {  {&_swigt__p_dictionary, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_difference_type[] = {  {&_swigt__p_difference_type, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_p_PyObject[] = {  {&_swigt__p_p_PyObject, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_size_type[] = {  {&_swigt__p_size_type, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_solver[] = {  {&_swigt__p_solver, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_solver_new[] = {  {&_swigt__p_solver_new, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_speciesTable[] = {  {&_swigt__p_speciesTable, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_species__multithermoT_VLET_chungTransportMixtureT_PengRobinsonMixtureT_multispecieT_solver_new__Stype_t_t_t_t_sensibleEnthalpy_t[] = {  {&_swigt__p_species__multithermoT_VLET_chungTransportMixtureT_PengRobinsonMixtureT_multispecieT_solver_new__Stype_t_t_t_t_sensibleEnthalpy_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__allocatorT_double_t[] = {  {&_swigt__p_std__allocatorT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__allocatorT_std__string_t[] = {  {&_swigt__p_std__allocatorT_std__string_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__invalid_argument[] = {  {&_swigt__p_std__invalid_argument, 0, 0, 0},{0, 0, 0, 0}};
@@ -11072,12 +14138,19 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_Foam__PengRobinsonMT_Foam__specie_t,
   _swigc__p_Foam__dictionary,
   _swigc__p_Foam__speciesTable,
+  _swigc__p_Mtype,
+  _swigc__p_PtrListT_chungTransportT_species__thermoT_janafThermoT_PengRobinsonT_specie_t_t_sensibleEnthalpy_t_t_t,
+  _swigc__p_Stype,
   _swigc__p_allocator_type,
   _swigc__p_char,
+  _swigc__p_dictionary,
   _swigc__p_difference_type,
   _swigc__p_p_PyObject,
   _swigc__p_size_type,
   _swigc__p_solver,
+  _swigc__p_solver_new,
+  _swigc__p_speciesTable,
+  _swigc__p_species__multithermoT_VLET_chungTransportMixtureT_PengRobinsonMixtureT_multispecieT_solver_new__Stype_t_t_t_t_sensibleEnthalpy_t,
   _swigc__p_std__allocatorT_double_t,
   _swigc__p_std__allocatorT_std__string_t,
   _swigc__p_std__invalid_argument,

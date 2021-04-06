@@ -56,6 +56,96 @@ void Foam::ISATbinaryTree::insertNode
         << "trying to insert a node with a wrong pointer to a chemPoint"
         << exit(FatalError);
 }
+
+
+Foam::ISATleaf*  Foam::ISATbinaryTree::Sibling(ISATleaf* x)
+{
+    if (size_>1)
+    {
+        if (x == x->node()->leafLeft())
+        {
+            // x is on the left, return right side
+            // might return nullptr if the right side is a node
+            return x->node()->leafRight();
+        }
+        else if (x == x->node()->leafRight())
+        {
+            // x is on the right, return left side
+            return x->node()->leafLeft();
+        }
+        else
+        {
+            FatalErrorInFunction
+                << "wrong addressing of the initial leaf"
+                << exit(FatalError);
+            return nullptr;
+        }
+    }
+    // there is only one leaf attached to the root_, no sibling
+    return nullptr;
+}
+
+
+Foam::ISATNode* Foam::ISATbinaryTree::nodeSibling(ISATleaf* x)
+{
+    if (size_>1)
+    {
+        if (x == x->node()->leafLeft())
+        {
+            // x is on the left, return right side
+            return x->node()->nodeRight();
+        }
+        else if (x == x->node()->leafRight())
+        {
+            // x is on the right, return left side
+            return x->node()->nodeLeft();
+        }
+        else
+        {
+            FatalErrorInFunction
+                << "wrong addressing of the initial leaf"
+                << exit(FatalError);
+            return nullptr;
+        }
+    }
+    return nullptr;
+}
+
+
+void Foam::ISATbinaryTree::transplant(ISATNode* u, ISATNode* v)
+{
+    if (v != nullptr)
+    {
+        // u is root_
+        if (u->parent() == nullptr)
+        {
+            root_ = v;
+        }
+        // u is on the left of its parent
+        else if (u == u->parent()->nodeLeft())
+        {
+            u->parent()->nodeLeft() = v;
+        }
+        // u is ont the right of its parent
+        else if (u == u->parent()->nodeRight())
+        {
+            u->parent()->nodeRight() = v;
+        }
+        else
+        {
+            FatalErrorInFunction
+                << "wrong addressing of the initial node"
+                << exit(FatalError);
+        }
+        v->parent() = u->parent();
+    }
+    else
+    {
+        FatalErrorInFunction
+            << "trying to transplant a nullptr node"
+            << exit(FatalError);
+    }
+}
 /*
 
 template<class CompType, class ThermoType>
@@ -165,44 +255,6 @@ bool Foam::binaryTree<CompType, ThermoType>::inSubTree
 
 
 
-
-template<class CompType, class ThermoType>
-void Foam::binaryTree<CompType, ThermoType>::transplant(bn* u, bn* v)
-{
-    if (v != nullptr)
-    {
-        // u is root_
-        if (u->parent() == nullptr)
-        {
-            root_ = v;
-        }
-        // u is on the left of its parent
-        else if (u == u->parent()->nodeLeft())
-        {
-            u->parent()->nodeLeft() = v;
-        }
-        // u is ont the right of its parent
-        else if (u == u->parent()->nodeRight())
-        {
-            u->parent()->nodeRight() = v;
-        }
-        else
-        {
-            FatalErrorInFunction
-                << "wrong addressing of the initial node"
-                << exit(FatalError);
-        }
-        v->parent() = u->parent();
-    }
-    else
-    {
-        FatalErrorInFunction
-            << "trying to transplant a nullptr node"
-            << exit(FatalError);
-    }
-}
-
-
 template<class CompType, class ThermoType>
 Foam::chemPointISAT<CompType, ThermoType>*
 Foam::binaryTree<CompType, ThermoType>::chemPSibling(bn* y)
@@ -232,34 +284,7 @@ Foam::binaryTree<CompType, ThermoType>::chemPSibling(bn* y)
 }
 
 
-template<class CompType, class ThermoType>
-Foam::chemPointISAT<CompType, ThermoType>*
-Foam::binaryTree<CompType, ThermoType>::chemPSibling(chP* x)
-{
-    if (size_>1)
-    {
-        if (x == x->node()->leafLeft())
-        {
-            // x is on the left, return right side
-            // might return nullptr if the right side is a node
-            return x->node()->leafRight();
-        }
-        else if (x == x->node()->leafRight())
-        {
-            // x is on the right, return left side
-            return x->node()->leafLeft();
-        }
-        else
-        {
-            FatalErrorInFunction
-                << "wrong addressing of the initial leaf"
-                << exit(FatalError);
-            return nullptr;
-        }
-    }
-    // there is only one leaf attached to the root_, no sibling
-    return nullptr;
-}
+
 
 
 template<class CompType, class ThermoType>
@@ -289,32 +314,7 @@ Foam::binaryTree<CompType, ThermoType>::nodeSibling(bn* y)
 }
 
 
-template<class CompType, class ThermoType>
-Foam::binaryNode<CompType, ThermoType>*
-Foam::binaryTree<CompType, ThermoType>::nodeSibling(chP* x)
-{
-    if (size_>1)
-    {
-        if (x == x->node()->leafLeft())
-        {
-            // x is on the left, return right side
-            return x->node()->nodeRight();
-        }
-        else if (x == x->node()->leafRight())
-        {
-            // x is on the right, return left side
-            return x->node()->nodeLeft();
-        }
-        else
-        {
-            FatalErrorInFunction
-                << "wrong addressing of the initial leaf"
-                << exit(FatalError);
-            return nullptr;
-        }
-    }
-    return nullptr;
-}
+
 
 
 template<class CompType, class ThermoType>
@@ -423,6 +423,8 @@ Foam::ISATleaf* Foam::ISATbinaryTree::insertNewLeaf
         newleaf->node() = newNode;
     }
     size_++;
+    newleaf->pTimeTagList_=timeTagList_.insert(newleaf);
+    //heap_.insert(newleaf);
     return newleaf;
 }
 
@@ -492,9 +494,15 @@ void Foam::ISATbinaryTree::eval(const scalarList& value, scalarList& ret)
     {
         for (int j = 0;j < n_in_;j++)
         {
-            ret[i] += pleaf->A()[i][j] * (value[j] - pleaf->value()[j]);
+            ret[i] += pleaf->A()[j][i] * (value[j] - pleaf->value()[j]);
         }
     }
+}
+
+
+bool Foam::ISATbinaryTree::isFull()
+{
+    return size_ >= maxNLeafs_;
 }
 /*
 void Foam::ISATbinaryTree::print
@@ -563,6 +571,68 @@ Foam::ISATbinaryTree::~ISATbinaryTree()
     clear();
 }
 
+
+
+void Foam::ISATbinaryTree::deleteLeaf(ISATleaf* pleaf)
+{
+    if (size_ == 1) // only one point is stored
+    {
+        deleteDemandDrivenData(pleaf);
+        deleteDemandDrivenData(root_);
+    }
+    else if (size_ > 1)
+    {
+        ISATNode* z = pleaf->node();
+        ISATNode* x;
+        ISATleaf* siblingpleaf = Sibling(pleaf);
+
+        if (siblingpleaf != nullptr)// the sibling of phi0 is a chemPoint
+        {
+            // z was root (only two chemPoints in the tree)
+            if (z->parent() == nullptr)
+            {
+                root_ = new ISATNode();
+                root_->leafLeft()=siblingpleaf;
+                siblingpleaf->node()=root_;
+            }
+            else if (z == z->parent()->nodeLeft())
+            {
+                z->parent()->leafLeft() = siblingpleaf;
+                z->parent()->nodeLeft() = nullptr;
+                siblingpleaf->node() = z->parent();
+            }
+            else if (z == z->parent()->nodeRight())
+            {
+                z->parent()->leafRight() = siblingpleaf;
+                z->parent()->nodeRight() = nullptr;
+                siblingpleaf->node() = z->parent();
+            }
+            else
+            {
+                FatalErrorInFunction
+                    << "wrong addressing of the initial leaf"
+                    << exit(FatalError);
+            }
+        }
+        else
+        {
+            x = nodeSibling(pleaf);
+            if (x !=nullptr)
+            {
+                transplant(z, x);
+            }
+            else
+            {
+                FatalErrorInFunction
+                    << "inconsistent structure of the tree, no leaf and no node"
+                    << exit(FatalError);
+            }
+        }
+        deleteDemandDrivenData(pleaf);
+        deleteDemandDrivenData(z);
+    }
+    size_--;
+}
 /*
 template<class CompType, class ThermoType>
 bool Foam::binaryTree<CompType, ThermoType>::secondaryBTSearch
@@ -622,67 +692,6 @@ bool Foam::binaryTree<CompType, ThermoType>::secondaryBTSearch
 }
 
 
-template<class CompType, class ThermoType>
-void Foam::binaryTree<CompType, ThermoType>::deleteLeaf(chP*& phi0)
-{
-    if (size_ == 1) // only one point is stored
-    {
-        deleteDemandDrivenData(phi0);
-        deleteDemandDrivenData(root_);
-    }
-    else if (size_ > 1)
-    {
-        bn* z = phi0->node();
-        bn* x;
-        chP* siblingPhi0 = chemPSibling(phi0);
-
-        if (siblingPhi0 != nullptr)// the sibling of phi0 is a chemPoint
-        {
-            // z was root (only two chemPoints in the tree)
-            if (z->parent() == nullptr)
-            {
-                root_ = new bn();
-                root_->leafLeft()=siblingPhi0;
-                siblingPhi0->node()=root_;
-            }
-            else if (z == z->parent()->nodeLeft())
-            {
-                z->parent()->leafLeft() = siblingPhi0;
-                z->parent()->nodeLeft() = nullptr;
-                siblingPhi0->node() = z->parent();
-            }
-            else if (z == z->parent()->nodeRight())
-            {
-                z->parent()->leafRight() = siblingPhi0;
-                z->parent()->nodeRight() = nullptr;
-                siblingPhi0->node() = z->parent();
-            }
-            else
-            {
-                FatalErrorInFunction
-                    << "wrong addressing of the initial leaf"
-                    << exit(FatalError);
-            }
-        }
-        else
-        {
-            x = nodeSibling(phi0);
-            if (x !=nullptr)
-            {
-                transplant(z, x);
-            }
-            else
-            {
-                FatalErrorInFunction
-                    << "inconsistent structure of the tree, no leaf and no node"
-                    << exit(FatalError);
-            }
-        }
-        deleteDemandDrivenData(phi0);
-        deleteDemandDrivenData(z);
-    }
-    size_--;
-}
 
 
 template<class CompType, class ThermoType>
@@ -850,11 +859,7 @@ Foam::binaryTree<CompType, ThermoType>::treeSuccessor(chP* x)
 
 
 
-template<class CompType, class ThermoType>
-bool Foam::binaryTree<CompType, ThermoType>::isFull()
-{
-    return size_ >= maxNLeafs_;
-}
+
 
 
 template<class CompType, class ThermoType>

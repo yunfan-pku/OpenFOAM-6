@@ -15,8 +15,12 @@
         PyList_SET_ITEM($result,i,PyFloat_FromDouble($1[i]));
 %}
 
-
-
+%naturalvar solver_new::comp;
+%naturalvar solver_new::equalconstant;
+%naturalvar solver_new::comp_liq;
+%naturalvar solver_new::comp_gas;
+%naturalvar solver_new::ret;
+%naturalvar solver_new::m_specie;
 %{
   #include"VLEinterface.h"
   /*

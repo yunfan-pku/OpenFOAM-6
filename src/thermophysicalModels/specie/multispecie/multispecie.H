@@ -132,8 +132,8 @@ namespace Foam
         //inline scalar R() const;
 
 
-        inline void setX(scalarList &);
-        inline void setY(scalarList &);
+        inline void setX(const scalarList &);
+        inline void setY(const scalarList &);
         inline const PtrList<Thermo>& speciesData() const;
         inline const Thermo &operator[](const label) const;
         // I-O

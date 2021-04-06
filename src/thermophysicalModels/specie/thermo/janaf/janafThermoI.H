@@ -39,7 +39,7 @@ inline Foam::janafThermo<EquationOfState>::janafThermo
     const typename janafThermo<EquationOfState>::coeffArray& lowCpCoeffs,
     const bool convertCoeffs
 )
-:
+    :
     EquationOfState(st),
     Tlow_(Tlow),
     Thigh_(Thigh),
@@ -47,15 +47,15 @@ inline Foam::janafThermo<EquationOfState>::janafThermo
 {
     if (convertCoeffs)
     {
-        for (label coefLabel=0; coefLabel<nCoeffs_; coefLabel++)
+        for (label coefLabel = 0; coefLabel < nCoeffs_; coefLabel++)
         {
-            highCpCoeffs_[coefLabel] = highCpCoeffs[coefLabel]*this->R();
-            lowCpCoeffs_[coefLabel] = lowCpCoeffs[coefLabel]*this->R();
+            highCpCoeffs_[coefLabel] = highCpCoeffs[coefLabel] * this->R();
+            lowCpCoeffs_[coefLabel] = lowCpCoeffs[coefLabel] * this->R();
         }
     }
     else
     {
-        for (label coefLabel=0; coefLabel<nCoeffs_; coefLabel++)
+        for (label coefLabel = 0; coefLabel < nCoeffs_; coefLabel++)
         {
             highCpCoeffs_[coefLabel] = highCpCoeffs[coefLabel];
             lowCpCoeffs_[coefLabel] = lowCpCoeffs[coefLabel];
@@ -90,13 +90,13 @@ inline Foam::janafThermo<EquationOfState>::janafThermo
     const word& name,
     const janafThermo& jt
 )
-:
+    :
     EquationOfState(name, jt),
     Tlow_(jt.Tlow_),
     Thigh_(jt.Thigh_),
     Tcommon_(jt.Tcommon_)
 {
-    for (label coefLabel=0; coefLabel<nCoeffs_; coefLabel++)
+    for (label coefLabel = 0; coefLabel < nCoeffs_; coefLabel++)
     {
         highCpCoeffs_[coefLabel] = jt.highCpCoeffs_[coefLabel];
         lowCpCoeffs_[coefLabel] = jt.lowCpCoeffs_[coefLabel];
@@ -115,9 +115,9 @@ inline Foam::scalar Foam::janafThermo<EquationOfState>::limit
     if (T < Tlow_ || T > Thigh_)
     {
         //WarningInFunction
-        FatalErrorInFunction 
+        FatalErrorInFunction
             << "attempt to use janafThermo<EquationOfState>"
-               " out of temperature range "
+            " out of temperature range "
             << Tlow_ << " -> " << Thigh_ << ";  T = " << T
             << endl;
 
@@ -176,8 +176,8 @@ inline Foam::scalar Foam::janafThermo<EquationOfState>::Cp
 {
     const coeffArray& a = coeffs(T);
     return
-        ((((a[4]*T + a[3])*T + a[2])*T + a[1])*T + a[0])
-      + EquationOfState::Cp(p, T);
+        ((((a[4] * T + a[3]) * T + a[2]) * T + a[1]) * T + a[0])
+        + EquationOfState::Cp(p, T);
 }
 
 
@@ -190,10 +190,10 @@ inline Foam::scalar Foam::janafThermo<EquationOfState>::Ha
 {
     const coeffArray& a = coeffs(T);
     return
-    (
-        ((((a[4]/5.0*T + a[3]/4.0)*T + a[2]/3.0)*T + a[1]/2.0)*T + a[0])*T
-      + a[5]
-    ) + EquationOfState::H(p, T);
+        (
+            ((((a[4] / 5.0 * T + a[3] / 4.0) * T + a[2] / 3.0) * T + a[1] / 2.0) * T + a[0]) * T
+            + a[5]
+            ) + EquationOfState::H(p, T);
 }
 
 
@@ -213,12 +213,12 @@ inline Foam::scalar Foam::janafThermo<EquationOfState>::Hc() const
 {
     const coeffArray& a = lowCpCoeffs_;
     return
-    (
         (
-            (((a[4]/5.0*Tstd + a[3]/4.0)*Tstd + a[2]/3.0)*Tstd + a[1]/2.0)*Tstd
-          + a[0]
-        )*Tstd + a[5]
-    );
+            (
+                (((a[4] / 5.0 * Tstd + a[3] / 4.0) * Tstd + a[2] / 3.0) * Tstd + a[1] / 2.0) * Tstd
+                + a[0]
+                ) * Tstd + a[5]
+            );
 }
 
 
@@ -231,10 +231,10 @@ inline Foam::scalar Foam::janafThermo<EquationOfState>::S
 {
     const coeffArray& a = coeffs(T);
     return
-    (
-        (((a[4]/4.0*T + a[3]/3.0)*T + a[2]/2.0)*T + a[1])*T + a[0]*log(T)
-      + a[6]
-    ) + EquationOfState::S(p, T);
+        (
+            (((a[4] / 4.0 * T + a[3] / 3.0) * T + a[2] / 2.0) * T + a[1]) * T + a[0] * log(T)
+            + a[6]
+            ) + EquationOfState::S(p, T);
 }
 
 
@@ -246,7 +246,7 @@ inline Foam::scalar Foam::janafThermo<EquationOfState>::dGdT
 ) const
 {
     const coeffArray& a = coeffs(T);
-    return -((a[0] + a[5]/T)/T + a[1]/2 + T*(a[2]/3 + T*(a[3]/4 + T*a[4]/5)));
+    return -((a[0] + a[5] / T) / T + a[1] / 2 + T * (a[2] / 3 + T * (a[3] / 4 + T * a[4] / 5)));
 }
 
 
@@ -259,7 +259,7 @@ inline Foam::scalar Foam::janafThermo<EquationOfState>::dCpdT
 {
     const coeffArray& a = coeffs(T);
     return
-        (((4*a[4]*T + 3*a[3])*T + 2*a[2])*T + a[1]);
+        (((4 * a[4] * T + 3 * a[3]) * T + 2 * a[2]) * T + a[1]);
 }
 
 
@@ -269,7 +269,7 @@ template<class EquationOfState>
 inline void Foam::janafThermo<EquationOfState>::operator+=
 (
     const janafThermo<EquationOfState>& jt
-)
+    )
 {
     scalar Y1 = this->Y();
 
@@ -278,16 +278,16 @@ inline void Foam::janafThermo<EquationOfState>::operator+=
     if (mag(this->Y()) > small)
     {
         Y1 /= this->Y();
-        const scalar Y2 = jt.Y()/this->Y();
+        const scalar Y2 = jt.Y() / this->Y();
 
         Tlow_ = max(Tlow_, jt.Tlow_);
         Thigh_ = min(Thigh_, jt.Thigh_);
 
         if
-        (
-            janafThermo<EquationOfState>::debug
-         && notEqual(Tcommon_, jt.Tcommon_)
-        )
+            (
+                janafThermo<EquationOfState>::debug
+                && notEqual(Tcommon_, jt.Tcommon_)
+                )
         {
             FatalErrorInFunction
                 << "Tcommon " << Tcommon_ << " for "
@@ -298,19 +298,19 @@ inline void Foam::janafThermo<EquationOfState>::operator+=
         }
 
         for
-        (
-            label coefLabel=0;
-            coefLabel<janafThermo<EquationOfState>::nCoeffs_;
-            coefLabel++
-        )
+            (
+                label coefLabel = 0;
+                coefLabel < janafThermo<EquationOfState>::nCoeffs_;
+                coefLabel++
+                )
         {
             highCpCoeffs_[coefLabel] =
-                Y1*highCpCoeffs_[coefLabel]
-              + Y2*jt.highCpCoeffs_[coefLabel];
+                Y1 * highCpCoeffs_[coefLabel]
+                + Y2 * jt.highCpCoeffs_[coefLabel];
 
             lowCpCoeffs_[coefLabel] =
-                Y1*lowCpCoeffs_[coefLabel]
-              + Y2*jt.lowCpCoeffs_[coefLabel];
+                Y1 * lowCpCoeffs_[coefLabel]
+                + Y2 * jt.lowCpCoeffs_[coefLabel];
         }
     }
 }
@@ -323,7 +323,7 @@ inline Foam::janafThermo<EquationOfState> Foam::operator+
 (
     const janafThermo<EquationOfState>& jt1,
     const janafThermo<EquationOfState>& jt2
-)
+    )
 {
     EquationOfState eofs = jt1;
     eofs += jt2;
@@ -331,44 +331,44 @@ inline Foam::janafThermo<EquationOfState> Foam::operator+
     if (mag(eofs.Y()) < small)
     {
         return janafThermo<EquationOfState>
-        (
-            eofs,
-            jt1.Tlow_,
-            jt1.Thigh_,
-            jt1.Tcommon_,
-            jt1.highCpCoeffs_,
-            jt1.lowCpCoeffs_
-        );
+            (
+                eofs,
+                jt1.Tlow_,
+                jt1.Thigh_,
+                jt1.Tcommon_,
+                jt1.highCpCoeffs_,
+                jt1.lowCpCoeffs_
+                );
     }
     else
     {
-        const scalar Y1 = jt1.Y()/eofs.Y();
-        const scalar Y2 = jt2.Y()/eofs.Y();
+        const scalar Y1 = jt1.Y() / eofs.Y();
+        const scalar Y2 = jt2.Y() / eofs.Y();
 
         typename janafThermo<EquationOfState>::coeffArray highCpCoeffs;
         typename janafThermo<EquationOfState>::coeffArray lowCpCoeffs;
 
         for
-        (
-            label coefLabel=0;
-            coefLabel<janafThermo<EquationOfState>::nCoeffs_;
-            coefLabel++
-        )
+            (
+                label coefLabel = 0;
+                coefLabel < janafThermo<EquationOfState>::nCoeffs_;
+                coefLabel++
+                )
         {
             highCpCoeffs[coefLabel] =
-                Y1*jt1.highCpCoeffs_[coefLabel]
-              + Y2*jt2.highCpCoeffs_[coefLabel];
+                Y1 * jt1.highCpCoeffs_[coefLabel]
+                + Y2 * jt2.highCpCoeffs_[coefLabel];
 
             lowCpCoeffs[coefLabel] =
-                Y1*jt1.lowCpCoeffs_[coefLabel]
-              + Y2*jt2.lowCpCoeffs_[coefLabel];
+                Y1 * jt1.lowCpCoeffs_[coefLabel]
+                + Y2 * jt2.lowCpCoeffs_[coefLabel];
         }
 
         if
-        (
-            janafThermo<EquationOfState>::debug
-         && notEqual(jt1.Tcommon_, jt2.Tcommon_)
-        )
+            (
+                janafThermo<EquationOfState>::debug
+                && notEqual(jt1.Tcommon_, jt2.Tcommon_)
+                )
         {
             FatalErrorInFunction
                 << "Tcommon " << jt1.Tcommon_ << " for "
@@ -379,14 +379,14 @@ inline Foam::janafThermo<EquationOfState> Foam::operator+
         }
 
         return janafThermo<EquationOfState>
-        (
-            eofs,
-            max(jt1.Tlow_, jt2.Tlow_),
-            min(jt1.Thigh_, jt2.Thigh_),
-            jt1.Tcommon_,
-            highCpCoeffs,
-            lowCpCoeffs
-        );
+            (
+                eofs,
+                max(jt1.Tlow_, jt2.Tlow_),
+                min(jt1.Thigh_, jt2.Thigh_),
+                jt1.Tcommon_,
+                highCpCoeffs,
+                lowCpCoeffs
+                );
     }
 }
 
@@ -396,17 +396,17 @@ inline Foam::janafThermo<EquationOfState> Foam::operator*
 (
     const scalar s,
     const janafThermo<EquationOfState>& jt
-)
+    )
 {
     return janafThermo<EquationOfState>
-    (
-        s*static_cast<const EquationOfState&>(jt),
-        jt.Tlow_,
-        jt.Thigh_,
-        jt.Tcommon_,
-        jt.highCpCoeffs_,
-        jt.lowCpCoeffs_
-    );
+        (
+            s * static_cast<const EquationOfState&>(jt),
+            jt.Tlow_,
+            jt.Thigh_,
+            jt.Tcommon_,
+            jt.highCpCoeffs_,
+            jt.lowCpCoeffs_
+            );
 }
 
 
@@ -415,41 +415,41 @@ inline Foam::janafThermo<EquationOfState> Foam::operator==
 (
     const janafThermo<EquationOfState>& jt1,
     const janafThermo<EquationOfState>& jt2
-)
+    )
 {
     EquationOfState eofs
     (
         static_cast<const EquationOfState&>(jt1)
-     == static_cast<const EquationOfState&>(jt2)
+        == static_cast<const EquationOfState&>(jt2)
     );
 
-    const scalar Y1 = jt2.Y()/eofs.Y();
-    const scalar Y2 = jt1.Y()/eofs.Y();
+    const scalar Y1 = jt2.Y() / eofs.Y();
+    const scalar Y2 = jt1.Y() / eofs.Y();
 
     typename janafThermo<EquationOfState>::coeffArray highCpCoeffs;
     typename janafThermo<EquationOfState>::coeffArray lowCpCoeffs;
 
     for
-    (
-        label coefLabel=0;
-        coefLabel<janafThermo<EquationOfState>::nCoeffs_;
-        coefLabel++
-    )
+        (
+            label coefLabel = 0;
+            coefLabel < janafThermo<EquationOfState>::nCoeffs_;
+            coefLabel++
+            )
     {
         highCpCoeffs[coefLabel] =
-            Y1*jt2.highCpCoeffs_[coefLabel]
-          - Y2*jt1.highCpCoeffs_[coefLabel];
+            Y1 * jt2.highCpCoeffs_[coefLabel]
+            - Y2 * jt1.highCpCoeffs_[coefLabel];
 
         lowCpCoeffs[coefLabel] =
-            Y1*jt2.lowCpCoeffs_[coefLabel]
-          - Y2*jt1.lowCpCoeffs_[coefLabel];
+            Y1 * jt2.lowCpCoeffs_[coefLabel]
+            - Y2 * jt1.lowCpCoeffs_[coefLabel];
     }
 
     if
-    (
-        janafThermo<EquationOfState>::debug
-     && notEqual(jt2.Tcommon_, jt1.Tcommon_)
-    )
+        (
+            janafThermo<EquationOfState>::debug
+            && notEqual(jt2.Tcommon_, jt1.Tcommon_)
+            )
     {
         FatalErrorInFunction
             << "Tcommon " << jt2.Tcommon_ << " for "
@@ -460,14 +460,14 @@ inline Foam::janafThermo<EquationOfState> Foam::operator==
     }
 
     return janafThermo<EquationOfState>
-    (
-        eofs,
-        max(jt2.Tlow_, jt1.Tlow_),
-        min(jt2.Thigh_, jt1.Thigh_),
-        jt2.Tcommon_,
-        highCpCoeffs,
-        lowCpCoeffs
-    );
+        (
+            eofs,
+            max(jt2.Tlow_, jt1.Tlow_),
+            min(jt2.Thigh_, jt1.Thigh_),
+            jt2.Tcommon_,
+            highCpCoeffs,
+            lowCpCoeffs
+            );
 }
 
 

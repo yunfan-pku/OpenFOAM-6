@@ -40,38 +40,99 @@ inline Foam::species::ISATmultithermo<ThermoMixture, Type>::ISATmultithermo(
     PtrList<SingleThermoType>& speciesData,
     const speciesTable& specieNames,
     const dictionary& thermoDict)
-    : ThermoMixture(name, speciesData, specieNames, thermoDict),
-    Hnfun(this), psifun(this, &ThermoMixture::psi), mufun(this, &ThermoMixture::mu),
-    alphahfun(this, &ThermoMixture::alphah), vaporfrafun(this, &ThermoMixture::vaporfra),
-    psivffun(this, &ThermoMixture::psi, &ThermoMixture::vaporfra),
-    Ttree(speciesData.size() + 1, 1, Hnfun, "Ttree"), psitree(speciesData.size() + 1, 1, psifun, "psitree"),//,Ttree(specieNames.size()+1,1),psimualphahtree(specieNames.size()+1,3)
-    mutree(speciesData.size() + 1, 1, mufun, "mutree"), alphahtree(speciesData.size() + 1, 1, alphahfun, "alphahtree"),
-    vaporfratree(speciesData.size() + 1, 1, vaporfrafun, "vaporfratree"),
-    psivftree(speciesData.size() + 1, 2, psivffun, "psivftree")
+    :
+    ThermoMixture(name, speciesData, specieNames, thermoDict),
+    ISATDict_
+    (
+        IFstream
+        (
+            fileName(thermoDict.lookup("ISATDictFile")).expand()
+        )()
+    ),
+    //Hnfun(this), 
+    //psifun(this, &ThermoMixture::psi), 
+    //psifun_HP(this), 
+    //Tpsifun_HP(this), 
+    Tpsivffun_HP(this),
+    mufun(this, &ThermoMixture::mu),
+    alphahfun(this, &ThermoMixture::alphah),
+    //vaporfrafun(this, &ThermoMixture::vaporfra),
+    //psivffun(this, &ThermoMixture::psi, &ThermoMixture::vaporfra),//psifun_HP(this, &ThermoMixture::psi),
+    //Ttree(speciesData.size() + 1, 1, Hnfun, "Ttree"), 
+    //psitree(speciesData.size() + 1, 1, psifun, "psitree"), 
+    //psitree_HP(speciesData.size() + 2, 1, psifun_HP, "psitree_HP"), 
+    //Tpsitree_HP(speciesData.size() + 2, 2, Tpsifun_HP, "Tpsitree_HP"), 
+    Tpsivftree_HP(speciesData.size() + 2, 3, Tpsivffun_HP, "Tpsivftree_HP"),//,Ttree(specieNames.size()+1,1),psimualphahtree(specieNames.size()+1,3)
+    mutree(speciesData.size() + 1, 1, mufun, "mutree"),
+    alphahtree(speciesData.size() + 1, 1, alphahfun, "alphahtree")
+    //vaporfratree(speciesData.size() + 1, 1, vaporfrafun, "vaporfratree"),
+    //psivftree(speciesData.size() + 1, 2, psivffun, "psivftree")
 {
-    psitree.epsilon() = 0.003;
+
+    /*
+    psitree.epsilon() = 1e-3;
     psitree.scaleFactor()[0][0] = 1e5;
     psitree.relepsilon() = 0;// 5e-2;
-    psitree.init_elp()[0][0] = 1/0.01;
-    psitree.init_elp()[1][1] = 1/1000;
-    psitree.init_elp()[2][2] = 1/0.5;
-    Ttree.relepsilon() = 0;// 2e-3;
-    Ttree.epsilon() = 0.3;
-    Ttree.init_elp()[0][0] = 1/0.1;
-    Ttree.init_elp()[1][1] = 1/5;
-    Ttree.init_elp()[2][2] = 1/1000;
-    Ttree.scaleFactor()[0][0] = 1e1;
+    psitree.init_elp()[0][0] = 1 / 0.01;
+    psitree.init_elp()[1][1] = 1 / 1000;
+    psitree.init_elp()[2][2] = 1 / 0.5;
+    psitree_HP.epsilon() = 1e-3;
+    psitree_HP.scaleFactor()[0][0] = 1e5;
+    psitree_HP.relepsilon() = 0;// 5e-2;
+    psitree_HP.init_elp()[0][0] = 1 / 0.01;
+    psitree_HP.init_elp()[1][1] = 1 / 0.01;
+    psitree_HP.init_elp()[2][2] = 1 / 100;
+    psitree_HP.init_elp()[3][3] = 1 / 1000;
+    Tpsitree_HP.epsilon() = 1e-3;
+    Tpsitree_HP.scaleFactor()[0][0] = 1e-2;
+    Tpsitree_HP.scaleFactor()[1][1] = 1e5;
+    Tpsitree_HP.relepsilon() = 0;// 5e-2;
+    Tpsitree_HP.init_elp()[0][0] = 1 / 0.01;
+    Tpsitree_HP.init_elp()[1][1] = 1 / 0.01;
+    Tpsitree_HP.init_elp()[2][2] = 1 / 100;
+    Tpsitree_HP.init_elp()[3][3] = 1 / 1000;
+*/
+
+    Info << readScalar(ISATDict_.subDict(Tpsivftree_HP.treename()).lookup("epsilon")) << endl;
+    scalarList scaleFactor(ISATDict_.subDict(Tpsivftree_HP.treename()).lookup("scaleFactor"));
+    Info << scaleFactor << endl;
+    Info << readScalar(ISATDict_.subDict(Tpsivftree_HP.treename()).lookup("relepsilon")) << endl;
+    scalarList scaleFactor(ISATDict_.subDict(Tpsivftree_HP.treename()).lookup("init_elp"));
+    Info << scaleFactor << endl;
+    FatalErrorInFunction << "haha" << abort(FatalError);
+    Tpsivftree_HP.epsilon() = 1e-3;
+    Tpsivftree_HP.scaleFactor()[0][0] = 1e-2;
+    Tpsivftree_HP.scaleFactor()[1][1] = 1e5;
+    Tpsivftree_HP.scaleFactor()[2][2] = 1;
+    Tpsivftree_HP.relepsilon() = 0;// 5e-2;
+    Tpsivftree_HP.init_elp()[0][0] = 1 / 0.01;
+    Tpsivftree_HP.init_elp()[1][1] = 1 / 0.01;
+    Tpsivftree_HP.init_elp()[2][2] = 1 / 100;
+    Tpsivftree_HP.init_elp()[3][3] = 1 / 1000;
+
+
+    /*
+        Ttree.relepsilon() = 0;// 2e-3;
+        Ttree.epsilon() = 1e-3;
+        Ttree.init_elp()[0][0] = 1 / 0.1;
+        Ttree.init_elp()[1][1] = 1 / 100;
+        Ttree.init_elp()[2][2] = 1 / 1000;
+        Ttree.scaleFactor()[0][0] = 1e-2;
+        */
     mutree.relepsilon() = 1;//2e-3;
     alphahtree.relepsilon() = 0;// 2e-3;
-    vaporfratree.epsilon() = 0.03;
+/*
+    vaporfratree.epsilon() = 1e-3;
     vaporfratree.relepsilon() = 0;// 1e-4;
-    vaporfratree.init_elp()[0][0] =1/ 0.01;
-    vaporfratree.init_elp()[1][1] = 1/1000;
-    vaporfratree.init_elp()[2][2] = 1/0.5;
-    vaporfratree.scaleFactor()[0][0] = 1e2;
+    vaporfratree.init_elp()[0][0] = 1 / 0.01;
+    vaporfratree.init_elp()[1][1] = 1 / 1000;
+    vaporfratree.init_elp()[2][2] = 1 / 0.5;
+    vaporfratree.scaleFactor()[0][0] = 1;
+
     psivftree.relepsilon() = 0;//2e-8;
     psivftree.epsilon() = 1e-8;
     psivftree.scaleFactor()[0][0] = 100000;
+    */
 }
 
 template <class ThermoMixture, template <class> class Type>
@@ -525,6 +586,7 @@ inline Foam::scalar Foam::species::ISATmultithermo<ThermoMixture, Type>::THE(
     return Type<ISATmultithermo<ThermoMixture, Type>>::THE(*this, he, p, T0);
 }
 //This one !!!
+
 template <class ThermoMixture, template <class> class Type>
 inline Foam::scalar Foam::species::ISATmultithermo<ThermoMixture, Type>::THs(
     const scalar hs,
@@ -533,7 +595,8 @@ inline Foam::scalar Foam::species::ISATmultithermo<ThermoMixture, Type>::THs(
 {
 
     double sum = 0;
-    scalarList in(this->X().size() + 2), out(1);
+    //scalarList in(this->X().size() + 2), out(1);
+    scalarList in(this->X().size() + 1), out(1);
     for (int i = 0;i < this->X().size() - 1;i++)
     {
         in[i] = this->X_[i];
@@ -541,17 +604,19 @@ inline Foam::scalar Foam::species::ISATmultithermo<ThermoMixture, Type>::THs(
     }
     in[this->X().size() - 1] = hs;
     in[this->X().size()] = p;
-    in[this->X().size() + 1] = T0;
+    //in[this->X().size() + 1] = T0;
 
     if (1 - sum < 1e-5)
     {
-        Ttree.notCall++;
+        //Ttree.notCall++;
         return T(hs, p, T0, &ISATmultithermo<ThermoMixture, Type>::Hs, &ISATmultithermo<ThermoMixture, Type>::Cp, &ISATmultithermo<ThermoMixture, Type>::limit);
     }
     //Hnfun.value(in, out);
-    Ttree.call(in, out);
-
-    return out[0];
+    //Info << "THS!!" << endl;
+    return T(hs, p, T0, &ISATmultithermo<ThermoMixture, Type>::Hs, &ISATmultithermo<ThermoMixture, Type>::Cp, &ISATmultithermo<ThermoMixture, Type>::limit);
+    //Ttree.call(in, out);
+    //Ttree.call(in, out, T0);
+    //return out[0];
 }
 
 template <class ThermoMixture, template <class> class Type>
@@ -641,15 +706,90 @@ Foam::species::ISATmultithermo<ThermoMixture, Type>::psi(const scalar p, const s
 
     if (1 - sum < 1e-5)
     {
-        psitree.notCall++;
+        //psitree.notCall++;
         return this->ThermoMixture::psi(p, T);
     }
     // Info<<"psihaha"<<endl;
 
-    psitree.call(in, out);
+    //psitree.call(in, out);
+    //psivftree.call(in, out);
+    return this->ThermoMixture::psi(p, T);
+    //return out[0];
+
+}
+
+template <class ThermoMixture, template <class> class Type>
+inline Foam::scalar
+Foam::species::ISATmultithermo<ThermoMixture, Type>::psi_a(const scalar h, const scalar p, const scalar T0) const
+{
+    scalar tt = T(h, p, T0, &ISATmultithermo<ThermoMixture, Type>::Hs, &ISATmultithermo<ThermoMixture, Type>::Cp, &ISATmultithermo<ThermoMixture, Type>::limit);
+    return this->ThermoMixture::psi(p, tt);
+}
+
+
+template <class ThermoMixture, template <class> class Type>
+inline Foam::scalar
+Foam::species::ISATmultithermo<ThermoMixture, Type>::psi_HP(const scalar H, const scalar P, const scalar T0) const
+{
+    scalarList in(this->X().size() + 2), out(1);
+    for (int i = 0;i < this->X().size();i++)
+    {
+        in[i] = this->X_[i];
+    }
+    in[this->X().size()] = H;
+    in[this->X().size() + 1] = P;
+
+    //Info << "psi_HP" << endl;
+
+    //psitree_HP.call(in, out, T0);
     //psivftree.call(in, out);
     return out[0];
+}
 
+
+template <class ThermoMixture, template <class> class Type>
+inline std::tuple<Foam::scalar, Foam::scalar>
+Foam::species::ISATmultithermo<ThermoMixture, Type>::Tpsi_HP(const scalar H, const scalar P, const scalar T0) const
+{
+    scalarList in(this->X().size() + 2), out(2);
+    for (int i = 0;i < this->X().size();i++)
+    {
+        in[i] = this->X_[i];
+    }
+    in[this->X().size()] = H;
+    in[this->X().size() + 1] = P;
+
+    //Info << "psi_HP" << endl;
+
+    //Tpsitree_HP.call(in, out, T0);
+    //psivftree.call(in, out);
+    return std::make_tuple(out[0], out[1]);
+
+}
+
+template <class ThermoMixture, template <class> class Type>
+inline std::tuple<Foam::scalar, Foam::scalar, Foam::scalar>
+Foam::species::ISATmultithermo<ThermoMixture, Type>::Tpsivf_HP(const scalar H, const scalar P, const scalar T0) const
+{
+    scalarList in(this->X().size() + 2), out(3);
+    for (int i = 0;i < this->X().size();i++)
+    {
+        in[i] = this->X_[i];
+    }
+    in[this->X().size()] = H;
+    in[this->X().size() + 1] = P;
+
+    //Info << "psi_HP" << endl;
+
+    Tpsivftree_HP.call(in, out, T0);
+    //psivftree.call(in, out);
+    return std::make_tuple(out[0], out[1], out[2]);
+
+}
+template <class ThermoMixture, template <class> class Type>
+inline void Foam::species::ISATmultithermo<ThermoMixture, Type>::newTimeStep()
+{
+    Tpsivftree_HP.newTimeStep();
 }
 template <class ThermoMixture, template <class> class Type>
 inline Foam::scalar
@@ -720,14 +860,15 @@ Foam::species::ISATmultithermo<ThermoMixture, Type>::vaporfra(const scalar p, co
 
     if (1 - sum < 1e-5)
     {
-        vaporfratree.notCall++;
+        //vaporfratree.notCall++;
         return this->ThermoMixture::vaporfra(p, T);
     }
     // Info<<"psihaha"<<endl;
 
-    vaporfratree.call(in, out);
+    //vaporfratree.call(in, out);
     //psivftree.call(in, out);
     //Info<<in<<endl;
+    return this->ThermoMixture::vaporfra(p, T);
     return out[0];
 
 }
@@ -746,14 +887,16 @@ inline void Foam::species::ISATmultithermo<ThermoMixture, Type>::psi_vf(const sc
 
     if (1 - sum < 1e-5)
     {
-        psivftree.notCall++;
+        //psivftree.notCall++;
         psi_out = this->ThermoMixture::psi(p, T);
         vf_out = this->ThermoMixture::vaporfra(p, T);
     }
 
     // Info<<"psihaha"<<endl;
 
-    psivftree.call(in, out);
+    //psivftree.call(in, out);
+    psi_out = this->ThermoMixture::psi(p, T);
+    vf_out = this->ThermoMixture::vaporfra(p, T);
     psi_out = out[0];
     vf_out = out[1];
     return;
