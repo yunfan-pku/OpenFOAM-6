@@ -168,7 +168,8 @@ inline Foam::scalar Foam::PengRobinsonS<Specie>::Hig_phase
     scalar T
 ) const
 {
-    return RR*1.0e-03*T*(T*(T*(T*(T*Hig_phase_[4]/5.0+Hig_phase_[3]/4.0)+Hig_phase_[2]/3.0)+Hig_phase_[1]/2.0)+Hig_phase_[0]);
+    //Info<<"!!!Hig_phase_[0]="<<RR*1.0e-03*(T*(T*(T*(T*(T*Hig_phase_[4]/5.0+Hig_phase_[3]/4.0)+Hig_phase_[2]/3.0)+Hig_phase_[1]/2.0)+Hig_phase_[0])+Hig_phase_[5])<<endl;
+    return RR*1.0e-03*(T*(T*(T*(T*(T*Hig_phase_[4]/5.0+Hig_phase_[3]/4.0)+Hig_phase_[2]/3.0)+Hig_phase_[1]/2.0)+Hig_phase_[0])+Hig_phase_[5]);
 }
 
 

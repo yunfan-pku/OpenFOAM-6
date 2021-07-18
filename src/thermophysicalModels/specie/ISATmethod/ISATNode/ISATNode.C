@@ -38,9 +38,9 @@ Foam::ISATNode::ISATNode()
 }
 
 Foam::ISATNode::ISATNode(
-    ISATleaf *elementLeft,
-    ISATleaf *elementRight,
-    ISATNode *parent)
+    ISATleaf* elementLeft,
+    ISATleaf* elementRight,
+    ISATNode* parent)
     : leafLeft_(elementLeft),
     leafRight_(elementRight),
     nodeLeft_(nullptr),
@@ -48,60 +48,81 @@ Foam::ISATNode::ISATNode(
     parent_(parent),
     v_(0)
 {
-    
+
 
     calcV(elementLeft, elementRight, v_);
     scalarList v(v_.size());
     a_ = calcA(elementLeft, elementRight);
-    forAll(v,i)
+    forAll(v, i)
     {
-        v[i]=0;
+        v[i] = 0;
     }
-    v[0]=1;
-    scalar s=0;
-    forAll(v,i)
+    v[0] = 1;
+    scalar s = 0;
+    forAll(v, i)
     {
-        s+=v[0]*v_[0];
+        s += v[0] * v_[0];
     }
 
-    if (s<0)
+    if (s < 0)
     {
         calcV(elementRight, elementLeft, v_);
         a_ = calcA(elementRight, elementLeft);
-        leafLeft_=elementRight;
-        leafRight_=elementLeft;
+        leafLeft_ = elementRight;
+        leafRight_ = elementLeft;
 
     }
-    
 
+
+}
+
+
+Foam::ISATNode::ISATNode(
+    ISATleaf* elementLeft,
+    ISATleaf* elementRight,
+    ISATNode* parent,
+    int dir)
+    : leafLeft_(nullptr),
+    leafRight_(nullptr),
+    nodeLeft_(nullptr),
+    nodeRight_(nullptr),
+    parent_(parent),
+    v_(0)
+{
+    v_.resize(elementRight->value().size());
+
+    for (int i = 0;i < v_.size();i++)
+        v_[i] = 0;
+    v_[dir] = 1.0;
+    a_ = calcA(elementLeft, elementRight);
 }
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
 void Foam::ISATNode::calcV(
-    ISATleaf *&elementLeft,
-    ISATleaf *&elementRight,
-    scalarList &v) {
-    scalarList d=elementRight->value()-elementLeft->value();
+    ISATleaf*& elementLeft,
+    ISATleaf*& elementRight,
+    scalarList& v) {
+    scalarList d = elementRight->value() - elementLeft->value();
 
     v.resize(d.size());
-    scalar sum=0;
+    scalar sum = 0;
     forAll(elementRight->value(), i)
     {
-        sum+=d[i]*d[i];
+        sum += d[i] * d[i];
     }
-    v = d/sqrt(sum);
+    v = d / sqrt(sum);
 }
 
 Foam::scalar Foam::ISATNode::calcA(
-    ISATleaf *elementLeft,
-    ISATleaf *elementRight)
+    ISATleaf* elementLeft,
+    ISATleaf* elementRight)
 {
-    scalarList temp=(elementLeft->value()+elementRight->value())/2;
-    scalar sum=0;
-    forAll(temp,i)
+    scalarList temp = (elementLeft->value() + elementRight->value()) / 2;
+    scalar sum = 0;
+    forAll(temp, i)
     {
-        sum+=temp[i]*v_[i];
+        sum += temp[i] * v_[i];
     }
     return sum;
 }

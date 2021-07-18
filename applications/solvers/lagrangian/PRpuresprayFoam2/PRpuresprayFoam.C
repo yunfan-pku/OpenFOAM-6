@@ -158,7 +158,7 @@ int main(int argc, char* argv[])
                                         fout.close();
                                         */
                 }
-
+                thermo.correct();
                 if (pimple.turbCorr())
                 {
                     turbulence->correct();

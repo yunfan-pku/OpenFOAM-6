@@ -281,10 +281,10 @@ namespace Foam
         {
             return pTimeTagList_;
         };
-        bool inEOA(const scalarList& point);
+        bool inEOA(const scalarList& point,const scalarRectangularMatrix& scaleIn);
 
         void eval(const scalarList& value, scalarList& ret);
-        void grow(const scalarList& point);
+        void grow(const scalarList& point,const scalarRectangularMatrix& scaleIn);
 
 
         //- Construct from another chemPoint and reference to a binary node

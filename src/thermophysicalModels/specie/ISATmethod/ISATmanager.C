@@ -28,20 +28,57 @@ License
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 template<class FuncType>
-Foam::ISATmanager<FuncType>::ISATmanager(label in_n, label out_n, FuncType& func, const word& name_in)
-    :tableTree_(in_n, out_n), pfunc(&func), epsilon_(1e-3), relepsilon_(0.0), scaleFactor_(out_n, out_n), init_elp_(in_n, in_n), nRetrieved_(0), nGrowth_(0), nAdd_(0), nCall_(0), treename_(name_in)
+Foam::ISATmanager<FuncType>::ISATmanager(label in_n, label out_n, FuncType& func, const word& name_in,const dictionary& ISATDict)
+:ISATDict_(ISATDict.subDict(name_in)),
+tableTree_(in_n, out_n,readLabel(ISATDict_.lookup("maxNLeafs")),readLabel(ISATDict_.lookup("NtimeTag"))), 
+pfunc(&func), 
+epsilon_(1e-3), 
+relepsilon_(0.0), 
+scaleFactor_(out_n, out_n), 
+scaleIn_(in_n, in_n), 
+toleranceOut_(out_n, out_n), 
+initToleranceIn_(in_n, in_n), 
+init_elp_(in_n, in_n), 
+timeSteps_(0),
+checkInterval_(readLabel(ISATDict_.lookup("checkInterval"))),
+maxDepthFactor_(readScalar(ISATDict_.lookup("maxDepthFactor"))),
+nRetrieved_(0), 
+nGrowth_(0), 
+nAdd_(0), 
+nCall_(0), 
+treename_(name_in)
 {
     for (int i = 0;i < out_n;i++)
         for (int j = 0;j < out_n;j++)
         {
             scaleFactor_[i][j] = 0;
+            toleranceOut_[i][j] = 0;
         }
     for (int i = 0;i < in_n;i++)
         for (int j = 0;j < in_n;j++)
+        {
             init_elp_[i][j] = 0;
+            scaleIn_[i][j] = 0;
+            initToleranceIn_[i][j] = 0;
+        }
     for (int i = 0;i < out_n;i++)
+    {
         scaleFactor_[i][i] = 1.0;
-
+    }    
+    for (int i = 0;i < in_n;i++)
+    scaleIn_[i][i] = 1.0;
+    scalarList toleranceOut_temp(ISATDict_.lookup("toleranceOut"));
+    scalarList initToleranceIn_temp(ISATDict_.lookup("initToleranceIn"));
+    scalarList scaleIn_temp(ISATDict_.lookup("scaleIn"));
+    for (int i = 0;i < out_n;i++)
+    {
+        toleranceOut_[i][i] = 1.0 / toleranceOut_temp[i];
+    }
+    for (int i = 0;i < in_n;i++)
+    {
+        initToleranceIn_[i][i] = 1.0 / initToleranceIn_temp[i];
+        scaleIn_[i][i] = scaleIn_temp[i];
+    }
     /*
 word Tname = "vaporfratree";
 if (Tname == treename_)
@@ -58,8 +95,10 @@ template<class FuncType>
 Foam::ISATmanager<FuncType>::~ISATmanager()
 {
     showPreformance();
-
-    word Tname = "vaporfratree";// "vaporfratree";
+    //tableTree_.balance(scaleIn_);
+    //showPreformance();
+    //tableTree_.balance();
+    //word Tname = "vaporfratree";// "vaporfratree";
 /*
     if (Tname == treename_)
         //if (tableTree_.size_ > 0)
@@ -90,9 +129,9 @@ void Foam::ISATmanager<FuncType>::add(const scalarList& value, Args... arg)
 
     ISATbinaryTree& T = tableTree_;
     ISATleaf* pleaf;
-    if(T.size()==T.maxNLeafs())
+    if (T.size() == T.maxNLeafs())
     {
-//        Info<<"Deleting"<<endl;
+        //        Info<<"Deleting"<<endl;
         T.deleteLeaf(T.timeTagList().pop());
     }
     scalarList R(tableTree_.n_out());
@@ -107,7 +146,8 @@ void Foam::ISATmanager<FuncType>::add(const scalarList& value, Args... arg)
         }*/
         //Info<<pleaf->A()<<endl;
 
-    pleaf->EOA() = ((pleaf->A()) * scaleFactor_ * scaleFactor_ * (pleaf->A().T()) + init_elp_ * init_elp_) / (epsilon_ * epsilon_);//+ init_elp_
+    //pleaf->EOA() = ((pleaf->A()) * scaleFactor_ * scaleFactor_ * (pleaf->A().T()) + init_elp_ * init_elp_) / (epsilon_ * epsilon_);//+ init_elp_
+    pleaf->EOA() = scaleIn_ * initToleranceIn_ * initToleranceIn_ * scaleIn_ + scaleIn_ * (pleaf->A()) * toleranceOut_ * toleranceOut_ * (pleaf->A().T()) * scaleIn_;
     /*
     if (Tname == treename_)
     {
@@ -241,7 +281,7 @@ bool Foam::ISATmanager<FuncType>::retrieve
         // lastSearch keeps track of the chemPoint we obtain by the regular
         // binary tree search
         //lastSearch_ = phi0;
-        if (plf->inEOA(value))
+        if (plf->inEOA(value,scaleIn_))
         {
             retrieved = true;
         }
@@ -360,9 +400,10 @@ bool Foam::ISATmanager<FuncType>::grow
     }
     */
     //if ((distance(ret, data) <= epsilon_ || distance(ret, data) <= relepsilon_ * norm(data)))
-    if (distance(ret1, data1) <= epsilon_ && distance(ret2, data2) <= epsilon_)
+    //if (distance(ret1, data1) <= epsilon_ && distance(ret2, data2) <= epsilon_)
+    if (normalized_distance(ret1, data1) <= 1.0 && normalized_distance(ret2, data2) <= 1.0)
     {
-        plf->grow(plf->value() + dvalue_m);
+        plf->grow(plf->value() + dvalue_m,scaleIn_);
         tableTree_.timeTagList().renew(plf->pTimeTagList());
         nGrowth_++;
         return true;
@@ -382,6 +423,14 @@ double Foam::ISATmanager<FuncType>::distance(const scalarList& l, const scalarLi
     return sqrt(sum);
 }
 template<class FuncType>
+double Foam::ISATmanager<FuncType>::normalized_distance(const scalarList& l, const scalarList& r)
+{
+    double sum = 0;
+    for (int i = 0;i < l.size();i++)
+        sum += sqr((l[i] - r[i]) * toleranceOut_[i][i]);
+    return sqrt(sum);
+}
+template<class FuncType>
 double Foam::ISATmanager<FuncType>::norm(const scalarList& l)
 {
     double sum = 0;
@@ -393,6 +442,8 @@ template<class FuncType>
 void Foam::ISATmanager<FuncType>::showPreformance() const
 {
     Info << treename_ << ", ISAT performance: nCall=" << nCall_ << ", notCall=" << notCall << ", nRetrieved=" << nRetrieved_ << ", nGrowth=" << nGrowth_ << ", nAdd=" << nAdd_ << endl;
+    Info <<"NtimeSteps:"<<timeSteps_<<",Treedepth:"<< tableTree_.depth()<<",Mindepth:"<< ceil(log2(tableTree_.size()))<<endl;
+
 }
 
 /*

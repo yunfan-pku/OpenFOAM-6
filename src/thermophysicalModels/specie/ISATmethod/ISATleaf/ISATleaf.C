@@ -65,11 +65,13 @@ Foam::ISATleaf::ISATleaf(int n_in, int n_out, const scalarList& v, ISATNode* nod
     }
 
 }
-bool Foam::ISATleaf::inEOA(const scalarList& point)
+bool Foam::ISATleaf::inEOA(const scalarList& point,const scalarRectangularMatrix& scaleIn)
 {
     scalarRectangularMatrix dx(value_.size(), 1);
     forAll(value_, i)
-        dx[i][0] = point[i] - value_[i];
+    { 
+        dx[i][0] = (point[i] - value_[i])/scaleIn[i][i];
+    }
     //scalarRectangularMatrix a=EOA_ * dx;
     return ((dx.T()) * EOA_ * dx)[0][0] <= 1.0;
     //return true;
@@ -87,12 +89,12 @@ void Foam::ISATleaf::eval(const scalarList& value, scalarList& ret)
         ret[i] += retm[0][i];
 }
 
-void Foam::ISATleaf::grow(const scalarList& point)
+void Foam::ISATleaf::grow(const scalarList& point,const scalarRectangularMatrix& scaleIn)
 {
     scalarRectangularMatrix dx(value_.size(), 1);
     double pbp;
     for (int i = 0;i < value_.size();i++)
-        dx[i][0] = point[i] - value_[i];
+        dx[i][0] = (point[i] - value_[i])/scaleIn[i][i];
     pbp = (dx.T() * EOA_ * dx)[0][0];
     EOA_ = EOA_ + EOA_ * dx * (dx.T()) * EOA_ * (1 - pbp) / sqr(pbp);
 }

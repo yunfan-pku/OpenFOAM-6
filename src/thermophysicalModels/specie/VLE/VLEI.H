@@ -383,10 +383,15 @@ inline autoPtr<typename Foam::VLE<ThermoMixture>::solution> Foam::VLE<ThermoMixt
     //Sol.equalconstant.reset(this->myinitial(p, T).ptr());
     //Info << "equalconstant= " << Sol.equalconstant() << endl;
 
-    //Sol.equalconstant()[0] = 300.98332688687367;
-    //Sol.equalconstant()[1] = 0.012591909335566309;
-    //Sol.equalconstant()[2] = 3302.6955988917484;
+    Sol.equalconstant()[0] = 300.98332688687367;
+    Sol.equalconstant()[1] = 0.012591909335566309;
+    Sol.equalconstant()[2] = 3302.6955988917484;
 
+    /*
+        Sol.equalconstant()[0] = 135.508;
+        Sol.equalconstant()[1] = 0.0560828;
+        Sol.equalconstant()[2] = 648.055;
+    */
 
     //Sol.equalconstant()[0] = 4000.006;
     //Sol.equalconstant()[1] = 0.240333;
@@ -1258,7 +1263,7 @@ inline autoPtr<typename Foam::VLE<ThermoMixture>::solution> Foam::VLE<ThermoMixt
             //Info << ggas << "," << gliq << "," << sol().vaporfra << "," << sol().vaporfra * ggas + (1 - sol().vaporfra) * gliq << endl;
             if (g < gmin)
             {
-                gmin=g;
+                gmin = g;
                 sol_min.reset(sol);
             }
         }
@@ -2341,6 +2346,11 @@ inline scalar Foam::VLE<ThermoMixture>::Ha(scalar p, scalar T) const
     scalar mw_gas = this->W(&(sol().X_gas())); //kg/mol
     scalar mw_mixture = this->W();
     scalar ygas = sol().vaporfra * mw_gas / mw_mixture;
+    //Info << sol().vaporfra << endl;
+    //Info << this->ThermoMixture::Ha(p, T, 1, &(sol().X_gas())) << endl;
+    //Info << this->ThermoMixture::Ha(p, T, 0, &(sol().X_liq())) << endl;
+    //Info << "mw_gas / mw_mixture=" << mw_gas / mw_mixture << endl;
+    //Info << ygas << endl;
     return this->ThermoMixture::Ha(p, T, 1, &(sol().X_gas())) * ygas + this->ThermoMixture::Ha(p, T, 0, &(sol().X_liq())) * (1.0 - ygas);
 }
 

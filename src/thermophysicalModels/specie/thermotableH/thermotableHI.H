@@ -3,21 +3,21 @@
 
 template <class ThermoType>
 inline Foam::thermotableH<ThermoType>::thermotableH(
-    HYmultiComponentMixture<ThermoType> &multi_mixture_in,
-    const word &name,
-    const ThermoType &st)
+    HYmultiComponentMixture<ThermoType>& multi_mixture_in,
+    const word& name,
+    const ThermoType& st)
     : ThermoType(name, st),
-      table(multi_mixture_in.table),
-      multi_mixture_(multi_mixture_in),
-      Y_(multi_mixture_in.Y().size(), 0.0)
+    table(multi_mixture_in.table),
+    multi_mixture_(multi_mixture_in),
+    Y_(multi_mixture_in.Y().size(), 0.0)
 {
 }
 
 template <class ThermoType>
 inline void Foam::thermotableH<ThermoType>::from_Y_to_z //ok
-    (
-        const scalarList &Yinp,
-        scalarList &zi) const
+(
+    const scalarList& Yinp,
+    scalarList& zi) const
 {
     scalarList Ymw(Yinp.size(), Zero);
     scalar sumYmw = 0.0;
@@ -42,10 +42,10 @@ inline void Foam::thermotableH<ThermoType>::from_Y_to_z //ok
 // ======================================================================//
 template <class ThermoType>
 Foam::scalar Foam::thermotableH<ThermoType>::from_tpn_reverse_to_T //no
-    (
-        const scalar propval,
-        const scalar p,
-        const scalar T0) const
+(
+    const scalar propval,
+    const scalar p,
+    const scalar T0) const
 {
     scalar eps_tpn = 1.0e-04;
     scalarList zi(Y_.size(), Zero);
@@ -70,8 +70,8 @@ Foam::scalar Foam::thermotableH<ThermoType>::from_tpn_reverse_to_T //no
     scalar ueos_tstep = 0.1 * (ueos_tmax - ueos_tmin) / rowT;
     /*if (celli < 2)
     {
-        Info<<"ueos_tmin= "<<ueos_tmin<<", ueos_tmax= "<< ueos_tmax<<", ueos_tstep= "<<ueos_tstep<<", rowT= "<<rowT<<endl;   
-        Info<<"guess_value= "<<guess_value<<", temp_guess= "<< temp_guess<<endl;           
+        Info<<"ueos_tmin= "<<ueos_tmin<<", ueos_tmax= "<< ueos_tmax<<", ueos_tstep= "<<ueos_tstep<<", rowT= "<<rowT<<endl;
+        Info<<"guess_value= "<<guess_value<<", temp_guess= "<< temp_guess<<endl;
     }*/
 
     scalar temp_extra = 0.0;
@@ -96,10 +96,10 @@ Foam::scalar Foam::thermotableH<ThermoType>::from_tpn_reverse_to_T //no
             }
             /*if (celli < 2)
             {
-                Info<<"temp_extra>= "<<temp_extra<<", ueos_tmax="<<ueos_tmax<<", ueos_tmin="<<ueos_tmin<<endl;   
-                Info<<"guess_value= "<<guess_value<<", propval= "<<propval<<endl;    
+                Info<<"temp_extra>= "<<temp_extra<<", ueos_tmax="<<ueos_tmax<<", ueos_tmin="<<ueos_tmin<<endl;
+                Info<<"guess_value= "<<guess_value<<", propval= "<<propval<<endl;
                 FatalErrorInFunction
-                << exit(FatalError);         
+                << exit(FatalError);
             }*/
         }
     }
@@ -125,10 +125,10 @@ Foam::scalar Foam::thermotableH<ThermoType>::from_tpn_reverse_to_T //no
             }
             /*if (celli < 2)
             {
-                Info<<"temp_extra<= "<<temp_extra<<", ueos_tmax="<<ueos_tmax<<", ueos_tmin="<<ueos_tmin<<endl;   
-                Info<<"guess_value= "<<guess_value<<", propval= "<<propval<<endl;  
+                Info<<"temp_extra<= "<<temp_extra<<", ueos_tmax="<<ueos_tmax<<", ueos_tmin="<<ueos_tmin<<endl;
+                Info<<"guess_value= "<<guess_value<<", propval= "<<propval<<endl;
                 FatalErrorInFunction
-                << exit(FatalError);                                  
+                << exit(FatalError);
             }*/
         }
     }
@@ -149,8 +149,8 @@ Foam::scalar Foam::thermotableH<ThermoType>::from_tpn_reverse_to_T //no
     scalar high_value = from_tpn_to_property(temp_up, p, zi[0], 4); //TPn_table_lookup(ueos_temp[up], pres, massfrac);
     /*if (celli < 2)
     {
-        Info<<"low_value= "<<low_value<<endl;   
-        Info<<"high_value= "<<high_value<<endl;           
+        Info<<"low_value= "<<low_value<<endl;
+        Info<<"high_value= "<<high_value<<endl;
     }*/
 
     int iT1 = 0;
@@ -172,7 +172,7 @@ Foam::scalar Foam::thermotableH<ThermoType>::from_tpn_reverse_to_T //no
 
     /*if (celli < 2)
     {
-        Info<<"iT1= "<<iT1<<endl;   
+        Info<<"iT1= "<<iT1<<endl;
     }*/
 
     if (iT1 <= 0 || iT2 >= rowT + 1)
@@ -193,7 +193,7 @@ Foam::scalar Foam::thermotableH<ThermoType>::from_tpn_reverse_to_T //no
     }
     /*if (celli < 2)
     {
-        Info<<"temp_b= "<<temp_b<<endl;   
+        Info<<"temp_b= "<<temp_b<<endl;
     }*/
 
     return temp_b;
@@ -248,14 +248,14 @@ Foam::scalar Foam::thermotableH<ThermoType>::extrapolate_temperature_tpn(
 
 template <class ThermoType>
 double Foam::thermotableH<ThermoType>::from_tpn_to_property //OK
-    (
-        const double T,
-        const double p,
-        const double zi,
-        int index) const //index starts from 1
+(
+    const double T,
+    const double p,
+    const double zi,
+    int index) const //index starts from 1
 {
     // std::cout<<T<<" "<<p<<" "<<zi<<"\n";
-    double input[3] = {T, p, zi};
+    double input[3] = { T, p, zi };
     if (index == 1)
         return T;
     if (index == 2)
@@ -297,9 +297,9 @@ double Foam::thermotableH<ThermoType>::get_property_from_tpn_reverse(
 
 template <class ThermoType>
 Foam::scalar Foam::thermotableH<ThermoType>::mw //g/mol
-    (
-        const scalar p,
-        const scalar T) const
+(
+    const scalar p,
+    const scalar T) const
 {
     scalarList zi(Y_.size(), Zero);
 
@@ -328,9 +328,9 @@ Foam::scalar Foam::thermotableH<ThermoType>::mu(
 
 template <class ThermoType>
 Foam::scalar Foam::thermotableH<ThermoType>::rho //kg/m3
-    (
-        const scalar p,
-        const scalar T) const
+(
+    const scalar p,
+    const scalar T) const
 {
 
     scalarList zi(Y_.size(), Zero);
@@ -346,9 +346,9 @@ Foam::scalar Foam::thermotableH<ThermoType>::rho //kg/m3
 
 template <class ThermoType>
 Foam::scalar Foam::thermotableH<ThermoType>::vaporfra //kg/m3
-    (
-        const scalar p,
-        const scalar T) const
+(
+    const scalar p,
+    const scalar T) const
 {
 
     scalarList zi(Y_.size(), Zero);
@@ -364,9 +364,9 @@ Foam::scalar Foam::thermotableH<ThermoType>::vaporfra //kg/m3
 
 template <class ThermoType>
 Foam::scalar Foam::thermotableH<ThermoType>::volspecific //m3/mol
-    (
-        const scalar p,
-        const scalar T) const
+(
+    const scalar p,
+    const scalar T) const
 {
     scalar mw_avg = 1.0e-03 * this->mw(p, T); //kg/mol
     scalar mixture_volspecific = mw_avg / this->rho(p, T);
@@ -391,7 +391,7 @@ Foam::scalar Foam::thermotableH<ThermoType>::THE(
     const scalar p,
     const scalar T0) const
 {
-    
+
 
     scalarList zi(Y_.size(), Zero);
     this->from_Y_to_z(Y_, zi);
@@ -408,12 +408,12 @@ Foam::scalar Foam::thermotableH<ThermoType>::THE(
 
     //scalar cell_T2;
     //cell_T2=from_tpn_to_property(630.0,31450900, 0.8412812384, 4);
-    if(h<=574781.9556&&h>=574781.9554&&p>=31450899&&p<=31450901)
+    if (h <= 574781.9556 && h >= 574781.9554 && p >= 31450899 && p <= 31450901)
     {
         from_tpn_to_property(630.0, p, zi[0], 4);
-        for(double iT=600;iT<=700;iT+=1)
-        Info<<iT<<","<<from_tpn_to_property(iT, p, zi[0], 4)<<endl;
-    //cell_T2=0;
+        for (double iT = 600;iT <= 700;iT += 1)
+            Info << iT << "," << from_tpn_to_property(iT, p, zi[0], 4) << endl;
+        //cell_T2=0;
     }
     //scalar cell_T1;
     //flag_XYY
@@ -436,7 +436,7 @@ Foam::scalar Foam::thermotableH<ThermoType>::THE(
         h1 = from_tpn_to_property(Tnew, p, zi[0], 4);
         if (h1 > h0)
             r *= 0.9;
-
+        //Info << h1 << ",old=" << h0 << endl;
         dh = h1 - h;
         dhdt = (h1 - h0) / (Tnew - Told);
         Told = Tnew;
@@ -447,9 +447,9 @@ Foam::scalar Foam::thermotableH<ThermoType>::THE(
         if (iter++ > maxiter)
         {
             FatalErrorInFunction << setprecision(10)
-                                 << "h=" << h << ",p=" << p << ",T0=" << T0 << ",X=" << zi << endl
-                                 << "Maximum number of iterations exceeded: " << maxiter
-                                 << abort(FatalError);
+                << "h=" << h << ",p=" << p << ",T0=" << T0 << ",X=" << zi << endl
+                << "Maximum number of iterations exceeded: " << maxiter
+                << abort(FatalError);
         }
 
         /* code */
@@ -468,9 +468,9 @@ Foam::scalar Foam::thermotableH<ThermoType>::THE(
 
 template <class ThermoType>
 Foam::scalar Foam::thermotableH<ThermoType>::psi //s2/m2 = rho/p
-    (
-        const scalar p,
-        const scalar T) const
+(
+    const scalar p,
+    const scalar T) const
 {
     scalar mixture_psi = p * this->volspecific(p, T);
     scalar mw_avg = 1.0e-03 * this->mw(p, T); //kg/mol
@@ -486,9 +486,9 @@ Foam::scalar Foam::thermotableH<ThermoType>::psi //s2/m2 = rho/p
 
 template <class ThermoType>
 Foam::scalar Foam::thermotableH<ThermoType>::alphah //make sure the unit
-    (
-        const scalar p,
-        const scalar T) const
+(
+    const scalar p,
+    const scalar T) const
 {
     scalar mixture_alphah = this->kappa(p, T) / this->Cp(p, T);
     return mixture_alphah;
@@ -542,7 +542,7 @@ Foam::scalar Foam::thermotableH<ThermoType>::HE(
     /*
     if (celli < 2)
     {
-        Info<< "PY_multiComponentMixture___T= " <<T<<", p= "<<p<<", zi="<<zi[0]<<", Yinp="<<Yinp[0]<<endl;      
+        Info<< "PY_multiComponentMixture___T= " <<T<<", p= "<<p<<", zi="<<zi[0]<<", Yinp="<<Yinp[0]<<endl;
         Info<< "PY_multiComponentMixture_sie= "<<mixture_sie<<", He="<<mixture_He<< endl;
     }
     */

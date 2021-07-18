@@ -18,7 +18,8 @@ TableFlag 1;
 PTFlag 0;
 PXFlag 0;
 phaseFlag 0;
-species (CO2 H2O CH4);
+species (CO2 H2O O2);
+//species (O2 CH4);
 phase
 {
     #include "thermo"

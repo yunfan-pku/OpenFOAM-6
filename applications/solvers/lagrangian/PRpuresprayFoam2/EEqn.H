@@ -25,8 +25,8 @@ fout<<std::endl;
 
 fvScalarMatrix EEqn
 (
-    //    fvm::ddt(rho, he) + mvConvection->fvmDiv(phi, he)
-    fvm::ddt(rho, he) + fvc::div(phi, he)//fvc::div_doubleflux(phi, p,rho,gammastar,estar)//fvc::div(phi, he)
+        fvm::ddt(rho, he) + mvConvection->fvmDiv(phi, he)
+    //fvm::ddt(rho, he) + fvc::div(phi, he)//fvc::div_doubleflux(phi, p,rho,gammastar,estar)//fvc::div(phi, he)
     + fvc::ddt(rho, K) + fvc::div(phi, K)
     + (
         he.name() == "e"
@@ -57,7 +57,7 @@ fvOptions.correct(he);
 
 
 runTime.cpuTimeIncrement();
-thermo.correct();
+//thermo.correct();
 thermotime += runTime.cpuTimeIncrement();
 /*
   forAll(psi,i)

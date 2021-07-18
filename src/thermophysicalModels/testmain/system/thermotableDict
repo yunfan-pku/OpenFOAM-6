@@ -1,10 +1,10 @@
 
-TableFlag 0;
+TableFlag 1;
 PTFlag 0;
 PXFlag 0;
 TXFlag 0;
 phaseFlag 0;
-pointFlag 1;
+pointFlag 0;
 /*
 phase
 {
@@ -17,19 +17,19 @@ phase
 table
 {
     #include "thermo"
-    outputfilename ThermoTable_CH4_H2O1.txt;
-    species (CO2 H2O CH4);
+    outputfilename compre3.plt;
+    species (CO2 H2O);//(CO2 H2O CH4);
 
-    component_ini (0.90 0.1 0.0001);
-    component_fin (0.09 0.01 100);
-    num_comp 50;
-    pressure_ini  28000000;//30000000;	567.096	129.742
-    pressure_fin  70000000;
-    num_pre  100;
+    component_ini (0.3 0.7);//(0.8 0.2 0.0001);
+    component_fin (0.3 0.7);//(0.8 0.2 1000);
+    num_comp 0;//50;
+    pressure_ini  0.1e+05;//30000000;	567.096	129.742
+    pressure_fin  600e+05;
+    num_pre  1000;
 
-    temperature_ini 280;//450;//633.15;
-    temperature_fin 1200;
-    num_temp  100;
+    temperature_ini 200;//450;//633.15;
+    temperature_fin 700;
+    num_temp  1000;
     PCFlag 0;//Phase change flag 1 no, 0 yes
     HEFlag 0;//0 H,p; 1 sie,rho
 }
@@ -72,27 +72,28 @@ PX
 TX
 {
     #include "thermo"
-    outputfilename TX8C.csv;
-    species (CO2 H2O CH4);
+    outputfilename TX8O_last.csv;
+    species (CO2 H2O O2);
 
-    component_ini (0.8 0.2 0.00001);
-    component_fin (0.08 0.02 100);
+    component_ini (0.8 0.2 0.0001);
+    component_fin (0.08 0.02 1000);
     num_comp 100;
 
     pressure   30000000;
 
     temperature_ini 300;
-    temperature_fin 500;
+    temperature_fin 700;
     num_temp  1000;
 }
 
 pState
 {
     #include "thermo"
-    species (CO2 H2O);
-    component (0.1 0.9);//(0.488372 0.511628);//(0.290323 0.709677);//(0.929712 0.070288);//(0.012494 0.987506);
-    pressure 230e5;
-    temperature 500;
+    species (CO2 H2O CH4);
+
+    component (0.8 0.2 0.0001);
+    pressure 2.8e+07;
+    temperature 280;
 }
 
 

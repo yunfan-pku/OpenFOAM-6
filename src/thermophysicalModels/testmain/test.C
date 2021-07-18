@@ -9,8 +9,26 @@
 #include "constTransport.H"
 #include "PengRobinsonS.H"
 #include "PengRobinsonM.H"
+#include <iomanip>
 
 using namespace Foam;
+
+double phasestate(double vaporfra)
+{
+    if (vaporfra > 1.0e-06 && vaporfra < 0.999999)
+    {
+        return 2.0;
+    }
+    else if (vaporfra <= 1.0e-06)
+    {
+        return 1.0;
+    }
+    else if (vaporfra >= 0.999999)
+    {
+        return 0.0;
+    }
+    return 0;
+}
 void regularize(scalarList& a)
 {
     scalar sum = 0;
@@ -29,10 +47,13 @@ void tablegen(dictionary& dict)
     speciesTable s(dict.lookup("species"));
     PengRobinsonM<specie> PR(s, dict);
     string ThermoTable;
-    scalar vaporfra = 0.5;
+    scalar vaporfra = 0.5,vaporfra_p = 0.5;
     scalarList equalconstant(s.size(), Zero);
+    scalarList equalconstant_p(s.size(), Zero);
     scalarList comp_liq(s.size(), Zero);
     scalarList comp_gas(s.size(), Zero);
+    scalarList comp_liq_p(s.size(), Zero);
+    scalarList comp_gas_p(s.size(), Zero);
     scalarList comp_liq0(s.size(), Zero);
     scalarList comp_gas0(s.size(), Zero);
 
@@ -59,6 +80,7 @@ void tablegen(dictionary& dict)
     }
 
     scalar pressure(readScalar(dict.lookup("pressure_ini")));
+    scalar pressure_p;
     scalar pressure1(readScalar(dict.lookup("pressure_fin")));
     label num_pres(readLabel(dict.lookup("num_pre")));
     scalar det_pres;
@@ -68,16 +90,21 @@ void tablegen(dictionary& dict)
     scalar t_pres;
 
     scalar temperature(readScalar(dict.lookup("temperature_ini")));
+    scalar temperature_p;
+    scalar dp=1.0;
     scalar temperature1(readScalar(dict.lookup("temperature_fin")));
     label num_temp(readLabel(dict.lookup("num_temp")));
     scalar det_temp;
     if (num_temp > 0)
         det_temp = (temperature1 - temperature) / num_temp;
     scalar t_temp;
+
+    scalar compre;
     int state;
     label PCFlag(readLabel(dict.lookup("PCFlag")));
     label HEFlag(readLabel(dict.lookup("HEFlag")));
-    output << "A" << std::endl;
+    //output << "A" << std::endl;
+    output << "VARIABLES = \"X\", \"Y\", \"C\", \"V\" \nZONE I=1001, J=1001, F=POINT" << std::endl;
     for (label ncomp = 0; ncomp <= num_comp; ncomp++)
     {
         forAll(comp, i)
@@ -126,7 +153,7 @@ void tablegen(dictionary& dict)
                     }
 
                     PR.TPn_flash(t_pres, t_temp, t_comp, comp_liq, comp_gas, vaporfra, equalconstant);
-                    //Info<<"vaporfra= "<<vaporfra<<endl;
+                    PR.TPn_flash(t_pres+dp, t_temp, t_comp, comp_liq_p, comp_gas_p, vaporfra_p, equalconstant_p);
 
                     forAll(comp, isp)
                     {
@@ -155,20 +182,35 @@ void tablegen(dictionary& dict)
                         state = 2;
                     }
                     alphagas = PR.Evaluate_alpha(t_pres, t_temp, vaporfra, comp_liq, comp_gas, t_comp);
+                    scalar alphagas_p = PR.Evaluate_alpha(t_pres+dp, t_temp, vaporfra_p, comp_liq_p, comp_gas_p, t_comp);
                     scalar mw_gas = PR.mwmix(comp_gas); //kg/mol
+                    scalar mw_gas_p = PR.mwmix(comp_gas_p); //kg/mol
                     //mw_mixture	        = PR.mwmix(comp);
 
                     scalar mw_liq = PR.mwmix(comp_liq); //kg/mol
+                    scalar mw_liq_p = PR.mwmix(comp_liq_p); //kg/mol
                     mw_mixture = mw_gas * vaporfra + mw_liq * (1.0 - vaporfra);
+                    scalar mw_mixture_p = mw_gas_p * vaporfra_p + mw_liq_p * (1.0 - vaporfra_p);
                     ygas = vaporfra * mw_gas / mw_mixture;
+                    scalar ygas_p = vaporfra_p * mw_gas_p / mw_mixture_p;
 
                     //Thermal properties
                     VspecificGas = PR.volmmix_phase(0, t_pres, t_temp, comp_gas); //m3/mol
                     VspecificLiq = PR.volmmix_phase(1, t_pres, t_temp, comp_liq);
+
+                    scalar VspecificGas_p = PR.volmmix_phase(0, t_pres+dp, t_temp, comp_gas_p); //m3/mol
+                    scalar VspecificLiq_p = PR.volmmix_phase(1, t_pres+dp, t_temp, comp_liq_p);
                     ZGas = t_pres * VspecificGas / (RR * 1.0e-03 * t_temp);
                     ZLiq = t_pres * VspecificLiq / (RR * 1.0e-03 * t_temp);
+
+                    scalar ZGas_p = (t_pres+dp) * VspecificGas_p / (RR * 1.0e-03 * t_temp);
+                    scalar ZLiq_p = (t_pres+dp) * VspecificLiq_p / (RR * 1.0e-03 * t_temp);
                     ZMixture = ZGas * alphagas + ZLiq * (1.0 - alphagas);
                     rhoMixture = t_pres * mw_mixture / (ZMixture * RR * 1.0e-03 * t_temp);
+
+                    scalar ZMixture_p = ZGas_p * alphagas_p + ZLiq_p * (1.0 - alphagas_p);
+                    scalar rhoMixture_p = (t_pres+dp) * mw_mixture_p / (ZMixture_p * RR * 1.0e-03 * t_temp);
+                    compre=(rhoMixture_p-rhoMixture)/dp/rhoMixture*1e5;
 
                     rho_gas = PR.rhomix_phase(0, t_pres, t_temp, comp_gas); //kg/m3
                     rho_liq = PR.rhomix_phase(1, t_pres, t_temp, comp_liq);
@@ -206,6 +248,7 @@ void tablegen(dictionary& dict)
                     //muMixture = 1.0e+06 * (mu_gas * ygas + mu_liq * (1.0 - ygas)); //up
                     muMixture = (mu_gas * ygas + mu_liq * (1.0 - ygas));
 
+
                     //Dij_binary_high	= PR.Dij_highP(t_pres, t_temp, comp);//cm2/s
 
                     //ZMixture2	        = t_pres*mw_mixture/(rhoMixture*RR*1.0e-03*t_temp);
@@ -233,6 +276,7 @@ void tablegen(dictionary& dict)
 
                 //ZMixture;<<' '<<' '<<Dij_binary_high*1.0e+06;
                 //Info << t_temp << "  " << t_pres << "  " << t_comp[0] << "  "<<muMixture<<endl;
+                output << std::setprecision(10);
                 if (HEFlag == 1)
                 {
                     output << t_temp << "  " << t_pres << "  " << t_comp[0] + t_comp[1] << "  " <<
@@ -249,8 +293,9 @@ void tablegen(dictionary& dict)
                 }
                 else if (HEFlag == 0)
                 {
-                    output << t_temp << "  " << t_pres << "  " << t_comp[0] + t_comp[1] << "  " << hMixture << "  " << t_pres << "  " << CpMixture << "  " << CvMixture << "  " << CsMixture << "  " << kappaMixture << "  " << muMixture << "  " << ZMixture << "  " << Dij_binary_high << "  " << comp_liq[0] << "  " << comp_gas[0] << "  " << alphagas << " " << rhoMixture << " " << vaporfra;
+                    //output << t_temp << "  " << t_pres << "  " << t_comp[0] + t_comp[1] << "  " << hMixture << "  " << t_pres << "  " << CpMixture << "  " << CvMixture << "  " << CsMixture << "  " << kappaMixture << "  " << muMixture << "  " << ZMixture << "  " << Dij_binary_high << "  " << comp_liq[0] << "  " << comp_gas[0] << "  " << alphagas << " " << rhoMixture << " " << vaporfra;
                     //          1               2                 3                     4                    5                        6                 7                         8                9                     10                  11                   12                          13                      14                  15       16                17
+                    output << t_temp << "  " << t_pres*1e-5<< "  " <<compre<<" "<< vaporfra;
                 }
 
                 Info << "t=" << t_temp << "  p=" << t_pres << " vaporfra=" << vaporfra << endl;
@@ -768,9 +813,120 @@ void pointState(dictionary& dict)
 
     tpdlast = 0;
     ndettpd = 0;
-    PR.TPn_flash(pressure, temperature, comp, comp_liq, comp_gas, vaporfra, equalconstant);
-    Info<<"EQ="<<equalconstant<<endl;
+    scalar t_pres = pressure;
+    scalar t_temp = temperature;
+    scalarList t_comp(comp);
+    //PR.TPn_flash(pressure, temperature, comp, comp_liq, comp_gas, vaporfra, equalconstant);
 
+
+
+    PR.TPn_flash(t_pres, t_temp, t_comp, comp_liq, comp_gas, vaporfra, equalconstant);
+    //Info<<"vaporfra= "<<vaporfra<<endl;
+
+    scalar mw_mixture = 0.0; //kg/mol
+    scalar rhoMixture = 0.0; //kg/m3
+    scalar sieMixture = 0.0; //J/kg
+    scalar CpMixture = 0.0;  //J/kgK
+    scalar CvMixture = 0.0;  //J/kgK
+    scalar CsMixture = 0.0;  //cm/s
+    scalar ZMixture = 0.0;   //[-]
+    //scalar ZMixture2  = 0.0;  //[-]
+    //scalar GammaMixture = 0.0; //[-]
+
+    scalar kappaMixture = 0.0;
+    scalar muMixture = 0.0;
+    scalar rho_gas = 0.0, rho_liq = 0.0;
+    scalar Cp_gas = 0.0, Cp_liq = 0.0;
+    scalar Cv_gas = 0.0, Cv_liq = 0.0;
+    scalar alphagas = 0.0, ygas = 0.0;
+    scalar kappa_gas = 0.0, kappa_liq = 0.0;
+    scalar mu_gas = 0.0, mu_liq = 0.0;
+    scalar Ct_gas = 0.0, Ct_liq = 0.0;
+    scalar Cs_gas = 0.0, Cs_liq = 0.0;
+    scalar VspecificGas = 0.0, VspecificLiq = 0.0;
+    scalar ZGas = 0.0, ZLiq = 0.0;
+    scalar Dij_binary_high = 0.0;
+    scalar hMixture = 0;
+    scalar state;
+
+
+    if (vaporfra > 1.0)
+    {
+        vaporfra = 0.9999999;
+    }
+    else if (vaporfra < 0.0)
+    {
+        vaporfra = 1.0e-07;
+    }
+    if (vaporfra >= 0.9999999)
+    {
+        state = 1;
+    }
+    else if (vaporfra <= 1.0e-07)
+    {
+        state = 0;
+    }
+    else
+    {
+        state = 2;
+    }
+    alphagas = PR.Evaluate_alpha(t_pres, t_temp, vaporfra, comp_liq, comp_gas, t_comp);
+    scalar mw_gas = PR.mwmix(comp_gas); //kg/mol
+    //mw_mixture	        = PR.mwmix(comp);
+
+    scalar mw_liq = PR.mwmix(comp_liq); //kg/mol
+    mw_mixture = mw_gas * vaporfra + mw_liq * (1.0 - vaporfra);
+    ygas = vaporfra * mw_gas / mw_mixture;
+
+    //Thermal properties
+    VspecificGas = PR.volmmix_phase(0, t_pres, t_temp, comp_gas); //m3/mol
+    VspecificLiq = PR.volmmix_phase(1, t_pres, t_temp, comp_liq);
+    ZGas = t_pres * VspecificGas / (RR * 1.0e-03 * t_temp);
+    ZLiq = t_pres * VspecificLiq / (RR * 1.0e-03 * t_temp);
+    ZMixture = ZGas * alphagas + ZLiq * (1.0 - alphagas);
+    rhoMixture = t_pres * mw_mixture / (ZMixture * RR * 1.0e-03 * t_temp);
+
+    rho_gas = PR.rhomix_phase(0, t_pres, t_temp, comp_gas); //kg/m3
+    rho_liq = PR.rhomix_phase(1, t_pres, t_temp, comp_liq);
+    //rhoMixture = rho_gas * alphagas + rho_liq * (1.0 - alphagas);
+
+    scalar sieReal_gas = PR.siemix_phase(0, t_pres, t_temp, comp_gas); //J/kg
+    scalar sieReal_liq = PR.siemix_phase(1, t_pres, t_temp, comp_liq);
+    sieMixture = sieReal_gas * ygas + sieReal_liq * (1.0 - ygas);
+
+    Cp_gas = PR.cpmix_phase(0, t_pres, t_temp, comp_gas); //J/kgK
+    Cp_liq = PR.cpmix_phase(1, t_pres, t_temp, comp_liq);
+    CpMixture = Cp_gas * ygas + Cp_liq * (1.0 - ygas);
+
+    Cv_gas = PR.cvmix_phase(0, t_pres, t_temp, comp_gas); //J/kgK
+    Cv_liq = PR.cvmix_phase(1, t_pres, t_temp, comp_liq);
+    CvMixture = Cv_gas * ygas + Cv_liq * (1.0 - ygas);
+    //GammaMixture        = CpMixture/CvMixture;
+
+    PR.soundspeedmix(0, t_pres, t_temp, comp_gas, Ct_gas, Cs_gas);
+    PR.soundspeedmix(1, t_pres, t_temp, comp_liq, Ct_liq, Cs_liq);
+
+    CsMixture = ::sqrt(1.0 / (rhoMixture * (alphagas / (rho_gas * sqr(Cs_gas)) +
+        (1.0 - alphagas) / (rho_liq * sqr(Cs_liq)))));
+    //CtMixture           = CsMixture * sqr(GammaMixture);
+
+    //Transport	Properties
+    PR.kappa_phase(0, t_pres, t_temp, comp_gas, kappa_gas, mu_gas); //W/mK
+    PR.kappa_phase(1, t_pres, t_temp, comp_liq, kappa_liq, mu_liq);
+    kappaMixture = kappa_gas * ygas + kappa_liq * (1.0 - ygas); //W/mK
+
+    scalar hReal_gas = PR.hmix_phase(0, t_pres, t_temp, comp_gas); //J/kg
+    scalar hReal_liq = PR.hmix_phase(1, t_pres, t_temp, comp_liq);
+    hMixture = hReal_gas * ygas + hReal_liq * (1.0 - ygas);
+    //hMixture=sieMixture + t_pres*mw_mixture / rhoMixture;
+    //muMixture = 1.0e+06 * (mu_gas * ygas + mu_liq * (1.0 - ygas)); //up
+    muMixture = (mu_gas * ygas + mu_liq * (1.0 - ygas));
+    Info << "equalconstant=" <<  equalconstant << endl;
+    Info << "ygas=" << ygas << endl;
+    Info << "mw_gas / mw_mixture=" << mw_gas / mw_mixture << endl;
+
+    Info << "vaporfra=" << vaporfra << endl;
+    Info << "h=" << hMixture << endl;
 
 }
 int main()

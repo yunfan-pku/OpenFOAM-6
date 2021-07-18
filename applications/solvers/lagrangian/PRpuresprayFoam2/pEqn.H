@@ -9,30 +9,30 @@ Info<< "psi max/min!!! : " << max(psi).value()
 rho = thermo.rho();
 //Info<< "pEqn_rho#########################################3\n" << endl;
 //which is from psiThermo.C
-Info<< "rho gas min/max   " << min(rho).value() << ", "
-        << max(rho).value() << endl;
-Info<< "p max/min01 : " << max(p).value()
-    << " " << min(p).value() << endl;
+Info << "rho gas min/max   " << min(rho).value() << ", "
+<< max(rho).value() << endl;
+Info << "p max/min01 : " << max(p).value()
+<< " " << min(p).value() << endl;
 //thermo.correct();
 rho = max(rho, rhoMin);
 rho = min(rho, rhoMax);
 rho.relax();
 
 
-Info<< "rho gas min/max   " << min(rho).value() << ", "
-        << max(rho).value() << endl;
+Info << "rho gas min/max   " << min(rho).value() << ", "
+<< max(rho).value() << endl;
 
 
-volScalarField rAU(1.0/UEqn.A());
+volScalarField rAU(1.0 / UEqn.A());
 /*
 forAll(p,i)
 {
 fout<<rAU[i]<<",";
-} 
+}
 fout<<std::endl;
 */
-surfaceScalarField rhorAUf("rhorAUf", fvc::interpolate(rho*rAU));
-volVectorField HbyA(constrainHbyA(rAU*UEqn.H(), U, p));
+surfaceScalarField rhorAUf("rhorAUf", fvc::interpolate(rho* rAU));
+volVectorField HbyA(constrainHbyA(rAU* UEqn.H(), U, p));
 
 if (pimple.nCorrPISO() <= 1)
 {
@@ -41,22 +41,22 @@ if (pimple.nCorrPISO() <= 1)
 //////////////////////////
 if (pimple.transonic())
 {
-    
+
     surfaceScalarField phid
     (
         "phid",
         fvc::interpolate(psi)
-       *(
+        * (
             fvc::flux(HbyA)
-          + MRF.zeroFilter
+            + MRF.zeroFilter
             (
-                rhorAUf*fvc::ddtCorr(rho, U, phi)/fvc::interpolate(rho)
+                rhorAUf * fvc::ddtCorr(rho, U, phi) / fvc::interpolate(rho)
             )
-        )
+            )
     );
 
     MRF.makeRelative(fvc::interpolate(psi), phid);
-    
+
     while (pimple.correctNonOrthogonal())
     {
         //csvwrite(filename, p, (runTime.timeName()+s+std::string("p_b_pEqn")).data());
@@ -66,11 +66,11 @@ if (pimple.transonic())
         fvScalarMatrix pEqn
         (
             fvm::ddt(psi, p)
-          + fvm::div(phid, p)
-          - fvm::laplacian(rhorAUf, p)
-         ==
+            + fvm::div(phid, p)
+            - fvm::laplacian(rhorAUf, p)
+            ==
             parcels.Srho()
-          + fvOptions(psi, p, rho.name())
+            + fvOptions(psi, p, rho.name())
         );
 
         pEqn.solve(mesh.solver(p.select(pimple.finalInnerIter())));
@@ -89,9 +89,9 @@ else
     (
         "phiHbyA",
         (
-            fvc::flux(rho*HbyA)
-          + rhorAUf*fvc::ddtCorr(rho, U, phi)
-        )
+            fvc::flux(rho * HbyA)
+            + rhorAUf * fvc::ddtCorr(rho, U, phi)
+            )
     );
 
     MRF.makeRelative(fvc::interpolate(rho), phiHbyA);
@@ -104,11 +104,11 @@ else
         fvScalarMatrix pEqn
         (
             fvm::ddt(psi, p)
-          + fvc::div(phiHbyA)
-          - fvm::laplacian(rhorAUf, p)
-         ==
+            + fvc::div(phiHbyA)
+            - fvm::laplacian(rhorAUf, p)
+            ==
             parcels.Srho()
-          + fvOptions(psi, p, rho.name())
+            + fvOptions(psi, p, rho.name())
         );
 
         pEqn.solve(mesh.solver(p.select(pimple.finalInnerIter())));
@@ -136,13 +136,13 @@ rho = thermo.rho();
 rho = max(rho, rhoMin);
 rho = min(rho, rhoMax);
 rho.relax();
-Info<< "rho max/min : " << max(rho).value()
-    << " " << min(rho).value() << endl;
+Info << "rho max/min : " << max(rho).value()
+<< " " << min(rho).value() << endl;
 
-U = HbyA - rAU*fvc::grad(p);
+U = HbyA - rAU * fvc::grad(p);
 U.correctBoundaryConditions();
 fvOptions.correct(U);
-K = 0.5*magSqr(U);
+K = 0.5 * magSqr(U);
 
 if (thermo.dpdt())//dpdt is in basicThermo.H
 {

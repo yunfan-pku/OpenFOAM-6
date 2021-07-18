@@ -189,6 +189,7 @@ inline Foam::scalar Foam::janafThermo<EquationOfState>::Ha
 ) const
 {
     const coeffArray& a = coeffs(T);
+    //Info<<" ((((a[4] / 5.0 * T + a[3] / 4.0) * T + a[2] / 3.0) * T + a[1] / 2.0) * T + a[0]) * T   + a[5]="<< (            ((((a[4] / 5.0 * T + a[3] / 4.0) * T + a[2] / 3.0) * T + a[1] / 2.0) * T + a[0]) * T+ a[5]            ) + EquationOfState::H(p, T)<<endl;
     return
         (
             ((((a[4] / 5.0 * T + a[3] / 4.0) * T + a[2] / 3.0) * T + a[1] / 2.0) * T + a[0]) * T

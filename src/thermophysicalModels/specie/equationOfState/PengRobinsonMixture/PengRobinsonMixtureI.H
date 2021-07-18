@@ -400,7 +400,6 @@ inline Foam::scalar Foam::PengRobinsonMixture<ThermoMixture>::dadt(
         {
             ai = This[i].EOS::a(p, T);
             aj = This[j].EOS::a(p, T);
-
             dadtmix += X[i] * X[j] * 0.5 * (sqrt(ai / aj) * This[j].dadt(p, T) + sqrt(aj / ai) * This[i].dadt(p, T)) * (1.0 - bico[i][j]);
         }
     }
@@ -1323,9 +1322,15 @@ inline Foam::scalar Foam::PengRobinsonMixture<ThermoMixture>::Ha // internal ene
         dH = (Z(p, T, pf, Xinp) - 1) * RR * 1e-3 * T;
     }
 
+    //Info << "dH=" << dH << endl;
+    //Info << "this->dadt(p, T, Xinp)=" << this->dadt(p, T, Xinp) << endl;
+    //Info << "this->a(p, T, Xinp)=" << this->a(p, T, Xinp) << endl;
+    //Info << "bmix=" << bmix << endl;
     dH = dH / this->W(Xinp); // J/kg
     // Based on Eq.12, Internal energy is estimated based on ideal(close to absolute 0 T) + departure
     //Info<<"!!!dH="<<dH<<"!!!Hi="<<this->Hideal(p, T, Xinp)<<"!!!\n";
+    //Info << "dH=" << dH << endl;
+    //Info << "this->Hideal(p, T, Xinp)=" << this->Hideal(p, T, Xinp) << endl;
     return dH + this->Hideal(p, T, Xinp);
     //+11990129.829480369 +3991.2*1000;
 }
@@ -1513,11 +1518,18 @@ inline Foam::scalar Foam::PengRobinsonMixture<ThermoMixture>::Hideal(
     const scalarList& X = *Xp;
 
     scalar H_ideal = 0, sum = 0;
-    forAll(X, i)
+    /*forAll(X, i)
     {
         sum += X[i] * (*this)[i].W();
         H_ideal += X[i] * (*this)[i].Ha(p, T) * (*this)[i].W();
     }
+    */
+   forAll(X, i)
+    {
+        sum += X[i] * (*this)[i].W();
+        H_ideal += X[i] * (*this)[i].Ha(p, T) * (*this)[i].W();
+    }
+    //Info<<"(*this)[1].Ha(p, T)="<<(*this)[1].Ha(p, T)<<endl;
     return H_ideal / sum;
 }
 

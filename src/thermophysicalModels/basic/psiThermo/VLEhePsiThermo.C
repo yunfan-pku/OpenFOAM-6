@@ -30,6 +30,8 @@ License
 template<class BasicPsiThermo, class MixtureType>
 void Foam::VLEhePsiThermo<BasicPsiThermo, MixtureType>::calculate()
 {
+
+    double tempT;
     const scalarField& hCells = this->he_;
     const scalarField& pCells = this->p_;
 
@@ -43,7 +45,12 @@ void Foam::VLEhePsiThermo<BasicPsiThermo, MixtureType>::calculate()
     {
         const typename MixtureType::thermoType& mixture_ =
             this->cellMixture(celli);
-
+        tempT = mixture_.THE(hCells[celli], pCells[celli], TCells[celli]);
+        //if (tempT < 452)
+        //{
+            //Info << hCells[900] << "," << hCells[100] << endl;
+        //    FatalErrorInFunction << hCells[900] << "," << hCells[100] << "T=" << tempT << ",h=" << hCells[celli] << ",p=" << pCells[celli] << abort(FatalError);
+        //}
         TCells[celli] = mixture_.THE
         (
             hCells[celli],
@@ -55,7 +62,7 @@ void Foam::VLEhePsiThermo<BasicPsiThermo, MixtureType>::calculate()
 
         muCells[celli] = mixture_.mu(pCells[celli], TCells[celli]);
         alphaCells[celli] = mixture_.alphah(pCells[celli], TCells[celli]);
-        vaporfracCells[celli]=mixture_.vaporfra(pCells[celli], TCells[celli]);
+        vaporfracCells[celli] = mixture_.vaporfra(pCells[celli], TCells[celli]);
     }
 
     volScalarField::Boundary& pBf =
@@ -131,7 +138,7 @@ Foam::VLEhePsiThermo<BasicPsiThermo, MixtureType>::VLEhePsiThermo
     const fvMesh& mesh,
     const word& phaseName
 )
-:
+    :
     heThermo<BasicPsiThermo, MixtureType>(mesh, phaseName),
     vaporfrac_
     (
@@ -178,7 +185,7 @@ void Foam::VLEhePsiThermo<BasicPsiThermo, MixtureType>::correct()
 
     if (debug)
     {
-        Info<< "    Finished" << endl;
+        Info << "    Finished" << endl;
     }
 }
 

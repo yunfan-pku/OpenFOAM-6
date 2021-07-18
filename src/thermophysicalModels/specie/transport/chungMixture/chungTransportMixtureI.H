@@ -307,7 +307,7 @@ inline Foam::scalar Foam::chungTransportMixture<ThermoMixture>::alphah(
     const scalar p,
     const scalar T) const
 {
-    return kappa(p, T) / this->Cp(p, T);
+    return kappa(p, T,1) / this->Cp(p, T,1);
 }
 
 // * * * * * * * * * * * * * * * Member Operators  * * * * * * * * * * * * * //

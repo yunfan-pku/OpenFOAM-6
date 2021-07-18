@@ -64,7 +64,7 @@ namespace Foam
 
     class ISATNode;
 
-    
+
     /*
         class Heap
         {
@@ -178,8 +178,12 @@ namespace Foam
             //TDACChemistryModel<CompType, ThermoType>& chemistry,
             //dictionary coeffsDict
             label in_n,
-            label out_n
-        ) :n_in_(in_n), n_out_(out_n), root_(nullptr), maxNLeafs_(10000), size_(0), timeTagList_(10) {};
+            label out_n,
+            label maxNLeafs,
+            label timeTagList
+        ) :n_in_(in_n), n_out_(out_n), root_(nullptr), maxNLeafs_(maxNLeafs), size_(0), timeTagList_(timeTagList) {};
+
+
 
         inline ISATNode* root()
         {
@@ -212,14 +216,22 @@ namespace Foam
             deleteSubTree(root_);
         }
 
-        inline label size()
+
+        inline void deleteSubTree_Node()
+        {
+            deleteSubTree_Node(root_);
+        }
+
+        void deleteSubTree_Node(ISATNode* subTreeRoot);
+        
+        inline label size() const
         {
             return size_;
         }
         //- Computes iteratively the depth of the subTree
-        label depth(ISATNode* subTreeRoot);
+        label depth(ISATNode* subTreeRoot)const;
 
-        inline label depth()
+        inline label depth() const
         {
             return depth(root_);
         }
@@ -305,7 +317,14 @@ namespace Foam
         //  Then, it repopulate the tree with this hyperplane stored at the root
         //  and by inserting the chemPoint in increasing order of value in that
         //  direction
+
+
+
+        ISATNode* balance_build(scalarRectangularMatrix& scaleIn, ISATNode* pNode, int start, int end, List<ISATleaf*>& arrays);
+        void balance(scalarRectangularMatrix& scaleIn);
         //void balance();
+        void getMiddle(List<ISATleaf*>& arrays, int ic, int left, int right, int posleft, int posright);
+        //inline void balance(scalarRectangularMatrix & scaleIn);
 /*
         inline void deleteAllNode()
         {

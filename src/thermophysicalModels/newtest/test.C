@@ -17,6 +17,8 @@
 #include "HashPtrTable.H"
 #include "multithermo.H"
 #include "IOmanip.H"
+#include<iostream>
+#include<tuple>
 using namespace Foam;
 int main()
 {
@@ -41,69 +43,123 @@ int main()
 
     dictionary thermoDictM(IFstream("system/thermoMixture")());
     Mtype thermo("test", speciesData, species, thermoDictM);
+    scalarList X(3), X1(3), X2(3);
+    scalar h1, h2, h;
+    X1[0] = 0.79992;//0.89991;//0.79992;
+    X1[1] = 0.19998;//0.09999;//0.19998;
+    X1[2] = 0.0001;
 
-    scalarList X(3);
-    X[0] = 0.85;
-    X[1] = 0.15;
-    X[2] = 1;
-    //X[2] = 0.01;
-    thermo.setX(X);
-    //Info<<thermo.TPn_flash(7000000,320)().vaporfra<<endl;
+    X2[0] = 0.0007992;//0.0008991;//0.0007992;
+    X2[1] = 0.0001998;//0.0000999;//0.0001998;
+    X2[2] = 0.999001;
+
+
+    thermo.setX(X1);
+    double T1 = 500;
+    double T2 = 300;
+    h1 = thermo.Hs(30000000, T1);
+    thermo.setX(X2);
+    h2 = thermo.Hs(30000000, T2);
+    Info << "h1=" << h1 << endl;
+    Info << "h2=" << h2 << endl;
+    //for (scalar T = 200;T < 465;T += 1)
+    //    Info << T << "," << thermo.TPn_flash(2.8e+07, T)().vaporfra<<","<<thermo.TPn_flash(2.8e+07, T)().equalconstant() << endl;
+    std::ofstream fout("O2_500_20p.csv");
+    for (double a = 0.;a <= 1.0001;a += 0.1)
+    {
+        X[0] = a * X1[0] + (1 - a) * X2[0];
+        X[1] = a * X1[1] + (1 - a) * X2[1];
+        X[2] = a * X1[2] + (1 - a) * X2[2];
+        thermo.setX(X);
+        h = a * h1 + (1 - a) * h2;
+
+        //Info << "h=" << h << endl;
+        scalar temph;
+        scalar T, dt = 10;
+        for (T = T2;T < T1;T += dt)
+        {
+            temph = thermo.Hs(30000000, T);
+            if (temph > h)
+            {
+                if (dt < 0.0001)
+                    break;
+                T -= dt;
+                dt /= 10;
+            }
+        }
+        //Info << T-dt << "," << thermo.Hs(30000000, T-dt) << endl;
+        Info << a << "," << T << "," << thermo.Hs(30000000, T) << ",h=" << h <<",vp="<<thermo.TPn_flash(30000000, T)().vaporfra<< endl;
+        fout << a << "," << T << std::endl;
+    }
+    fout.close();
+
+
+    //Info<<thermo.TPn_flash_New_TPD(800000, 175)().vaporfra << endl;
+
+
+
+    //bool rb;
+    //Foam::autoPtr<Foam::scalarList> rl;
+    //std::tie(rb, rl) = thermo.solveTPD_BFGS(30000000,260);
+    //Info << thermo.TPn_flash_New(30000000, 260,rl)().vaporfra << endl;
+
+    //Info << thermo.TPn_flash(30000000, 350)().vaporfra << endl;
     //Info<<thermo.TPn_flash(7000000,320)().fu<<endl;
     //Info<<thermo.TPn_flash(7000000,350)().vaporfra<<endl;
-   
-   
-    for(scalar i=200;i<1000;i+=10)
-    {
-        Info<<setprecision(10)<<"T="<<i<<","<<(thermo.TPn_flash(30000000,i))().vaporfra<<endl;
-    //thermo.TPn_validation(10000000,i);
-    }
-    
-   // thermo.TPn_validation(23000000,393);
-   // thermo.TPn_validation(19900000,355.5);
-   // thermo.TPn_validation(19900000,356);
-    //thermo.TPn_validation(7000000,300);
-    //thermo.TPn_validation(7000000,350);
+    //Info << thermo.solveTPD_BFGS(1e5, 421) << endl;
 
-    //Info<<thermo.THE(130436,6000000, 900);
-    //for(scalar i=200;i<600;i+=1)
-    //Info<<i<<","<<thermo.Hs(94419.092, i)+693451.2184<<endl;
-    
-     //Info<<thermo.THE(-693451.2184,94419.092,  441.9815523)<<endl;
-    //Info << thermo.rho(23000000, 500) << endl;
-    // Info<<thermo.Cp(23000000,500)<<endl;
-    // Info<<thermo.Hs(23000000,500)<<endl;
-    /*
-    for(scalar i=400;i<=550;i+=10)
-    Info<<thermo.Hs(23000000, i)<<endl;
-    */
-    scalar dp = 10;
-    //Info << "SS=" << ::sqrt(dp / (thermo.rho(5000000 + dp, 500) - thermo.rho(5000000, 500))) << endl;
-    //Info << thermo.Hs(23000000, 500) << endl;
-    //Info << thermo.Hs(22000000, 500) << endl;
-    //Info << thermo.Hs(21000000, 500) << endl;
-    //Info << " psi=" << thermo.psi(1000000, 500) << endl;
-    //Info << " psi=" << thermo.psi(100000, 520) << endl;
-    
-    //double hs = thermo.Hs(23000000, 500);
-    //Info << hs << endl;
-    //double nt = thermo.THE(-32739.9,100000, 576.628);
-    //Info << nt << endl;
-    //double hn = thermo.Ha(23000000, nt);
-    //Info << hn << endl;
-    /*
-    double te = 505.1362181469;
-    Info << te << "," << thermo.Hs(1.50416e+07, te) - 128817 << endl;
-    Info << "---------------------------------------" << endl;
-    //te=505.1362181469;
-    //Info<<te<<","<<thermo.Hs(1.50416e+07, te)-128817<<endl;
-    te = 505.1362181470;
-    Info << te << "," << thermo.Hs(1.50416e+07, te) - 128817 << endl;
-*/
-    //Info << thermo.rho(15149200, 567.096) << endl; //15149200	567.096	129.742
+    /* for(scalar i=200;i<1000;i+=10)
+     {
+         Info<<setprecision(10)<<"T="<<i<<","<<(thermo.TPn_flash(30000000,i))().vaporfra<<endl;
+     //thermo.TPn_validation(10000000,i);
+     }
+     */
 
-    //for(scalar i=500;i<=600;i+=1)
-    //Info<<setprecision(15)<<i<<","<<thermo.Hs(7.11705e+06, i)+981310<<endl;
+     // thermo.TPn_validation(23000000,393);
+     // thermo.TPn_validation(19900000,355.5);
+     // thermo.TPn_validation(19900000,356);
+      //thermo.TPn_validation(7000000,300);
+      //thermo.TPn_validation(7000000,350);
+
+      //Info<<thermo.THE(130436,6000000, 900);
+      //for(scalar i=200;i<600;i+=1)
+      //Info<<i<<","<<thermo.Hs(94419.092, i)+693451.2184<<endl;
+
+       //Info<<thermo.THE(-693451.2184,94419.092,  441.9815523)<<endl;
+      //Info << thermo.rho(23000000, 500) << endl;
+      // Info<<thermo.Cp(23000000,500)<<endl;
+      // Info<<thermo.Hs(23000000,500)<<endl;
+      /*
+      for(scalar i=400;i<=550;i+=10)
+      Info<<thermo.Hs(23000000, i)<<endl;
+      */
+      //scalar dp = 10;
+      //Info << "SS=" << ::sqrt(dp / (thermo.rho(5000000 + dp, 500) - thermo.rho(5000000, 500))) << endl;
+      //Info << thermo.Hs(23000000, 500) << endl;
+      //Info << thermo.Hs(22000000, 500) << endl;
+      //Info << thermo.Hs(21000000, 500) << endl;
+      //Info << " psi=" << thermo.psi(1000000, 500) << endl;
+      //Info << " psi=" << thermo.psi(100000, 520) << endl;
+
+      //double hs = thermo.Hs(23000000, 500);
+      //Info << hs << endl;
+      //double nt = thermo.THE(-32739.9,100000, 576.628);
+      //Info << nt << endl;
+      //double hn = thermo.Ha(23000000, nt);
+      //Info << hn << endl;
+      /*
+      double te = 505.1362181469;
+      Info << te << "," << thermo.Hs(1.50416e+07, te) - 128817 << endl;
+      Info << "---------------------------------------" << endl;
+      //te=505.1362181469;
+      //Info<<te<<","<<thermo.Hs(1.50416e+07, te)-128817<<endl;
+      te = 505.1362181470;
+      Info << te << "," << thermo.Hs(1.50416e+07, te) - 128817 << endl;
+  */
+  //Info << thermo.rho(15149200, 567.096) << endl; //15149200	567.096	129.742
+
+  //for(scalar i=500;i<=600;i+=1)
+  //Info<<setprecision(15)<<i<<","<<thermo.Hs(7.11705e+06, i)+981310<<endl;
 
 
   // Info<<thermo.THE(-981310,7.11705e+06, 571.776 )<<endl;
@@ -113,7 +169,7 @@ int main()
     //for(double T=100;T<600;T+=10)
     //fout<<p<<","<<T<<","<<(thermo.TPn_flash(p,T))().vaporfra<<std::endl;
     //Info<<"!_!_!_!_!_!_!"<<(thermo.TPn_flash(100000,341.066))().vaporfra<<endl;
-    
+
     //Info<<thermo.Hs(100000,341.064)<<endl;
     //Info<<thermo.Hs(100000,341.066)<<endl;
     //Info<<thermo.Hs(100000,500.066)<<endl;
@@ -149,14 +205,14 @@ int main()
     X[0]=0.5;
     X[1]=0.5;
     vlet.setX(X);
-   // autoPtr<vle::solution> sol(vlet.TPn_flash(10000000,450)); 
+   // autoPtr<vle::solution> sol(vlet.TPn_flash(10000000,450));
    // Info<<sol().vaporfra<<endl;
     Info<<vlet.rho(1000000,450)<<endl;
     Info<<vlet.Ha(1000000,450)<<endl;
     Info<<vlet.psi(1000000,450)<<endl;
     Info<<vlet.rho(1000000,450)<<endl;
     Info<<vlet.Ea(100000,450)<<endl;
-    
+
     dictionary dict(IFstream("system/thermo")());
     janafThermo<perfectGas<specie>> h2o(dict.subDict("H2O"));
     Info<<h2o.Ha(10000,2000)<<" "<<h2o.R()<<endl;

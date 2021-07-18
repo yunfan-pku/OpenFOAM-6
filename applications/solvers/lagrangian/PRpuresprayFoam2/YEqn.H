@@ -10,9 +10,10 @@ tmp<fv::convectionScheme<scalar>> mvConvection
 );
 
 {
+    scalar Sc = 1.49;
     combustion->correct();
     Qdot = combustion->Qdot();
-    volScalarField Yt(0.0*Y[0]);
+    volScalarField Yt(0.0 * Y[0]);
 
     forAll(Y, i)
     {
@@ -23,12 +24,12 @@ tmp<fv::convectionScheme<scalar>> mvConvection
             fvScalarMatrix YEqn
             (
                 fvm::ddt(rho, Yi)
-              + mvConvection->fvmDiv(phi, Yi)
-              - fvm::laplacian(turbulence->muEff(), Yi)
-             ==
+                + mvConvection->fvmDiv(phi, Yi)
+                - fvm::laplacian(turbulence->muEff() / Sc, Yi)
+                ==
                 parcels.SYi(i, Yi)
-              + combustion->R(Yi)
-              + fvOptions(rho, Yi)
+                + combustion->R(Yi)
+                + fvOptions(rho, Yi)
             );
 
             YEqn.relax();

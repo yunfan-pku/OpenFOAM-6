@@ -62,9 +62,9 @@ inline Foam::species::ISATmultithermo<ThermoMixture, Type>::ISATmultithermo(
     //psitree(speciesData.size() + 1, 1, psifun, "psitree"), 
     //psitree_HP(speciesData.size() + 2, 1, psifun_HP, "psitree_HP"), 
     //Tpsitree_HP(speciesData.size() + 2, 2, Tpsifun_HP, "Tpsitree_HP"), 
-    Tpsivftree_HP(speciesData.size() + 2, 3, Tpsivffun_HP, "Tpsivftree_HP"),//,Ttree(specieNames.size()+1,1),psimualphahtree(specieNames.size()+1,3)
-    mutree(speciesData.size() + 1, 1, mufun, "mutree"),
-    alphahtree(speciesData.size() + 1, 1, alphahfun, "alphahtree")
+    Tpsivftree_HP(speciesData.size() + 2, 3, Tpsivffun_HP, "Tpsivftree_HP",ISATDict_),//,Ttree(specieNames.size()+1,1),psimualphahtree(specieNames.size()+1,3)
+    mutree(speciesData.size() + 1, 1, mufun, "mutree",ISATDict_),
+    alphahtree(speciesData.size() + 1, 1, alphahfun, "alphahtree",ISATDict_)
     //vaporfratree(speciesData.size() + 1, 1, vaporfrafun, "vaporfratree"),
     //psivftree(speciesData.size() + 1, 2, psivffun, "psivftree")
 {
@@ -93,13 +93,14 @@ inline Foam::species::ISATmultithermo<ThermoMixture, Type>::ISATmultithermo(
     Tpsitree_HP.init_elp()[3][3] = 1 / 1000;
 */
 
-    Info << readScalar(ISATDict_.subDict(Tpsivftree_HP.treename()).lookup("epsilon")) << endl;
-    scalarList scaleFactor(ISATDict_.subDict(Tpsivftree_HP.treename()).lookup("scaleFactor"));
-    Info << scaleFactor << endl;
-    Info << readScalar(ISATDict_.subDict(Tpsivftree_HP.treename()).lookup("relepsilon")) << endl;
-    scalarList scaleFactor(ISATDict_.subDict(Tpsivftree_HP.treename()).lookup("init_elp"));
-    Info << scaleFactor << endl;
-    FatalErrorInFunction << "haha" << abort(FatalError);
+    //Info << readScalar(ISATDict_.subDict(Tpsivftree_HP.treename()).lookup("epsilon")) << endl;
+    //scalarList scaleFactor(ISATDict_.subDict(Tpsivftree_HP.treename()).lookup("scaleFactor"));
+    //Info << scaleFactor << endl;
+    //Info << readScalar(ISATDict_.subDict(Tpsivftree_HP.treename()).lookup("relepsilon")) << endl;
+    //scalarList init_elp(ISATDict_.subDict(Tpsivftree_HP.treename()).lookup("init_elp"));
+    //Info << init_elp << endl;
+    //FatalErrorInFunction << "haha" << abort(FatalError);
+/*
     Tpsivftree_HP.epsilon() = 1e-3;
     Tpsivftree_HP.scaleFactor()[0][0] = 1e-2;
     Tpsivftree_HP.scaleFactor()[1][1] = 1e5;
@@ -107,9 +108,45 @@ inline Foam::species::ISATmultithermo<ThermoMixture, Type>::ISATmultithermo(
     Tpsivftree_HP.relepsilon() = 0;// 5e-2;
     Tpsivftree_HP.init_elp()[0][0] = 1 / 0.01;
     Tpsivftree_HP.init_elp()[1][1] = 1 / 0.01;
-    Tpsivftree_HP.init_elp()[2][2] = 1 / 100;
+    Tpsivftree_HP.init_elp()[2][2] = 1 / 100;//error
     Tpsivftree_HP.init_elp()[3][3] = 1 / 1000;
+    scalarList toleranceOut(ISATDict_.subDict(Tpsivftree_HP.treename()).lookup("toleranceOut"));
+*/
+    /*
+    Tpsivftree_HP.toleranceOut()[0][0] = Tpsivftree_HP.scaleFactor()[0][0] / Tpsivftree_HP.epsilon();
+    Tpsivftree_HP.toleranceOut()[1][1] = Tpsivftree_HP.scaleFactor()[1][1] / Tpsivftree_HP.epsilon();
+    Tpsivftree_HP.toleranceOut()[2][2] = Tpsivftree_HP.scaleFactor()[2][2] / Tpsivftree_HP.epsilon();
+    */
+   /*
+    Tpsivftree_HP.toleranceOut()[0][0] = 1.0 / toleranceOut[0];
+    Tpsivftree_HP.toleranceOut()[1][1] = 1.0 / toleranceOut[1];
+    Tpsivftree_HP.toleranceOut()[2][2] = 1.0 / toleranceOut[2];
+    scalarList initToleranceIn(ISATDict_.subDict(Tpsivftree_HP.treename()).lookup("initToleranceIn"));
+    */
+    /*
+        Tpsivftree_HP.initToleranceIn()[0][0] = Tpsivftree_HP.init_elp()[0][0] / Tpsivftree_HP.epsilon();
+        Tpsivftree_HP.initToleranceIn()[1][1] = Tpsivftree_HP.init_elp()[1][1] / Tpsivftree_HP.epsilon();
+        Tpsivftree_HP.initToleranceIn()[2][2] = Tpsivftree_HP.init_elp()[2][2] / Tpsivftree_HP.epsilon();
+        Tpsivftree_HP.initToleranceIn()[3][3] = Tpsivftree_HP.init_elp()[3][3] / Tpsivftree_HP.epsilon();
 
+        Info<<Tpsivftree_HP.initToleranceIn()[0][0] <<","<<1.0 / initToleranceIn[0]<<endl;
+        Info<<Tpsivftree_HP.initToleranceIn()[1][1] <<","<<1.0 / initToleranceIn[1]<<endl;
+        Info<<Tpsivftree_HP.initToleranceIn()[2][2] <<","<<1.0 / initToleranceIn[2]<<endl;
+        Info<<Tpsivftree_HP.initToleranceIn()[3][3] <<","<<1.0 / initToleranceIn[3]<<endl;
+        */
+        //FatalErrorInFunction << "haha" << abort(FatalError);
+/*
+    Tpsivftree_HP.initToleranceIn()[0][0] = 1.0 / initToleranceIn[0];
+    Tpsivftree_HP.initToleranceIn()[1][1] = 1.0 / initToleranceIn[1];
+    Tpsivftree_HP.initToleranceIn()[2][2] = 1.0 / initToleranceIn[2];
+    Tpsivftree_HP.initToleranceIn()[3][3] = 1.0 / initToleranceIn[3];
+    scalarList scaleIn(ISATDict_.subDict(Tpsivftree_HP.treename()).lookup("scaleIn"));
+
+    Tpsivftree_HP.scaleIn()[0][0] = scaleIn[0];
+    Tpsivftree_HP.scaleIn()[1][1] = scaleIn[1];
+    Tpsivftree_HP.scaleIn()[2][2] = scaleIn[2];
+    Tpsivftree_HP.scaleIn()[3][3] = scaleIn[3];
+    */
 
     /*
         Ttree.relepsilon() = 0;// 2e-3;
@@ -118,7 +155,7 @@ inline Foam::species::ISATmultithermo<ThermoMixture, Type>::ISATmultithermo(
         Ttree.init_elp()[1][1] = 1 / 100;
         Ttree.init_elp()[2][2] = 1 / 1000;
         Ttree.scaleFactor()[0][0] = 1e-2;
-        */
+    */
     mutree.relepsilon() = 1;//2e-3;
     alphahtree.relepsilon() = 0;// 2e-3;
 /*

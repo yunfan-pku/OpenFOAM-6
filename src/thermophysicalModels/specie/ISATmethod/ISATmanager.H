@@ -61,13 +61,22 @@ namespace Foam
         // Private data
 
             //- List of the stored 'points' organized in a binary tree
+        dictionary ISATDict_;
         ISATbinaryTree tableTree_;
         FuncType* pfunc;
         double epsilon_;
         double relepsilon_;
         scalarRectangularMatrix scaleFactor_;
+
+        scalarRectangularMatrix scaleIn_;
+        scalarRectangularMatrix toleranceOut_;
+        scalarRectangularMatrix initToleranceIn_;
+
         scalarRectangularMatrix init_elp_;
 
+        label timeSteps_;
+        label checkInterval_;
+        scalar maxDepthFactor_;
 
         label nRetrieved_;
         label nGrowth_;
@@ -198,7 +207,7 @@ namespace Foam
         // Constructors
 
             //- Construct from dictionary
-        ISATmanager(label in_n, label out_n, FuncType& func, const word& name_in);
+        ISATmanager(label in_n, label out_n, FuncType& func, const word& name_in, const dictionary& ISATDict);
 
 
         // Destructor
@@ -233,6 +242,26 @@ namespace Foam
             return relepsilon_;
         }
 
+        inline scalarRectangularMatrix& toleranceOut()
+        {
+            return toleranceOut_;
+        }
+
+        inline  const scalarRectangularMatrix& toleranceOut()const
+        {
+            return toleranceOut_;
+        }
+        inline scalarRectangularMatrix& initToleranceIn()
+        {
+            return initToleranceIn_;
+        }
+
+        inline  const scalarRectangularMatrix& initToleranceIn()const
+        {
+            return initToleranceIn_;
+        }
+
+
         ISATleaf* search(const scalarList& value);
         template <class ...Args>
         void call(const Foam::scalarList& value, scalarList& out, Args... arg);
@@ -244,12 +273,18 @@ namespace Foam
         bool grow(ISATleaf* plf, const scalarList& dvalue, const scalarList& data1, const scalarList& data2);
 
         double distance(const scalarList& l, const scalarList& r);
+        double normalized_distance(const scalarList& l, const scalarList& r);
 
         double norm(const scalarList& l);
 
         void newTimeStep()
         {
+            timeSteps_++;
             tableTree_.timeTagList().newTimeStep();
+            if(timeSteps_%checkInterval_==0&&tableTree_.depth()*1.0/ceil(log2(tableTree_.size()))>maxDepthFactor_)
+            {
+                tableTree_.balance(scaleIn_);
+            }    
         }
 
         label treesize()
@@ -265,6 +300,16 @@ namespace Foam
         inline  scalarRectangularMatrix& scaleFactor()
         {
             return scaleFactor_;
+        }
+
+        inline const scalarRectangularMatrix& scaleIn() const
+        {
+            return scaleIn_;
+        }
+
+        inline  scalarRectangularMatrix& scaleIn()
+        {
+            return scaleIn_;
         }
 
         void showPreformance() const;
